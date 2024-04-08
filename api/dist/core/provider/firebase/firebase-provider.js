@@ -45,7 +45,7 @@ let FirebaseProvider = class FirebaseProvider {
         this.config = config;
         this.app = admin.initializeApp({
             credential: admin.credential.cert(firebase_config_1.default),
-            storageBucket: "market-stall-rentals.appspot.com",
+            storageBucket: "cemify-app.appspot.com",
         });
     }
 };

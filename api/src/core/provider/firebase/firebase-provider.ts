@@ -10,7 +10,7 @@ export class FirebaseProvider {
   constructor(private readonly config: ConfigService) {
     this.app = admin.initializeApp({
       credential: admin.credential.cert(firebaseConfig),
-      storageBucket: "market-stall-rentals.appspot.com",
+      storageBucket: "cemify-app.appspot.com",
     });
   }
 }

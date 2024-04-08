@@ -1,4 +1,4 @@
-import * as firebaseConfig from "./market-stall-rentals-firebase-adminsdk-tceie-d772b426f4.json";
+import * as firebaseConfig from "./cemify-app-firebase-adminsdk-tbc28-f3fa2f3203.json";
 
 export default {
   type: firebaseConfig.type,

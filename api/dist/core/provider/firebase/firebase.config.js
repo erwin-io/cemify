@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const firebaseConfig = __importStar(require("./market-stall-rentals-firebase-adminsdk-tceie-d772b426f4.json"));
+const firebaseConfig = __importStar(require("./cemify-app-firebase-adminsdk-tbc28-f3fa2f3203.json"));
 exports.default = {
     type: firebaseConfig.type,
     projectId: firebaseConfig.project_id,
