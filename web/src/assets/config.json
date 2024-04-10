@@ -1,0 +1,423 @@
+{
+  "appName": "Cemetery Mapping",
+  "reservationConfig": {
+    "maxCancellation": "3",
+    "daysCancellationLimitReset": "5",
+    "timeSlotHours": {
+      "start": "08:00",
+      "end": "17:00"
+    },
+    "timeSlotNotAvailableHours": [
+      "12:00"
+    ],
+    "dayOfWeekNotAvailable": [
+      "Sunday",
+      "Wednesday",
+      "Saturday"
+    ]
+  },
+  "tableColumns": {
+    "users": [
+      {
+        "name": "fullName",
+        "label": "Name",
+        "apiNotation": "fullName",
+        "sticky": true,
+        "type": "string",
+        "style": {
+          "width": "100px",
+          "left": "0px"
+        },
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Full name"
+        },
+        "urlPropertyName": "url"
+      },
+      {
+        "name": "userProfilePic",
+        "label": "Profile Picture",
+        "type": "image",
+        "style": {
+          "width": "100px"
+        }
+      },
+      {
+        "name": "userName",
+        "label": "Username",
+        "apiNotation": "user.userName",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Username"
+        }
+      },
+      {
+        "name": "mobileNumber",
+        "label": "Mobile number",
+        "apiNotation": "mobileNumber",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Mobile number"
+        }
+      },
+      {
+        "name": "access",
+        "label": "User group",
+        "apiNotation": "access.name",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "User group"
+        }
+      },
+      {
+        "name": "userType",
+        "label": "Type",
+        "apiNotation": "userType",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Type"
+        }
+      }
+    ],
+    "access": [
+      {
+        "name": "accessCode",
+        "label": "User group #",
+        "sticky": true,
+        "apiNotation": "accessCode",
+        "type": "string",
+        "style": {
+          "width": "100px",
+          "left": "0px"
+        },
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "User group #"
+        },
+        "urlPropertyName": "url"
+      },
+      {
+        "name": "name",
+        "label": "User group name",
+        "apiNotation": "name",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "User group name"
+        }
+      }
+    ],
+    "burial": [
+      {
+        "sticky": true,
+        "name": "burialCode",
+        "label": "Code #",
+        "apiNotation": "burialCode",
+        "type": "string",
+        "style": {
+          "width": "100px",
+          "left": "0px"
+        },
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Code #"
+        },
+        "urlPropertyName": "url"
+      },
+      {
+        "name": "fullName",
+        "label": "Name",
+        "apiNotation": "fullName",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Name"
+        }
+      },
+      {
+        "name": "dateOfBurial",
+        "label": "Burial",
+        "apiNotation": "dateOfBurial",
+        "type": "date",
+        "format": {
+          "type": "date-time",
+          "custom": "MMM dd, yyyy"
+        },
+        "filterOptions": {
+          "enable": true,
+          "label": "Burial",
+          "type": "date-range"
+        }
+      },
+      {
+        "name": "dateOfBirth",
+        "label": "Born",
+        "apiNotation": "dateOfBirth",
+        "type": "date",
+        "format": {
+          "type": "date-time",
+          "custom": "MMM dd, yyyy"
+        },
+        "filterOptions": {
+          "enable": true,
+          "label": "Born",
+          "type": "date-range"
+        }
+      },
+      {
+        "name": "dateOfDeath",
+        "label": "Date Of Death",
+        "apiNotation": "dateOfDeath",
+        "type": "date",
+        "format": {
+          "type": "date-time",
+          "custom": "MMM dd, yyyy"
+        },
+        "filterOptions": {
+          "enable": true,
+          "label": "Date Of Death",
+          "type": "date-range"
+        }
+      },
+      {
+        "name": "lotCode",
+        "label": "Lot",
+        "apiNotation": "lot.lotCode",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Lot"
+        }
+      },
+      {
+        "name": "block",
+        "label": "Block",
+        "apiNotation": "lot.block",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Block"
+        }
+      },
+      {
+        "name": "familyContactPerson",
+        "label": "Family contact person",
+        "apiNotation": "familyContactPerson",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Family contact person"
+        }
+      },
+      {
+        "name": "familyContactNumber",
+        "label": "Family contact number",
+        "apiNotation": "familyContactNumber",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Family contact number"
+        }
+      },
+      {
+        "name": "fromReservation",
+        "label": "Reservation",
+        "apiNotation": "fromReservation",
+        "type": "boolean",
+        "filterOptions": {
+          "enable": true,
+          "type": "option-yes-no",
+          "placeholder": "Reservation"
+        }
+      },
+      {
+        "name": "workOrder",
+        "label": "Work order status",
+        "apiNotation": "workOrder.status",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Work order status"
+        }
+      }
+    ],
+    "reservation": [
+      {
+        "sticky": true,
+        "name": "reservationCode",
+        "label": "Code #",
+        "apiNotation": "reservationCode",
+        "type": "string",
+        "style": {
+          "width": "100px",
+          "left": "0px"
+        },
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Code #"
+        },
+        "urlPropertyName": "url"
+      },
+      {
+        "name": "dateTime",
+        "label": "Date time requested",
+        "apiNotation": "dateTime",
+        "type": "date",
+        "format": {
+          "type": "date-time",
+          "custom": "MMM dd, yyyy h:mm a"
+        },
+        "filterOptions": {
+          "enable": true,
+          "label": "Date time requested",
+          "type": "date-range"
+        }
+      },
+      {
+        "name": "lotCode",
+        "label": "Lot",
+        "apiNotation": "lot.lotCode",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Lot"
+        }
+      },
+      {
+        "name": "block",
+        "label": "Block",
+        "apiNotation": "lot.block",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Block"
+        }
+      },
+      {
+        "name": "dateOfBurial",
+        "label": "Burial",
+        "apiNotation": "dateOfBurial",
+        "type": "date",
+        "format": {
+          "type": "date",
+          "custom": "MMM dd, yyyy"
+        },
+        "filterOptions": {
+          "enable": true,
+          "label": "Burial",
+          "type": "date-range"
+        }
+      },
+      {
+        "name": "user",
+        "label": "Requested by",
+        "apiNotation": "user.fullName",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Requested by"
+        }
+      }
+    ]
+  },
+  "sessionConfig": {
+    "sessionTimeout": "60"
+  },
+  "lookup": {
+    "accessPages": [
+      {
+        "page": "Map",
+        "view": true,
+        "modify": true,
+        "rights": []
+      },
+      {
+        "page": "Burial",
+        "view": false,
+        "modify": false,
+        "rights": ["Status"]
+      },
+      {
+        "page": "Reservation",
+        "view": false,
+        "modify": false,
+        "rights": ["Approval"]
+      },
+      {
+        "page": "Work Order",
+        "view": false,
+        "modify": false,
+        "rights": ["Status"]
+      },
+      {
+        "page": "Users",
+        "view": false,
+        "modify": false,
+        "rights": []
+      },
+      {
+        "page": "Access",
+        "view": false,
+        "modify": false,
+        "rights": []
+      }
+    ]
+  },
+  "apiEndPoints": {
+    "auth": {
+      "login": "/auth/login/staff",
+      "registerTenant": "/auth/register/tenant"
+    },
+    "user": {
+      "getByCode": "/users/",
+      "createUsers": "/users/",
+      "updateProfile": "/users/updateProfile/",
+      "updateUsers": "/users/",
+      "getUsersByAdvanceSearch": "/users/page/",
+      "resetUserPassword": "/users/",
+      "approveAccessRequest": "/users/"
+    },
+    "access": {
+      "getByAdvanceSearch": "/access/page/",
+      "getByCode": "/access/",
+      "create": "/access/",
+      "update": "/access/",
+      "delete": "/access/"
+    },
+    "burial": {
+      "getByAdvanceSearch": "/burial/page/",
+      "getAllByClientUserCode": "/burial/getAllByClientUserCode/",
+      "getByCode": "/burial/",
+      "searchMap": "/burial/searchMap/",
+      "create": "/burial/",
+      "createFromReservation": "/burial/createFromReservation",
+      "update": "/burial/",
+      "delete": "/burial/"
+    },
+    "reservation": {
+      "getByAdvanceSearch": "/reservation/page/",
+      "getByCode": "/reservation/",
+      "create": "/reservation/",
+      "update": "/reservation/",
+      "updateStatus": "/reservation/updateStatus/"
+    },
+    "lot": {
+      "getByAdvanceSearch": "/lot/page/",
+      "getByCode": "/lot/",
+      "getByBlock": "/lot/getByBlock/",
+      "updateMapData": "/lot/updateMapData/"
+    },
+    "notifications": {
+      "getByAdvanceSearch": "/notifications/page/",
+      "getUnreadByUser": "/notifications/getUnreadByUser/",
+      "marAsRead": "/notifications/marAsRead/"
+    },
+    "message": {
+      "create": "/message/"
+    }
+  }
+}

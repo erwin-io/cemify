@@ -1,0 +1,124 @@
+
+<div class="inner-content">
+  <form
+  [formGroup]="form"
+  fxLayout="row wrap"
+  id="form"
+  class="readonly">
+  <fieldset fxFlex="100" fxLayout="row wrap" style="row-gap: 16px">
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.sm="row"
+      fxLayout.md="column"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.sm="33.33%"
+        fxFlex.md="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Code #</mat-label>
+        <input
+          matInput
+          placeholder="Code #"
+          formControlName="reservationCode"/>
+      </mat-form-field>
+      <div
+      fxFlex.sm="33.33%"
+      fxFlex.md="100"
+        fxLayout="column"></div>
+      <div
+      fxFlex.sm="33.33%"
+      fxFlex.md="100"
+        fxLayout="column"></div>
+    </div>
+    <div fxLayout="column" fxFlex="100">
+      <mat-label >Burial</mat-label>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.sm="row"
+      fxLayout.md="column"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.sm="33.33%"
+        fxFlex.md="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Date of burial</mat-label>
+        <input
+          matInput
+          placeholder="Date of burial"
+          formControlName="dateOfBirth"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.sm="33.33%"
+        fxFlex.md="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Date of birth</mat-label>
+        <input
+          matInput
+          placeholder="Date of birth"
+          formControlName="dateOfBirth"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.sm="33.33%"
+        fxFlex.md="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Date of death</mat-label>
+        <input
+          matInput
+          placeholder="Date of death"
+          formControlName="dateOfDeath"/>
+      </mat-form-field>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-xs="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-xs="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Block</mat-label>
+        <input
+          matInput
+          placeholder="Block"
+          formControlName="block"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.gt-xs="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Lot</mat-label>
+        <input
+          matInput
+          placeholder="Lot"
+          formControlName="lotCode"/>
+      </mat-form-field>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-xs="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Requested by</mat-label>
+        <input
+          matInput
+          placeholder="Requested by"
+          formControlName="user"/>
+      </mat-form-field>
+    </div>
+  </fieldset>
+  </form>
+</div>

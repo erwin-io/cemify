@@ -1,0 +1,15 @@
+.content {
+  .inner-content {
+    .map-container {
+      display: flex;
+      position: relative;
+      app-map-search {
+        display: flex;
+        position: absolute;
+        z-index: 999;
+        top: 20px;
+        left: 20px;
+      }
+    }
+  }
+}

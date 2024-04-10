@@ -1,0 +1,245 @@
+
+<div class="inner-content">
+  <form
+  [formGroup]="form"
+  fxLayout="row wrap"
+  id="form"
+  class="readonly">
+  <fieldset fxFlex="100" fxLayout="row wrap" style="row-gap: 16px">
+    <div fxLayout="column" fxFlex="100">
+      <mat-label >Lot</mat-label>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-xs="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-xs="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Block</mat-label>
+        <input
+          matInput
+          placeholder="Block"
+          formControlName="block"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.gt-xs="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Lot</mat-label>
+        <input
+          matInput
+          placeholder="Lot"
+          formControlName="lotCode"/>
+      </mat-form-field>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.sm="row"
+      fxLayout.md="column"
+      style="gap: 16px"
+      *ngIf="burial && burial?.burialCode">
+      <mat-form-field
+      fxFlex.gt-xs="50%"
+      fxFlex.md="100"
+      fxLayout="column"
+        appearance="outline">
+        <mat-label>Code #</mat-label>
+        <input
+          matInput
+          readonly
+          placeholder="Code #"
+          value="{{burial?.burialCode}}"/>
+      </mat-form-field>
+      <div
+      fxFlex.gt-xs="50%"
+      fxFlex.md="100"
+      fxLayout="column"></div>
+      <div
+      fxFlex.gt-xs="50%"
+      fxFlex.md="100"
+      fxLayout="column"></div>
+    </div>
+    <div fxLayout="column" fxFlex="100">
+      <mat-label >Burial</mat-label>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-lg="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline"
+        *ngIf="!isReadOnly; else dateOfBurial">
+        <mat-label>Date of burial</mat-label>
+        <input
+          matInput
+          placeholder="Date of burial"
+          formControlName="dateOfBurial"
+          [matDatepicker]="dateOfBurialPicker"/>
+        <mat-datepicker-toggle matIconSuffix [for]="dateOfBurialPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateOfBurialPicker></mat-datepicker>
+      </mat-form-field>
+      <ng-template #dateOfBurial>
+        <mat-form-field
+          fxFlex.gt-lg="33.33%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Date of burial</mat-label>
+          <input
+            matInput
+            placeholder="Date of burial"
+            formControlName="dateOfBirth"/>
+        </mat-form-field>
+      </ng-template>
+
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline"
+        *ngIf="!isReadOnly; else dateOfBirth">
+        <mat-label>Date of Birth</mat-label>
+        <input
+          matInput
+          placeholder="Date of birth"
+          formControlName="dateOfBirth"
+          [matDatepicker]="dateOfBirthPicker"/>
+        <mat-datepicker-toggle matIconSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateOfBirthPicker></mat-datepicker>
+      </mat-form-field>
+      <ng-template #dateOfBirth>
+        <mat-form-field
+          fxFlex.gt-lg="33.33%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Date of birth</mat-label>
+          <input
+            matInput
+            placeholder="Date of birth"
+            formControlName="dateOfBirth"/>
+        </mat-form-field>
+      </ng-template>
+
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline"
+        *ngIf="!isReadOnly; else dateOfDeath">
+        <mat-label>Date of death</mat-label>
+        <input
+          matInput
+          placeholder="Date of death"
+          formControlName="dateOfDeath"
+          [matDatepicker]="dateOfDeathPicker"/>
+        <mat-datepicker-toggle matIconSuffix [for]="dateOfDeathPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateOfDeathPicker></mat-datepicker>
+      </mat-form-field>
+      <ng-template #dateOfDeath>
+        <mat-form-field
+          fxFlex.gt-lg="33.33%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Date of death</mat-label>
+          <input
+            matInput
+            placeholder="Date of death"
+            formControlName="dateOfDeath"/>
+        </mat-form-field>
+      </ng-template>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-lg="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-lg="50%"
+        fxFlex="100"
+        appearance="outline">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          placeholder="Name"
+          formControlName="fullName"/>
+      </mat-form-field>
+      <div
+        fxFlex.gt-lg="50%"
+        fxFlex="100"
+        appearance="outline"></div>
+    </div>
+    <div fxLayout="column" fxFlex="100">
+      <mat-label >Contact Person</mat-label>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-lg="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-lg="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Family contact person</mat-label>
+        <input
+          matInput
+          placeholder="Family contact person"
+          formControlName="familyContactPerson"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.gt-lg="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Family contact number</mat-label>
+        <input
+          matInput
+          placeholder="Family contact number"
+          formControlName="familyContactNumber"/>
+      </mat-form-field>
+    </div>
+    <div fxLayout="column" fxFlex="100">
+      <mat-label >Work Order</mat-label>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      style="gap: 16px;"
+      class="readonly">
+      <mat-form-field
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Search staff</mat-label>
+        <input
+          matInput
+          disabled
+          placeholder="Search staff"
+          [value]="assignedStaffUser?.fullName"/>
+        <mat-icon
+          class="icon-right"
+          style="cursor: pointer;"
+          matSuffix
+          *ngIf="!isReadOnly"
+          matTooltip="Search staff"
+          (click)="showSelectStaff()">
+          search
+        </mat-icon>
+      </mat-form-field>
+    </div>
+  </fieldset>
+  </form>
+</div>

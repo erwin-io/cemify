@@ -1,0 +1,66 @@
+<mat-toolbar color="#fff" class="mat-elevation-z4">
+  <button [disabled]="isLoading" style="margin-right: 10px!important;" mat-icon-button
+    matTooltip="{{ isReadOnly? 'Back' : 'Cancel'}}"
+    routerLink="/reservation/{{isReadOnly ? reservation?.status.toLowerCase() : reservationCode + '/details'}}">
+    <mat-icon>
+      {{
+        isReadOnly? 'keyboard_arrow_left' : 'close'
+      }}
+    </mat-icon>
+  </button>
+  <span reservationCode="title">{{ '#' + reservationCode }}</span>
+  <span class="toolbar-item-spacer"></span>
+</mat-toolbar>
+<div class="content">
+  <div class="inner-content" fxLayout="column" fxLayoutGap="20">
+    <div fxFlex="100" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="16px">
+      <div fxFlex="100" fxLayout="row">
+        <div *ngIf="isReadOnly && pageRights['Approval'] && (reservation?.status === 'PENDING' || reservation?.status === 'APPROVED')" [ngStyle.gt-xs]="{ 'flex-direction': 'row' }" [ngStyle]="{ 'flex-direction': 'column'}" style=" display: flex; width: 100%; justify-content: flex-start;gap: 16px;">
+          <button *ngIf="reservation?.status === 'PENDING'" aria-label="Approve" matTooltip="Approve" mat-fab extended color="primary" (click)="updateStatus('APPROVED')">
+            <mat-icon>check</mat-icon>
+            Approve
+          </button>
+          <button *ngIf="reservation?.status === 'APPROVED'" aria-label="Lease" matTooltip="Lease" mat-fab extended (click)="updateStatus('LEASED')">
+            <mat-icon>close</mat-icon>
+            Lease
+          </button>
+          <button *ngIf="reservation?.status === 'PENDING'" aria-label="Reject" matTooltip="Reject" mat-fab extended (click)="updateStatus('REJECTED')">
+            <mat-icon>close</mat-icon>
+            Reject
+          </button>
+        </div>
+      </div>
+      <div style=" display: flex; width: 100%; justify-content: flex-end;">
+        <button class="reservation-status {{reservation?.status?.toLowerCase()}}" matTooltip="{{reservation?.status}}" mat-fab extended disableRipple>
+          <mat-icon>{{
+          reservation?.status === 'PENDING' ? 'schedule' : '' ||
+          reservation?.status === 'REJECTED' ? 'cancel' : '' ||
+          reservation?.status === 'APPROVED' ? 'check_circle' : '' ||
+          reservation?.status === 'LEASED' ? 'receipt_long' : '' ||
+          reservation?.status === 'CANCELLED' ? 'not_interested' : '' }}</mat-icon>
+          {{
+            reservation?.status === 'PENDING' ? 'Pending' : '' ||
+            reservation?.status === 'REJECTED' ? 'Rejected' : '' ||
+            reservation?.status === 'APPROVED' ? 'Approved' : '' ||
+            reservation?.status === 'LEASED' ? 'Leased' : '' ||
+            reservation?.status === 'CANCELLED' ? 'Cancelled' : '' }}
+        </button>
+      </div>
+    </div>
+    <div fxFlex="100" fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap="20">
+      <div fxLayout="column" fxFlex>
+        <app-map-box fxFlex="100" [disablePan]="true" [disableSelection]="true" (onLoadComplete)="onLoadComplete()" #mapBox></app-map-box>
+      </div>
+      <div fxLayout="column" fxFlex.gt-sm="40" fxFlex="100">
+        <h4 class="inner-content-title">Reservation details</h4>
+        <mat-card>
+          <mat-card-content>
+            <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
+              <app-reservation-form #reservationForm></app-reservation-form>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
