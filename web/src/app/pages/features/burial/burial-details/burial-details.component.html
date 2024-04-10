@@ -19,7 +19,7 @@
       </mat-icon>
     </button>
   </ng-template>
-  <span class="title">{{ isNew ? 'New burial' : '#' + burialCode }}{{!burial?.active ? '(Deleted)' : ''}}</span>
+  <span class="title">{{ isNew ? 'New burial' : '#' + (!burial?.active ? burialCode + '(Deleted)' : burialCode) }}</span>
   <span class="toolbar-item-spacer"></span>
   <div class="toolbar-action">
     <button
