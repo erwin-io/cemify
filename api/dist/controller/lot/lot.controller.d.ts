@@ -6,7 +6,7 @@ import { LotService } from "src/services/lot.service";
 export declare class LotController {
     private readonly lotService;
     constructor(lotService: LotService);
-    getByCode(lotCode: string): Promise<ApiResponseModel<Lot>>;
+    getByCode(lotCode: string): Promise<ApiResponseModel<any>>;
     getByBlock(block: string): Promise<ApiResponseModel<Lot[]>>;
     getPaginated(params: PaginationParamsDto): Promise<ApiResponseModel<{
         results: Lot[];

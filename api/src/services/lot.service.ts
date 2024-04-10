@@ -2,7 +2,10 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LOT_ERROR_NOT_FOUND } from "src/common/constant/lot.constant";
 import { columnDefToTypeORMCondition } from "src/common/utils/utils";
-import { LotMapDataDto, UpdateLotMapDataDto } from "src/core/dto/lot/lot.update.dto";
+import {
+  LotMapDataDto,
+  UpdateLotMapDataDto,
+} from "src/core/dto/lot/lot.update.dto";
 import { Lot } from "src/db/entities/Lot";
 import { Repository } from "typeorm";
 
@@ -41,20 +44,67 @@ export class LotService {
       where: {
         block,
       },
+      relations: {
+        burials: true,
+      },
     });
     return result;
   }
 
   async getByCode(lotCode) {
-    const result = await this.lotsRepo.findOne({
-      where: {
-        lotCode,
-      },
-    });
+    // const result = await this.lotsRepo.findOne({
+    //   where: {
+    //     lotCode,
+    //   },
+    // });
+    // if (!result) {
+    //   throw Error(LOT_ERROR_NOT_FOUND);
+    // }
+    // return result;
+    const [result] = await this.lotsRepo.query(`
+    select 
+    l."LotCode" as "lotCode",  
+    l."Block" as "block",  
+    l."Level" as "level",  
+    l."MapData" as "mapData",  
+    l."Status" as "status",
+    b."BurialId" as "burialId", 
+    b."BurialCode" as "burialCode", 
+    b."FullName" as "fullName", 
+    b."DateOfBirth" as "dateOfBirth", 
+    b."DateOfDeath" as "dateOfDeath", 
+    b."DateOfBurial" as "dateOfBurial", 
+    b."FamilyContactPerson" as "familyContactPerson", 
+    b."FamilyContactNumber" as "familyContactNumber", 
+    b."FromReservation" as "fromReservation", 
+    b."Active" as "burialId", 
+    b."LotId" as "lotId" FROM dbo."Lot" l
+  left join dbo."Burial" b ON l."LotId" = b."LotId"
+  where l."LotCode" = '${lotCode}'`);
     if (!result) {
       throw Error(LOT_ERROR_NOT_FOUND);
     }
-    return result;
+
+    return {
+      lotId: result.lotId,
+      lotCode: result.lotCode,
+      block: result.block,
+      level: result.level,
+      mapData: result.mapData,
+      status: result.status,
+      burial: {
+        burialId: result.burialId,
+        burialCode: result.burialCode,
+        fullName: result.fullName,
+        dateOfBirth: result.dateOfBirth,
+        dateOfDeath: result.dateOfDeath,
+        dateOfBurial: result.dateOfBurial,
+        familyContactPerson: result.familyContactPerson,
+        familyContactNumber: result.familyContactNumber,
+        fromReservation: result.fromReservation,
+        active: result.active,
+      },
+    } as any;
   }
 
   async updateMapData(lotCode, dto: UpdateLotMapDataDto) {

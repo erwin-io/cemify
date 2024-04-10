@@ -27,6 +27,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_2 = require("@nestjs/typeorm");
 const moment_1 = __importDefault(require("moment"));
 const date_constant_1 = require("../common/constant/date.constant");
+const user_error_constant_1 = require("../common/constant/user-error.constant");
 const user_type_constant_1 = require("../common/constant/user-type.constant");
 const utils_1 = require("../common/utils/utils");
 const burial_constant_1 = require("../common/constant/burial.constant");
@@ -40,17 +41,82 @@ let BurialService = class BurialService {
         this.pusherService = pusherService;
         this.oneSignalNotificationService = oneSignalNotificationService;
     }
+    async searchMap(key) {
+        const [burial, lot] = await Promise.all([
+            this.burialRepo.manager.query(`
+      select 
+      b."BurialId" as "burialId", 
+      b."BurialCode" as "burialCode", 
+      b."FullName" as "fullName", 
+      b."DateOfBirth" as "dateOfBirth", 
+      b."DateOfDeath" as "dateOfDeath", 
+      b."DateOfBurial" as "dateOfBurial", 
+      b."FamilyContactPerson" as "familyContactPerson", 
+      b."FamilyContactNumber" as "familyContactNumber", 
+      b."FromReservation" as "fromReservation", 
+      b."Active" as "burialId", 
+      b."LotId" as "lotId",  
+      l."LotCode" as "lotCode",  
+      l."Block" as "block",  
+      l."Level" as "level",  
+      l."MapData" as "mapData",  
+      l."Status" as "status" FROM dbo."Burial" b
+    left join dbo."Lot" l ON b."LotId" = l."LotId"
+    where LOWER(b."FullName") like '%${key.toLowerCase()}%' limit 10
+      `),
+            this.burialRepo.manager.query(`
+      select 
+      "LotId" as "lotId",  
+      "LotCode" as "lotCode",  
+      "Block" as "block",  
+      "Level" as "level",  
+      "MapData" as "mapData",  
+      "Status" as "status" FROM dbo."Lot" where LOWER("LotCode") like '%${key.toLowerCase()}%' limit 10`),
+        ]);
+        return {
+            burial: burial.map((res) => {
+                return {
+                    burialId: res.burialId,
+                    burialCode: res.burialCode,
+                    fullName: res.fullName,
+                    dateOfBirth: res.dateOfBirth,
+                    dateOfDeath: res.dateOfDeath,
+                    dateOfBurial: res.dateOfBurial,
+                    familyContactPerson: res.familyContactPerson,
+                    familyContactNumber: res.familyContactNumber,
+                    fromReservation: res.fromReservation,
+                    active: res.active,
+                    lot: {
+                        lotId: res.lotId,
+                        lotCode: res.lotCode,
+                        block: res.block,
+                        level: res.level,
+                        mapData: res.mapData,
+                        status: res.status,
+                    },
+                };
+            }),
+            lot: lot,
+        };
+    }
     async getPagination({ pageSize, pageIndex, order, columnDef }) {
         const skip = Number(pageIndex) > 0 ? Number(pageIndex) * Number(pageSize) : 0;
         const take = Number(pageSize);
         const condition = (0, utils_1.columnDefToTypeORMCondition)(columnDef);
         const [results, total] = await Promise.all([
             this.burialRepo.find({
-                where: Object.assign({}, condition),
+                where: condition,
                 relations: {
                     lot: true,
                     reservation: {
-                        user: true,
+                        user: {
+                            userProfilePic: true,
+                        },
+                    },
+                    workOrder: {
+                        assignedStaffUser: {
+                            userProfilePic: true,
+                        },
                     },
                 },
                 skip,
@@ -58,7 +124,7 @@ let BurialService = class BurialService {
                 order,
             }),
             this.burialRepo.count({
-                where: Object.assign({}, condition),
+                where: condition,
             }),
         ]);
         return {
@@ -79,7 +145,14 @@ let BurialService = class BurialService {
             relations: {
                 lot: true,
                 reservation: {
-                    user: true,
+                    user: {
+                        userProfilePic: true,
+                    },
+                },
+                workOrder: {
+                    assignedStaffUser: {
+                        userProfilePic: true,
+                    },
                 },
             },
         });
@@ -149,7 +222,7 @@ let BurialService = class BurialService {
             burial.lot = lot;
             let workOrder = new WorkOrder_1.WorkOrder();
             workOrder.dateTargetCompletion = dateOfBurial;
-            workOrder.title = `Burial activity on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")}`;
+            workOrder.title = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")}`;
             workOrder.description =
                 "Date of Burial: " + (0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY") + "\n";
             "Location\n" +
@@ -173,8 +246,8 @@ let BurialService = class BurialService {
             burial = await entityManager.save(Burial_1.Burial, burial);
             burial.burialCode = (0, utils_1.generateIndentityCode)(burial.burialId);
             burial = await entityManager.save(Burial_1.Burial, burial);
-            const workOrderNotifTitle = `New Burial activity assigned to you!`;
-            const workOrderNotifDesc = `Burial activity on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} at block ${lot.block}, lot ${lot.lotCode}`;
+            const workOrderNotifTitle = `New Burial work order assigned to you!`;
+            const workOrderNotifDesc = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} at block ${lot.block}, lot ${lot.lotCode}`;
             const staffNotificationIds = await this.logNotification([assignedStaffUser], "WORK_ORDER", workOrder, entityManager, workOrderNotifTitle, workOrderNotifDesc);
             await this.syncRealTime([assignedStaffUser.userId], burial);
             const pushNotifResults = await Promise.all([
@@ -248,11 +321,11 @@ let BurialService = class BurialService {
             burial = await entityManager.save(Burial_1.Burial, burial);
             burial.burialCode = (0, utils_1.generateIndentityCode)(burial.burialId);
             burial = await entityManager.save(Burial_1.Burial, burial);
-            const workOrderNotifTitle = `New Burial activity assigned to you!`;
-            const workOrderNotifDesc = `Burial activity on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} at block ${reservation.lot.block}, lot ${reservation.lot.lotCode}`;
+            const workOrderNotifTitle = `New Burial work order assigned to you!`;
+            const workOrderNotifDesc = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} at block ${reservation.lot.block}, lot ${reservation.lot.lotCode}`;
             let workOrder = new WorkOrder_1.WorkOrder();
             workOrder.dateTargetCompletion = dateOfBurial;
-            workOrder.title = `Burial activity on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")}`;
+            workOrder.title = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")}`;
             workOrder.description =
                 "Date of Burial: " + (0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY") + "\n";
             "Location\n" +
@@ -309,7 +382,7 @@ let BurialService = class BurialService {
     }
     async update(burialCode, dto) {
         return await this.burialRepo.manager.transaction(async (entityManager) => {
-            var _a, _b, _c, _d;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
             let burial = await entityManager.findOne(Burial_1.Burial, {
                 where: {
                     burialCode,
@@ -321,6 +394,11 @@ let BurialService = class BurialService {
                             userProfilePic: {
                                 file: true,
                             },
+                        },
+                    },
+                    workOrder: {
+                        assignedStaffUser: {
+                            userProfilePic: true,
                         },
                     },
                 },
@@ -339,6 +417,9 @@ let BurialService = class BurialService {
             burial.dateOfBurial = dateOfBurial;
             burial.familyContactPerson = dto.familyContactPerson;
             burial.familyContactNumber = dto.familyContactNumber;
+            const assignedStaffUserChanged = ((_b = (_a = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _a === void 0 ? void 0 : _a.assignedStaffUser) === null || _b === void 0 ? void 0 : _b.userId) !==
+                dto.assignedStaffUserId;
+            const oldAssignedStaffUser = (_c = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _c === void 0 ? void 0 : _c.assignedStaffUser;
             burial = await entityManager.save(Burial_1.Burial, burial);
             burial.burialCode = (0, utils_1.generateIndentityCode)(burial.burialId);
             burial = await entityManager.save(Burial_1.Burial, burial);
@@ -362,7 +443,7 @@ let BurialService = class BurialService {
                     },
                 },
             });
-            if (dateChanged) {
+            if (dateChanged && !assignedStaffUserChanged) {
                 const workOrderNotifTitle = `Burial work order schedule was moved!`;
                 const workOrderNotifDesc = `Burial Burial work order schedule at block ${burial.lot.block}, lot ${burial.lot.lotCode} was moved on to ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} `;
                 burial.workOrder.dateTargetCompletion = dateOfBurial;
@@ -386,6 +467,48 @@ let BurialService = class BurialService {
                 ]);
                 console.log("Push notif results ", JSON.stringify(pushNotifResults));
             }
+            else if (assignedStaffUserChanged) {
+                const workOrderNotifTitleOld = `Burial work order was no longer assigned to you!`;
+                const workOrderNotifDescOld = `Burial work order at block ${(_d = burial === null || burial === void 0 ? void 0 : burial.lot) === null || _d === void 0 ? void 0 : _d.block}, lot ${(_e = burial === null || burial === void 0 ? void 0 : burial.lot) === null || _e === void 0 ? void 0 : _e.lotCode} was no longer assigned to you!`;
+                const workOrderNotifTitleNew = `New Burial work order assigned to you!`;
+                const workOrderNotifDescNew = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} at block ${burial.lot.block}, lot ${(_f = burial === null || burial === void 0 ? void 0 : burial.lot) === null || _f === void 0 ? void 0 : _f.lotCode}`;
+                burial.workOrder.dateTargetCompletion = dateOfBurial;
+                burial.workOrder.title = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")}`;
+                burial.workOrder.description =
+                    "Date of Burial: " +
+                        (0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY") +
+                        "\n";
+                "Location\n" +
+                    "Block: " +
+                    burial.lot.block +
+                    " \n" +
+                    "Lot: " +
+                    burial.lot.lotCode +
+                    " \n";
+                const newAssignedStaffUser = await entityManager.findOne(Users_1.Users, {
+                    where: {
+                        userId: dto.assignedStaffUserId,
+                    },
+                });
+                if (!newAssignedStaffUser) {
+                    throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
+                }
+                burial.workOrder.assignedStaffUser = newAssignedStaffUser;
+                burial.workOrder = await entityManager.save(WorkOrder_1.WorkOrder, burial.workOrder);
+                const oldStaffNotificationIds = await this.logNotification([oldAssignedStaffUser], "WORK_ORDER", burial.workOrder, entityManager, workOrderNotifTitleOld, workOrderNotifDescOld);
+                const newStaffNotificationIds = await this.logNotification([burial.workOrder.assignedStaffUser], "WORK_ORDER", burial.workOrder, entityManager, workOrderNotifTitleNew, workOrderNotifDescNew);
+                await this.syncRealTime([
+                    oldAssignedStaffUser === null || oldAssignedStaffUser === void 0 ? void 0 : oldAssignedStaffUser.userId,
+                    burial.workOrder.assignedStaffUser.userId,
+                ], burial);
+                const pushNotifResultsOld = await Promise.all([
+                    this.oneSignalNotificationService.sendToExternalUser(oldAssignedStaffUser.userName, "WORK_ORDER", burial.burialCode, newStaffNotificationIds, workOrderNotifTitleOld, workOrderNotifDescOld),
+                ]);
+                const pushNotifResultsNew = await Promise.all([
+                    this.oneSignalNotificationService.sendToExternalUser(burial.workOrder.assignedStaffUser.userName, "WORK_ORDER", burial.burialCode, oldStaffNotificationIds, workOrderNotifTitleOld, workOrderNotifDescOld),
+                ]);
+                console.log("Push notif results ", JSON.stringify([...pushNotifResultsOld, ...pushNotifResultsNew]));
+            }
             burial = await entityManager.findOne(Burial_1.Burial, {
                 where: {
                     burialCode: burial.burialCode,
@@ -406,8 +529,8 @@ let BurialService = class BurialService {
                     },
                 },
             });
-            (_b = (_a = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _a === void 0 ? void 0 : _a.assignedStaffUser) === null || _b === void 0 ? true : delete _b.password;
-            (_d = (_c = burial === null || burial === void 0 ? void 0 : burial.reservation) === null || _c === void 0 ? void 0 : _c.user) === null || _d === void 0 ? true : delete _d.password;
+            (_h = (_g = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _g === void 0 ? void 0 : _g.assignedStaffUser) === null || _h === void 0 ? true : delete _h.password;
+            (_k = (_j = burial === null || burial === void 0 ? void 0 : burial.reservation) === null || _j === void 0 ? void 0 : _j.user) === null || _k === void 0 ? true : delete _k.password;
             return burial;
         });
     }

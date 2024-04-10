@@ -5,12 +5,17 @@ import { PusherService } from "./pusher.service";
 import { OneSignalNotificationService } from "./one-signal-notification.service";
 import { CreateBurialDto, CreateBurialFromReservationDto } from "src/core/dto/burial/burial.create.dto";
 import { UpdateBurialDto } from "src/core/dto/burial/burial.update.dto";
+import { Lot } from "src/db/entities/Lot";
 import { WorkOrder } from "src/db/entities/WorkOrder";
 export declare class BurialService {
     private readonly burialRepo;
     private pusherService;
     private oneSignalNotificationService;
     constructor(burialRepo: Repository<Burial>, pusherService: PusherService, oneSignalNotificationService: OneSignalNotificationService);
+    searchMap(key: any): Promise<{
+        burial: any;
+        lot: Lot[];
+    }>;
     getPagination({ pageSize, pageIndex, order, columnDef }: {
         pageSize: any;
         pageIndex: any;

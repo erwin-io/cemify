@@ -18,7 +18,7 @@ class CreateBurialDto extends burial_base_dto_1.DefaultBurialDto {
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)({
-        message: "Not allowed, Stall is required!"
+        message: "Not allowed, Lot is required!"
     }),
     __metadata("design:type", String)
 ], CreateBurialDto.prototype, "lotCode", void 0);

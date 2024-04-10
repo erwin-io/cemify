@@ -24,6 +24,19 @@ let BurialController = class BurialController {
     constructor(burialService) {
         this.burialService = burialService;
     }
+    async searcMap(key) {
+        const res = {};
+        try {
+            res.data = await this.burialService.searchMap(key);
+            res.success = true;
+            return res;
+        }
+        catch (e) {
+            res.success = false;
+            res.message = e.message !== undefined ? e.message : e;
+            return res;
+        }
+    }
     async getAllByClientUserCode(userCode) {
         const res = {};
         try {
@@ -106,6 +119,13 @@ let BurialController = class BurialController {
         }
     }
 };
+__decorate([
+    (0, common_1.Get)("/searchMap/:key"),
+    __param(0, (0, common_1.Param)("key")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], BurialController.prototype, "searcMap", null);
 __decorate([
     (0, common_1.Get)("/getAllByClientUserCode/:userCode"),
     __param(0, (0, common_1.Param)("userCode")),

@@ -27,7 +27,7 @@ export class LotController {
   @Get("/:lotCode")
   //   @UseGuards(JwtAuthGuard)
   async getByCode(@Param("lotCode") lotCode: string) {
-    const res = {} as ApiResponseModel<Lot>;
+    const res = {} as ApiResponseModel<Lot | any>;
     try {
       res.data = await this.lotService.getByCode(lotCode);
       res.success = true;

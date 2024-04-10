@@ -5,7 +5,7 @@ import { DefaultBurialDto } from "./burial-base.dto";
 export class CreateBurialDto extends DefaultBurialDto {
   @ApiProperty()
   @IsNotEmpty({
-    message: "Not allowed, Stall is required!"
+    message: "Not allowed, Lot is required!"
   })
   lotCode: string;
 }

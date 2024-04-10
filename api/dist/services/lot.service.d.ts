@@ -14,6 +14,6 @@ export declare class LotService {
         total: number;
     }>;
     getByBlock(block: any): Promise<Lot[]>;
-    getByCode(lotCode: any): Promise<Lot>;
+    getByCode(lotCode: any): Promise<any>;
     updateMapData(lotCode: any, dto: UpdateLotMapDataDto): Promise<Lot>;
 }

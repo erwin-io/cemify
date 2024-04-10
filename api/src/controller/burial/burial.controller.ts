@@ -22,12 +22,27 @@ import { UpdateBurialDto } from "src/core/dto/burial/burial.update.dto";
 import { PaginationParamsDto } from "src/core/dto/pagination-params.dto";
 import { ApiResponseModel } from "src/core/models/api-response.model";
 import { Burial } from "src/db/entities/Burial";
+import { Lot } from "src/db/entities/Lot";
 import { BurialService } from "src/services/burial.service";
 
 @ApiTags("burial")
 @Controller("burial")
 export class BurialController {
   constructor(private readonly burialService: BurialService) {}
+
+  @Get("/searchMap/:key")
+  async searcMap(@Param("key") key: string) {
+    const res = {} as ApiResponseModel<{ lot: Lot[]; burial: Burial[] }>;
+    try {
+      res.data = await this.burialService.searchMap(key);
+      res.success = true;
+      return res;
+    } catch (e) {
+      res.success = false;
+      res.message = e.message !== undefined ? e.message : e;
+      return res;
+    }
+  }
 
   @Get("/getAllByClientUserCode/:userCode")
   async getAllByClientUserCode(@Param("userCode") userCode: string) {
