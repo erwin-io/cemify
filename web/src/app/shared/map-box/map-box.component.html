@@ -1,11 +1,4 @@
-<div id="box" class="box">
-  <div class="legend" *ngIf="showLegend">
-    <ul>
-      <li available>Available</li>
-      <li occupied>Occupied</li>
-      <li unavailable>Unavailable</li>
-    </ul>
-  </div>
+<div id="box" class="box" [ngClass.gt-xs]="{'big-screen': true}">
   <div class="svg-box">
     <svg #map id="svg" class="svg {{mode.toLowerCase()}} {{disableSelection ? 'no-select' : 'can-select'}} {{showLegend ? 'show-legend' : 'hide-legend'}}" version="1.1" width="1594px" height="1673px" viewBox="-0.5 -0.5 1594 1673">
       <g>
@@ -35,5 +28,20 @@
         </foreignObject>
       </g>
     </svg>
+  </div>
+  <div class="legend" *ngIf="showLegend">
+    <div class="legend-content">
+      <ul>
+        <li available>
+          <mat-icon>check_circle</mat-icon><span>Available</span>
+        </li>
+        <li occupied>
+          <mat-icon >do_disturb_on</mat-icon><span>Occupied</span>
+        </li>
+        <li unavailable>
+          <mat-icon>do_not_disturb</mat-icon><span>Unavailable</span>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

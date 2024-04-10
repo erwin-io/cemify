@@ -80,7 +80,7 @@ export class BurialService {
       l."MapData" as "mapData",  
       l."Status" as "status" FROM dbo."Burial" b
     left join dbo."Lot" l ON b."LotId" = l."LotId"
-    where LOWER(b."FullName") like '%${key.toLowerCase()}%' limit 10
+    where LOWER(b."FullName") like '%${key.toLowerCase()}%' and b."Active" = true limit 10
       `),
       this.burialRepo.manager.query(`
       select 
@@ -695,6 +695,104 @@ export class BurialService {
           JSON.stringify([...pushNotifResultsOld, ...pushNotifResultsNew])
         );
       }
+
+      burial = await entityManager.findOne(Burial, {
+        where: {
+          burialCode: burial.burialCode,
+        },
+        relations: {
+          lot: true,
+          reservation: {
+            user: {
+              userProfilePic: {
+                file: true,
+              },
+            },
+          },
+          workOrder: {
+            assignedStaffUser: {
+              userProfilePic: true,
+            },
+          },
+        },
+      });
+      delete burial?.workOrder?.assignedStaffUser?.password;
+      delete burial?.reservation?.user?.password;
+      return burial;
+    });
+  }
+
+  async delete(burialCode) {
+    return await this.burialRepo.manager.transaction(async (entityManager) => {
+      let burial = await entityManager.findOne(Burial, {
+        where: {
+          burialCode,
+          active: true,
+        },
+        relations: {
+          lot: true,
+          reservation: {
+            user: {
+              userProfilePic: {
+                file: true,
+              },
+            },
+          },
+          workOrder: {
+            assignedStaffUser: {
+              userProfilePic: true,
+            },
+          },
+        },
+      });
+      if (!burial) {
+        throw Error(BURIAL_ERROR_NOT_FOUND);
+      }
+      burial.active = false;
+      burial = await entityManager.save(Burial, burial);
+
+      
+      burial.lot.status = LOT_STATUS.AVAILABLE;
+      burial.lot = await entityManager.save(
+        Lot,
+        burial.lot
+      );
+      
+      const workOrderNotifTitle = `Burial work order schedule was canceled!`;
+      const workOrderNotifDesc = `Burial Burial work order schedule at block ${
+        burial.lot.block
+      }, lot ${burial.lot.lotCode} was canceled!`;
+
+      burial.active = false;
+      burial.workOrder = await entityManager.save(
+        WorkOrder,
+        burial.workOrder
+      );
+
+      const staffNotificationIds = await this.logNotification(
+        [burial.workOrder.assignedStaffUser],
+        "WORK_ORDER",
+        burial.workOrder,
+        entityManager,
+        workOrderNotifTitle,
+        workOrderNotifDesc
+      );
+      await this.syncRealTime(
+        [burial.workOrder.assignedStaffUser.userId],
+        burial
+      );
+      const pushNotifResults: { userId: string; success: boolean }[] =
+        await Promise.all([
+          this.oneSignalNotificationService.sendToExternalUser(
+            burial.workOrder.assignedStaffUser.userName,
+            "WORK_ORDER",
+            burial.burialCode,
+            staffNotificationIds,
+            workOrderNotifTitle,
+            workOrderNotifDesc
+          ),
+        ]);
+      console.log("Push notif results ", JSON.stringify(pushNotifResults));
 
       burial = await entityManager.findOne(Burial, {
         where: {

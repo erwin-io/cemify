@@ -1,0 +1,123 @@
+<div fxFlex="100" fxLayout="column">
+  <div fxLayout="column" fxFlex="100" fxLayoutGap="16">
+    <mat-label >Lot</mat-label>
+    <div
+      fxFlex="100"
+      fxLayout="column">
+      <mat-form-field
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Lot</mat-label>
+        <input
+          matInput
+          readonly
+          placeholder="Lot"
+          [value]="lot?.lotCode"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex="100"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Block</mat-label>
+        <input
+          matInput
+          readonly
+          placeholder="Block"
+          [value]="lot?.block"
+          />
+      </mat-form-field>
+    </div>
+  </div>
+  <div fxLayout="column" fxFlex="100" fxLayoutGap="16">
+    <mat-label >Burial</mat-label>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      *ngIf="lot?.burial && lot?.burial?.burialCode; else noBurialInfo" >
+      <mat-form-field
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Code #</mat-label>
+        <input
+          matInput
+          readonly
+          placeholder="Code #"
+          [value]="lot?.burial?.burialCode"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Date of burial</mat-label>
+        <input
+          matInput
+          readonly
+          placeholder="Date of burial"
+          [value]="lot?.burial?.dateOfBurial | date: 'MMM dd, yyy'"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Date of birth</mat-label>
+        <input
+          matInput
+          readonly
+          placeholder="Date of birth"
+          [value]="lot?.burial?.dateOfBirth | date: 'MMM dd, yyy'"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Date of death</mat-label>
+        <input
+          matInput
+          readonly
+          placeholder="Date of death"
+          [value]="lot?.burial?.dateOfDeath | date: 'MMM dd, yyy'"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex="100"
+        appearance="outline">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          readonly
+          placeholder="Name"
+          [value]="lot?.burial?.fullName"/>
+      </mat-form-field>
+      <div fxLayout="column" fxFlex="100" fxLayoutGap="16">
+        <mat-label >Contact Person</mat-label>
+        <mat-form-field
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Family contact person</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="Family contact person"
+            [value]="lot?.burial?.familyContactPerson"/>
+        </mat-form-field>
+        <mat-form-field
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Family contact number</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="Family contact number"
+            [value]="lot?.burial?.familyContactNumber"/>
+        </mat-form-field>
+      </div>
+    </div>
+    <ng-template #noBurialInfo>
+      <span>No burial information to show</span>
+    </ng-template>
+  </div>
+</div>

@@ -177,7 +177,7 @@ export class ReservationDetailsComponent {
         try {
           let res = await this.reservationService.updateStatus(this.reservationCode, { status }).toPromise();
           if (res.success) {
-            this.snackBar.open('Saved!', 'close', {
+            this.snackBar.open('Successfully updated!', 'close', {
               panelClass: ['style-success'],
             });
             this.router.navigate(['/reservation/' + this.reservationCode + '/details']);

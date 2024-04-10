@@ -30,6 +30,7 @@ export declare class BurialService {
     create(dto: CreateBurialDto): Promise<Burial>;
     createFromReservation(dto: CreateBurialFromReservationDto): Promise<Burial>;
     update(burialCode: any, dto: UpdateBurialDto): Promise<Burial>;
+    delete(burialCode: any): Promise<Burial>;
     logNotification(users: Users[], type: "RESERVATION" | "WORK_ORDER", data: Burial | WorkOrder, entityManager: EntityManager, title: string, description: string): Promise<string[]>;
     syncRealTime(userIds: string[], data: Burial): Promise<void>;
 }

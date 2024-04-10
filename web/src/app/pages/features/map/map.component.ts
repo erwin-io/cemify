@@ -22,7 +22,7 @@ import { MapSearchComponent } from './map-search/map-search.component';
   }
 })
 export class MapComponent {
-  details: Burial | Lot;
+  details: Lot;
   @ViewChild('mapBox') mapBox: MapBoxComponent;
   @ViewChild('search') search: MapSearchComponent;
   constructor(
@@ -39,16 +39,10 @@ export class MapComponent {
       }
     }
 
-  onSearchComplete(event: { type: 'lot' | 'burial', data: Burial | Lot }) {
-    if(event && event.type && event.data) {
-      const { type, data } = event;
-      if(type === "lot") {
-        this.details = data as Lot;
-        this.mapBox.selectLot(this.details.lotCode, this.details.block);
-      } else {
-        this.details = data as Burial;
-        this.mapBox.selectLot(this.details.lot.lotCode, this.details.lot.block);
-      }
+  onSearchComplete(event: Lot) {
+    if(event) {
+      this.details = event;
+      this.mapBox.selectLot(this.details.lotCode, this.details.block);
     } else {
       this.details = null;
       this.mapBox.clearSelection();

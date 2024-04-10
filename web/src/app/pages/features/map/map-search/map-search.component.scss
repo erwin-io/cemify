@@ -7,8 +7,11 @@
     border:1px solid #dcdcdc;
     box-shadow: 1px 1px 8px 1px #00000029;
     background-color: #fff;
-    width: 250px;
     overflow: hidden;
+    width: 100%;
+    &.mobile {
+      position: absolute;
+    }
     &.show-menu {
       border-radius:20px;
       input {
@@ -23,9 +26,24 @@
       display: flex;
       padding: 0;
       margin: 0;
-      flex-direction: column;
+      flex-direction: row;
       flex-grow: 1;
       position: relative;
+      .search-left {
+        display: flex;
+        flex-direction: row;
+        padding: 0 5px;
+        align-items: center;
+        mat-spinner {
+          width: 30px!important;
+          height: 30px!important;
+          margin-right: 10px;
+        }
+        button {
+          width: 51px!important;
+          height: 51px!important;
+        }
+      }
       input {
         flex-grow: 1;
         width: 100%;
@@ -39,13 +57,6 @@
         &:focus {
           outline: none!important;
         }
-      }
-      button {
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 51px!important;
-        height: 51px!important;
       }
     }
     ul {

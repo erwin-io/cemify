@@ -141,4 +141,20 @@ export class BurialController {
       return res;
     }
   }
+
+  @Delete("/:burialCode")
+  //   @UseGuards(JwtAuthGuard)
+  async delete(@Param("burialCode") burialCode: string) {
+    const res: ApiResponseModel<Burial> = {} as any;
+    try {
+      res.data = await this.burialService.delete(burialCode);
+      res.success = true;
+      res.message = `Burial ${DELETE_SUCCESS}`;
+      return res;
+    } catch (e) {
+      res.success = false;
+      res.message = e.message !== undefined ? e.message : e;
+      return res;
+    }
+  }
 }

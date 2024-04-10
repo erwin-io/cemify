@@ -62,7 +62,7 @@ let BurialService = class BurialService {
       l."MapData" as "mapData",  
       l."Status" as "status" FROM dbo."Burial" b
     left join dbo."Lot" l ON b."LotId" = l."LotId"
-    where LOWER(b."FullName") like '%${key.toLowerCase()}%' limit 10
+    where LOWER(b."FullName") like '%${key.toLowerCase()}%' and b."Active" = true limit 10
       `),
             this.burialRepo.manager.query(`
       select 
@@ -531,6 +531,72 @@ let BurialService = class BurialService {
             });
             (_h = (_g = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _g === void 0 ? void 0 : _g.assignedStaffUser) === null || _h === void 0 ? true : delete _h.password;
             (_k = (_j = burial === null || burial === void 0 ? void 0 : burial.reservation) === null || _j === void 0 ? void 0 : _j.user) === null || _k === void 0 ? true : delete _k.password;
+            return burial;
+        });
+    }
+    async delete(burialCode) {
+        return await this.burialRepo.manager.transaction(async (entityManager) => {
+            var _a, _b, _c, _d;
+            let burial = await entityManager.findOne(Burial_1.Burial, {
+                where: {
+                    burialCode,
+                    active: true,
+                },
+                relations: {
+                    lot: true,
+                    reservation: {
+                        user: {
+                            userProfilePic: {
+                                file: true,
+                            },
+                        },
+                    },
+                    workOrder: {
+                        assignedStaffUser: {
+                            userProfilePic: true,
+                        },
+                    },
+                },
+            });
+            if (!burial) {
+                throw Error(burial_constant_1.BURIAL_ERROR_NOT_FOUND);
+            }
+            burial.active = false;
+            burial = await entityManager.save(Burial_1.Burial, burial);
+            burial.lot.status = lot_constant_1.LOT_STATUS.AVAILABLE;
+            burial.lot = await entityManager.save(Lot_1.Lot, burial.lot);
+            const workOrderNotifTitle = `Burial work order schedule was canceled!`;
+            const workOrderNotifDesc = `Burial Burial work order schedule at block ${burial.lot.block}, lot ${burial.lot.lotCode} was canceled!`;
+            burial.active = false;
+            burial.workOrder = await entityManager.save(WorkOrder_1.WorkOrder, burial.workOrder);
+            const staffNotificationIds = await this.logNotification([burial.workOrder.assignedStaffUser], "WORK_ORDER", burial.workOrder, entityManager, workOrderNotifTitle, workOrderNotifDesc);
+            await this.syncRealTime([burial.workOrder.assignedStaffUser.userId], burial);
+            const pushNotifResults = await Promise.all([
+                this.oneSignalNotificationService.sendToExternalUser(burial.workOrder.assignedStaffUser.userName, "WORK_ORDER", burial.burialCode, staffNotificationIds, workOrderNotifTitle, workOrderNotifDesc),
+            ]);
+            console.log("Push notif results ", JSON.stringify(pushNotifResults));
+            burial = await entityManager.findOne(Burial_1.Burial, {
+                where: {
+                    burialCode: burial.burialCode,
+                },
+                relations: {
+                    lot: true,
+                    reservation: {
+                        user: {
+                            userProfilePic: {
+                                file: true,
+                            },
+                        },
+                    },
+                    workOrder: {
+                        assignedStaffUser: {
+                            userProfilePic: true,
+                        },
+                    },
+                },
+            });
+            (_b = (_a = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _a === void 0 ? void 0 : _a.assignedStaffUser) === null || _b === void 0 ? true : delete _b.password;
+            (_d = (_c = burial === null || burial === void 0 ? void 0 : burial.reservation) === null || _c === void 0 ? void 0 : _c.user) === null || _d === void 0 ? true : delete _d.password;
             return burial;
         });
     }

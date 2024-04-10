@@ -146,6 +146,8 @@ export class BurialDetailsComponent {
 
           if (this.isReadOnly) {
             this.burialForm.form.disable();
+          } else if(!this.isReadOnly && !this.burial.active) {
+            this.router.navigate(['/burial/' + this.burialCode]);
           }
           this.isLoading = false;
         } else {
@@ -297,5 +299,60 @@ export class BurialDetailsComponent {
     // this.mapBox.setZoom(Number(zoom));
     this.mapBox.setPan(pan.x, pan.y);
     this.mapBox.selectLot(lotCode, block, true);
+  }
+
+  onDelete() {
+    const dialogData = new AlertDialogModel();
+    dialogData.title = 'Confirm';
+    dialogData.message = 'Delete burial?';
+    dialogData.confirmButton = {
+      visible: true,
+      text: 'yes',
+      color: 'primary',
+    };
+    dialogData.dismissButton = {
+      visible: true,
+      text: 'cancel',
+    };
+    const dialogRef = this.dialog.open(AlertDialogComponent, {
+      maxWidth: '400px',
+      closeOnNavigation: true,
+    });
+    dialogRef.componentInstance.alertDialogConfig = dialogData;
+
+    dialogRef.componentInstance.conFirm.subscribe(async (data: any) => {
+      this.isProcessing = true;
+      dialogRef.componentInstance.isProcessing = this.isProcessing;
+      try {
+        let res = await this.burialService.delete(this.burialCode).toPromise();
+        if (res.success) {
+          this.snackBar.open('Successfully deleted!', 'close', {
+            panelClass: ['style-success'],
+          });
+          this.router.navigate(['/burial/']);
+          this.isProcessing = false;
+          dialogRef.componentInstance.isProcessing = this.isProcessing;
+          dialogRef.close();
+        } else {
+          this.isProcessing = false;
+          dialogRef.componentInstance.isProcessing = this.isProcessing;
+          this.error = Array.isArray(res.message)
+            ? res.message[0]
+            : res.message;
+          this.snackBar.open(this.error, 'close', {
+            panelClass: ['style-error'],
+          });
+          dialogRef.close();
+        }
+      } catch (e) {
+        this.isProcessing = false;
+        dialogRef.componentInstance.isProcessing = this.isProcessing;
+        this.error = Array.isArray(e.message) ? e.message[0] : e.message;
+        this.snackBar.open(this.error, 'close', {
+          panelClass: ['style-error'],
+        });
+        dialogRef.close();
+      }
+    });
   }
 }

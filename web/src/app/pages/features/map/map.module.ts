@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from 'src/app/shared/material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { MapComponent } from './map.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DataTableModule } from 'src/app/shared/data-table/data-table.module';
 import { MapBoxModule } from 'src/app/shared/map-box/map-box.module';
 import { MapSearchComponent } from './map-search/map-search.component';
+import { MapSearchDetailsComponent } from './map-search-details/map-search-details.component';
 
 export const routes: Routes = [
   {
@@ -20,9 +21,10 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [MapComponent, MapSearchComponent],
+  declarations: [MapComponent, MapSearchComponent, MapSearchDetailsComponent],
   imports: [
     CommonModule,
+    FormsModule,
     MaterialModule,
     NgApexchartsModule,
     ReactiveFormsModule,

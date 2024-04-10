@@ -19,18 +19,27 @@
       </mat-icon>
     </button>
   </ng-template>
-  <span class="title">{{ isNew ? 'New burial' : '#' + burialCode }}</span>
+  <span class="title">{{ isNew ? 'New burial' : '#' + burialCode }}{{!burial?.active ? '(Deleted)' : ''}}</span>
   <span class="toolbar-item-spacer"></span>
   <div class="toolbar-action">
     <button
       mat-raised-button
       color="primary"
       matTooltip="Edit"
-      *ngIf="!isNew && isReadOnly"
+      *ngIf="!isNew && isReadOnly && burial?.active"
       routerLink="/burial/{{burialCode}}/edit"
       replaceUrl="true"
     >
       Edit
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      matTooltip="Delete"
+      *ngIf="!isNew && isReadOnly && burial?.active"
+      (click)="onDelete()"
+    >
+      Delete
     </button>
     <button
       *ngIf="!canAddEdit ? false : !isReadOnly"

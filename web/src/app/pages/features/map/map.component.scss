@@ -3,12 +3,22 @@
     .map-container {
       display: flex;
       position: relative;
+      app-map-box {
+        &:not(.big-screen) {
+          max-height: 350px!important;
+        }
+      }
       app-map-search {
         display: flex;
-        position: absolute;
         z-index: 999;
         top: 20px;
         left: 20px;
+        box-sizing: border-box;
+        min-height: 53px!important;
+        &.big-screen {
+          max-width: 350px!important;
+          position: absolute;
+        }
       }
     }
   }

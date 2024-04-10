@@ -21,4 +21,5 @@ export declare class BurialController {
     create(dto: CreateBurialDto): Promise<ApiResponseModel<Burial>>;
     createFromReservation(dto: CreateBurialFromReservationDto): Promise<ApiResponseModel<Burial>>;
     update(burialCode: string, dto: UpdateBurialDto): Promise<ApiResponseModel<Burial>>;
+    delete(burialCode: string): Promise<ApiResponseModel<Burial>>;
 }

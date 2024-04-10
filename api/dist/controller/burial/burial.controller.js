@@ -118,6 +118,20 @@ let BurialController = class BurialController {
             return res;
         }
     }
+    async delete(burialCode) {
+        const res = {};
+        try {
+            res.data = await this.burialService.delete(burialCode);
+            res.success = true;
+            res.message = `Burial ${api_response_constant_1.DELETE_SUCCESS}`;
+            return res;
+        }
+        catch (e) {
+            res.success = false;
+            res.message = e.message !== undefined ? e.message : e;
+            return res;
+        }
+    }
 };
 __decorate([
     (0, common_1.Get)("/searchMap/:key"),
@@ -169,6 +183,13 @@ __decorate([
     __metadata("design:paramtypes", [String, burial_update_dto_1.UpdateBurialDto]),
     __metadata("design:returntype", Promise)
 ], BurialController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)("/:burialCode"),
+    __param(0, (0, common_1.Param)("burialCode")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], BurialController.prototype, "delete", null);
 BurialController = __decorate([
     (0, swagger_1.ApiTags)("burial"),
     (0, common_1.Controller)("burial"),

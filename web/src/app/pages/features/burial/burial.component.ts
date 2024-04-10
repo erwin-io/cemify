@@ -108,6 +108,22 @@ export class BurialComponent  {
 
   async getBurialPaginated(showProgress = true){
     try{
+      const findIndex = this.filter.findIndex(x=>x.apiNotation === "active");
+      if(findIndex >= 0) {
+        this.filter[findIndex] = {
+          "apiNotation": "active",
+          "filter": "Yes",
+          "name": "active",
+          "type": "option-yes-no"
+        };
+      } else {
+        this.filter.push({
+          "apiNotation": "active",
+          "filter": "Yes",
+          "name": "active",
+          "type": "option-yes-no"
+        });
+      }
       this.isLoading = true;
       if(showProgress === true) {
         this.spinner.show();

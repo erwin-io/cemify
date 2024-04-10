@@ -35,6 +35,11 @@ export const routes: Routes = [
     data: { title: "Burial", isNew: true}
   },
   {
+    path: ':burialCode',
+    component: BurialDetailsComponent,
+    data: { title: "Burial" }
+  },
+  {
     path: ':burialCode/details',
     component: BurialDetailsComponent,
     data: { title: "Burial" }

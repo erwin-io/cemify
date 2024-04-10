@@ -4,13 +4,13 @@
 </mat-toolbar>
 <div class="content">
   <div class="inner-content" fxFlex="100" fxLayout="column">
-    <div fxFlex="100">
-      <div fxFlex class="map-container">
-        <app-map-search #search (onSearchComplete)="onSearchComplete($event)"></app-map-search>
-        <app-map-box fxFlex="100" (click)="search.showMenu = false" [disablePan]="true" [showLegend]="true" [disableSelection]="false" #mapBox (onSelectChange)="onSelectChange($event)"></app-map-box>
+    <div fxFlex="100" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="15">
+      <div fxFlex class="map-container" fxLayout="column" fxLayoutGap="20">
+        <app-map-search [ngClass.gt-xs]="{'big-screen': true}" #search (onSearchComplete)="onSearchComplete($event)"></app-map-search>
+        <app-map-box [ngClass.gt-xs]="{'big-screen': true}" fxFlex="100" (click)="search.showMenu = false" [disablePan]="true" [showLegend]="true" [disableSelection]="false" #mapBox (onSelectChange)="onSelectChange($event)"></app-map-box>
       </div>
-      <div fxFlex.gt-xs="25" *ngIf="details">
-
+      <div fxFlex="100" fxFlex.gt-xs="25" *ngIf="details">
+        <app-map-search-details [lot]="details"></app-map-search-details>
       </div>
     </div>
   </div>

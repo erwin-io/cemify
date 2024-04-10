@@ -11,6 +11,7 @@ import { MapBoxComponent } from './map-box.component';
   imports: [
     CommonModule,
     FlexLayoutModule,
+    MaterialModule
   ],
   exports: [MapBoxComponent]
 })

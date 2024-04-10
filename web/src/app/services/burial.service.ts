@@ -77,6 +77,14 @@ export class BurialService implements IServices {
     );
   }
 
+  delete(burialCode: string): Observable<ApiResponse<Burial>> {
+    return this.http.delete<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.burial.delete + burialCode)
+    .pipe(
+      tap(_ => this.log('access')),
+      catchError(this.handleError('access', []))
+    );
+  }
+
   handleError<T>(operation: string, result?: T) {
     return (error: any): Observable<T> => {
       this.log(`${operation} failed: ${Array.isArray(error.error.message) ? error.error.message[0] : error.error.message}`);
