@@ -135,6 +135,34 @@ export class WorkOrderService {
         workOrder = await entityManager.save(workOrder);
         workOrder.workOrderCode = generateIndentityCode(workOrder.workOrderId);
         workOrder = await entityManager.save(workOrder);
+
+        const title = `New work order assigned to you!`;
+        const desc = `New work order on ${moment(dateTargetCompletion).format(
+          "MMM DD, YYYY"
+        )} was assigned to you`;
+        const notificationIds = await this.logNotification(
+          [workOrder.assignedStaffUser],
+          workOrder,
+          entityManager,
+          title,
+          desc
+        );
+        await this.syncRealTime(
+          [workOrder.assignedStaffUser.userId],
+          workOrder
+        );
+        const pushNotifResults: { userId: string; success: boolean }[] =
+          await Promise.all([
+            this.oneSignalNotificationService.sendToExternalUser(
+              workOrder.assignedStaffUser.userName,
+              "WORK_ORDER",
+              workOrder.workOrderCode,
+              notificationIds,
+              title,
+              desc
+            ),
+          ]);
+        console.log("Push notif results ", JSON.stringify(pushNotifResults));
         workOrder = await entityManager.findOne(WorkOrder, {
           where: {
             workOrderCode: workOrder.workOrderCode,
@@ -179,10 +207,16 @@ export class WorkOrderService {
         }
         workOrder.title = dto.title;
         workOrder.description = dto.description;
+        const currentDateTargetCompletion = moment(
+          new Date(workOrder.dateTargetCompletion),
+          DateConstant.DATE_LANGUAGE
+        ).format("YYYY-MM-DD");
         const dateTargetCompletion = moment(
           new Date(dto.dateTargetCompletion),
           DateConstant.DATE_LANGUAGE
         ).format("YYYY-MM-DD");
+        const dateChanged =
+          dateTargetCompletion !== currentDateTargetCompletion;
         workOrder.dateTargetCompletion = dateTargetCompletion;
         const assignedStaffUser = await entityManager.findOne(Users, {
           where: {
@@ -194,7 +228,96 @@ export class WorkOrderService {
         if (!assignedStaffUser) {
           throw Error(USER_ERROR_USER_NOT_FOUND);
         }
+
+        const assignedStaffUserChanged =
+          workOrder?.assignedStaffUser?.userCode !== dto.assignedStaffUserCode;
+        const oldAssignedStaffUser = workOrder?.assignedStaffUser;
         workOrder.assignedStaffUser = assignedStaffUser;
+
+        if (dateChanged && !assignedStaffUserChanged) {
+          const workOrderNotifTitle = `Work order schedule was moved!`;
+          const workOrderNotifDesc = `Work order schedule was moved on to ${moment(
+            dateTargetCompletion
+          ).format("MMM DD, YYYY")} `;
+
+          const staffNotificationIds = await this.logNotification(
+            [workOrder.assignedStaffUser],
+            workOrder,
+            entityManager,
+            workOrderNotifTitle,
+            workOrderNotifDesc
+          );
+          await this.syncRealTime(
+            [workOrder.assignedStaffUser.userId],
+            workOrder
+          );
+          const pushNotifResults: { userId: string; success: boolean }[] =
+            await Promise.all([
+              this.oneSignalNotificationService.sendToExternalUser(
+                workOrder.assignedStaffUser.userName,
+                "WORK_ORDER",
+                workOrder.workOrderCode,
+                staffNotificationIds,
+                workOrderNotifTitle,
+                workOrderNotifDesc
+              ),
+            ]);
+          console.log("Push notif results ", JSON.stringify(pushNotifResults));
+        } else if (assignedStaffUserChanged) {
+          const workOrderNotifTitleOld = `Work order was no longer assigned to you!`;
+          const workOrderNotifDescOld = `Work order was no longer assigned to you!`;
+
+          const workOrderNotifTitleNew = `New work order assigned to you!`;
+          const workOrderNotifDescNew = `New work order on ${moment(
+            dateTargetCompletion
+          ).format("MMM DD, YYYY")} was assigned to you`;
+
+          const oldStaffNotificationIds = await this.logNotification(
+            [oldAssignedStaffUser],
+            workOrder,
+            entityManager,
+            workOrderNotifTitleOld,
+            workOrderNotifDescOld
+          );
+
+          const newStaffNotificationIds = await this.logNotification(
+            [workOrder.assignedStaffUser],
+            workOrder,
+            entityManager,
+            workOrderNotifTitleNew,
+            workOrderNotifDescNew
+          );
+          await this.syncRealTime(
+            [oldAssignedStaffUser?.userId, workOrder.assignedStaffUser.userId],
+            workOrder
+          );
+          const pushNotifResultsOld: { userId: string; success: boolean }[] =
+            await Promise.all([
+              this.oneSignalNotificationService.sendToExternalUser(
+                oldAssignedStaffUser.userName,
+                "WORK_ORDER",
+                workOrder.workOrderCode,
+                newStaffNotificationIds,
+                workOrderNotifTitleOld,
+                workOrderNotifDescOld
+              ),
+            ]);
+          const pushNotifResultsNew: { userId: string; success: boolean }[] =
+            await Promise.all([
+              this.oneSignalNotificationService.sendToExternalUser(
+                workOrder.assignedStaffUser.userName,
+                "WORK_ORDER",
+                workOrder.workOrderCode,
+                oldStaffNotificationIds,
+                workOrderNotifTitleOld,
+                workOrderNotifDescOld
+              ),
+            ]);
+          console.log(
+            "Push notif results ",
+            JSON.stringify([...pushNotifResultsOld, ...pushNotifResultsNew])
+          );
+        }
         workOrder = await entityManager.save(WorkOrder, workOrder);
         workOrder = await entityManager.findOne(WorkOrder, {
           where: {

@@ -116,6 +116,14 @@ let WorkOrderService = class WorkOrderService {
             workOrder = await entityManager.save(workOrder);
             workOrder.workOrderCode = (0, utils_1.generateIndentityCode)(workOrder.workOrderId);
             workOrder = await entityManager.save(workOrder);
+            const title = `New work order assigned to you!`;
+            const desc = `New work order on ${(0, moment_1.default)(dateTargetCompletion).format("MMM DD, YYYY")} was assigned to you`;
+            const notificationIds = await this.logNotification([workOrder.assignedStaffUser], workOrder, entityManager, title, desc);
+            await this.syncRealTime([workOrder.assignedStaffUser.userId], workOrder);
+            const pushNotifResults = await Promise.all([
+                this.oneSignalNotificationService.sendToExternalUser(workOrder.assignedStaffUser.userName, "WORK_ORDER", workOrder.workOrderCode, notificationIds, title, desc),
+            ]);
+            console.log("Push notif results ", JSON.stringify(pushNotifResults));
             workOrder = await entityManager.findOne(WorkOrder_1.WorkOrder, {
                 where: {
                     workOrderCode: workOrder.workOrderCode,
@@ -134,7 +142,7 @@ let WorkOrderService = class WorkOrderService {
     }
     async update(workOrderCode, dto) {
         return await this.workOrderRepo.manager.transaction(async (entityManager) => {
-            var _a;
+            var _a, _b;
             let workOrder = await entityManager.findOne(WorkOrder_1.WorkOrder, {
                 where: {
                     workOrderCode,
@@ -155,7 +163,9 @@ let WorkOrderService = class WorkOrderService {
             }
             workOrder.title = dto.title;
             workOrder.description = dto.description;
+            const currentDateTargetCompletion = (0, moment_1.default)(new Date(workOrder.dateTargetCompletion), date_constant_1.DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");
             const dateTargetCompletion = (0, moment_1.default)(new Date(dto.dateTargetCompletion), date_constant_1.DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");
+            const dateChanged = dateTargetCompletion !== currentDateTargetCompletion;
             workOrder.dateTargetCompletion = dateTargetCompletion;
             const assignedStaffUser = await entityManager.findOne(Users_1.Users, {
                 where: {
@@ -167,7 +177,35 @@ let WorkOrderService = class WorkOrderService {
             if (!assignedStaffUser) {
                 throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
             }
+            const assignedStaffUserChanged = ((_a = workOrder === null || workOrder === void 0 ? void 0 : workOrder.assignedStaffUser) === null || _a === void 0 ? void 0 : _a.userCode) !== dto.assignedStaffUserCode;
+            const oldAssignedStaffUser = workOrder === null || workOrder === void 0 ? void 0 : workOrder.assignedStaffUser;
             workOrder.assignedStaffUser = assignedStaffUser;
+            if (dateChanged && !assignedStaffUserChanged) {
+                const workOrderNotifTitle = `Work order schedule was moved!`;
+                const workOrderNotifDesc = `Work order schedule was moved on to ${(0, moment_1.default)(dateTargetCompletion).format("MMM DD, YYYY")} `;
+                const staffNotificationIds = await this.logNotification([workOrder.assignedStaffUser], workOrder, entityManager, workOrderNotifTitle, workOrderNotifDesc);
+                await this.syncRealTime([workOrder.assignedStaffUser.userId], workOrder);
+                const pushNotifResults = await Promise.all([
+                    this.oneSignalNotificationService.sendToExternalUser(workOrder.assignedStaffUser.userName, "WORK_ORDER", workOrder.workOrderCode, staffNotificationIds, workOrderNotifTitle, workOrderNotifDesc),
+                ]);
+                console.log("Push notif results ", JSON.stringify(pushNotifResults));
+            }
+            else if (assignedStaffUserChanged) {
+                const workOrderNotifTitleOld = `Work order was no longer assigned to you!`;
+                const workOrderNotifDescOld = `Work order was no longer assigned to you!`;
+                const workOrderNotifTitleNew = `New work order assigned to you!`;
+                const workOrderNotifDescNew = `New work order on ${(0, moment_1.default)(dateTargetCompletion).format("MMM DD, YYYY")} was assigned to you`;
+                const oldStaffNotificationIds = await this.logNotification([oldAssignedStaffUser], workOrder, entityManager, workOrderNotifTitleOld, workOrderNotifDescOld);
+                const newStaffNotificationIds = await this.logNotification([workOrder.assignedStaffUser], workOrder, entityManager, workOrderNotifTitleNew, workOrderNotifDescNew);
+                await this.syncRealTime([oldAssignedStaffUser === null || oldAssignedStaffUser === void 0 ? void 0 : oldAssignedStaffUser.userId, workOrder.assignedStaffUser.userId], workOrder);
+                const pushNotifResultsOld = await Promise.all([
+                    this.oneSignalNotificationService.sendToExternalUser(oldAssignedStaffUser.userName, "WORK_ORDER", workOrder.workOrderCode, newStaffNotificationIds, workOrderNotifTitleOld, workOrderNotifDescOld),
+                ]);
+                const pushNotifResultsNew = await Promise.all([
+                    this.oneSignalNotificationService.sendToExternalUser(workOrder.assignedStaffUser.userName, "WORK_ORDER", workOrder.workOrderCode, oldStaffNotificationIds, workOrderNotifTitleOld, workOrderNotifDescOld),
+                ]);
+                console.log("Push notif results ", JSON.stringify([...pushNotifResultsOld, ...pushNotifResultsNew]));
+            }
             workOrder = await entityManager.save(WorkOrder_1.WorkOrder, workOrder);
             workOrder = await entityManager.findOne(WorkOrder_1.WorkOrder, {
                 where: {
@@ -181,7 +219,7 @@ let WorkOrderService = class WorkOrderService {
                     },
                 },
             });
-            (_a = workOrder === null || workOrder === void 0 ? void 0 : workOrder.assignedStaffUser) === null || _a === void 0 ? true : delete _a.password;
+            (_b = workOrder === null || workOrder === void 0 ? void 0 : workOrder.assignedStaffUser) === null || _b === void 0 ? true : delete _b.password;
             return workOrder;
         });
     }
