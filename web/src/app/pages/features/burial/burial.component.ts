@@ -15,6 +15,7 @@ import { PusherService } from 'src/app/services/pusher.service';
 import { AlertDialogModel } from 'src/app/shared/alert-dialog/alert-dialog-model';
 import { AlertDialogComponent } from 'src/app/shared/alert-dialog/alert-dialog.component';
 import { Location } from '@angular/common';
+import { Access, AccessPages } from 'src/app/model/access.model';
 
 @Component({
   selector: 'app-burial',
@@ -44,6 +45,11 @@ export class BurialComponent  {
     type: string;
   }[] = [];
 
+  pageAccess: AccessPages = {
+    view: true,
+    modify: false,
+  };
+
   @ViewChild('burialFormDialog') burialFormDialogTemp: TemplateRef<any>;
   constructor(
     private spinner: SpinnerVisibilityService,
@@ -58,11 +64,12 @@ export class BurialComponent  {
     public router: Router,
     private pusherService: PusherService) {
       this.currentUserProfile = this.storageService.getLoginProfile();
+      // console.log(this.currentUserProfile.access.find)
       if(this.route.snapshot.data) {
-        // this.pageBurial = {
-        //   ...this.pageBurial,
-        //   ...this.route.snapshot.data["burial"]
-        // };
+        this.pageAccess = {
+          ...this.pageAccess,
+          ...this.route.snapshot.data["access"]
+        };
       }
     }
 

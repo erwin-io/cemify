@@ -7,13 +7,16 @@ import {
   Post,
   Put,
 } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiTags } from "@nestjs/swagger";
 import {
   DELETE_SUCCESS,
   SAVING_SUCCESS,
   UPDATE_SUCCESS,
 } from "src/common/constant/api-response.constant";
-import { UpdateLotMapDataDto } from "src/core/dto/lot/lot.update.dto";
+import {
+  UpdateLotMapDataDto,
+  UpdateLotStatusDto,
+} from "src/core/dto/lot/lot.update.dto";
 import { PaginationParamsDto } from "src/core/dto/pagination-params.dto";
 import { ApiResponseModel } from "src/core/models/api-response.model";
 import { Lot } from "src/db/entities/Lot";
@@ -61,6 +64,25 @@ export class LotController {
     try {
       res.data = await this.lotService.getPagination(params);
       res.success = true;
+      return res;
+    } catch (e) {
+      res.success = false;
+      res.message = e.message !== undefined ? e.message : e;
+      return res;
+    }
+  }
+
+  @Put("/updateStatus/:lotCode")
+  //   @UseGuards(JwtAuthGuard)
+  async updateStatus(
+    @Param("lotCode") lotCode: string,
+    @Body() dto: UpdateLotStatusDto
+  ) {
+    const res: ApiResponseModel<Lot> = {} as any;
+    try {
+      res.data = await this.lotService.updateStatus(lotCode, dto);
+      res.success = true;
+      res.message = `Lot status ${UPDATE_SUCCESS}`;
       return res;
     } catch (e) {
       res.success = false;

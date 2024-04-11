@@ -1,0 +1,35 @@
+::ng-deep mat-tab-group {
+  .tab-label {
+    gap: 5px!important;
+    display: flex!important;
+    align-items: center!important;
+    .mat-badge-content {
+      position: static!important;
+      font-size: 0.8em!important;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
+  mat-card {
+    margin: 8px!important;
+  }
+}
+
+
+.view-access-status {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin-bottom: 20px;
+  color: rgba(131, 107, 52, .97);
+  background-color: #feefd0;
+  border-color: #fde8b9;
+  border: 1px solid;
+  border-radius: 0.375rem;
+  * {
+    margin: 0!important;
+  }
+}

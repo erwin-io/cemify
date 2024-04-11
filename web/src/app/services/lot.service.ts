@@ -44,6 +44,14 @@ export class LotService implements IServices {
     );
   }
 
+  updateStatus(id: string, data: any): Observable<ApiResponse<Lot>> {
+    return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.lot.updateStatus + id, data)
+    .pipe(
+      tap(_ => this.log('lot')),
+      catchError(this.handleError('lot', []))
+    );
+  }
+
   updateMapData(lotCode: string, data: any): Observable<ApiResponse<Lot>> {
     return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.lot.updateMapData + lotCode, data)
     .pipe(

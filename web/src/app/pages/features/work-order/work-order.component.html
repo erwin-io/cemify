@@ -1,1 +1,104 @@
-<p>work-order works!</p>
+<mat-toolbar color="#fff" class="mat-elevation-z4">
+  <span id="title">Work order</span>
+  <span class="toolbar-item-spacer"></span>
+</mat-toolbar>
+<div class="component-floating-actions vertical-actions">
+  <button mat-fab color="primary" aria-label="New Work order" matTooltip="New Work order" routerLink="/work-order/new" *ngIf="currentUserProfile && currentUserProfile?.userType === 'ADMIN' ? pageAccess.modify : false">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+<div class="content">
+  <div class="inner-content">
+    <div class="view-access-status" *ngIf="!this.pageRights['Status']">
+      <p>Notice: You do not have access rights to manage work order status. Only the work order that has been assigned to you is accessible.</p>
+      <p>Contact your admin for access inquiries.</p>
+    </div>
+    <mat-tab-group (animationDone)="onAnimationDone()" (selectedTabChange)="onSelectedTabChange($event)" [(selectedIndex)]="tabIndex" >
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="tab-label" matBadge="{{total.pending > 99 ? '99+' : total.pending }}" *ngIf="total.pending > 0; else matLabelPending" matBadgeOverlap="false">Pending</span>
+          <ng-template #matLabelPending>Pending</ng-template>
+        </ng-template>
+        <ng-template matTabContent>
+          <mat-card [ngClass]="{ 'hidden': isLoading }">
+            <mat-card-content fxLayout="column" >
+              <app-data-table
+              [isLoading]="isLoading"
+              [dataSource]="dataSource['pending']"
+              [columnDefs]="appConfig.config.tableColumns.workOrder"
+              [total]="total['pending']"
+              (pageChange)="pageChange($event, 'pending')"
+              (sortChange)="sortChange($event, 'pending')"
+              (filterChange)="filterChange($event, 'pending')"
+              ></app-data-table>
+            </mat-card-content>
+          </mat-card>
+        </ng-template>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="tab-label" matBadge="{{total.inprogress > 99 ? '99+' : total.inprogress }}" *ngIf="total.inprogress > 0; else matLabelInprogress" matBadgeOverlap="false">In progress</span>
+          <ng-template #matLabelInprogress>In progress</ng-template>
+        </ng-template>
+        <ng-template matTabContent>
+          <mat-card [ngClass]="{ 'hidden': isLoading }">
+            <mat-card-content fxLayout="column" >
+              <app-data-table
+              [isLoading]="isLoading"
+              [dataSource]="dataSource['inprogress']"
+              [columnDefs]="appConfig.config.tableColumns.workOrder"
+              [total]="total['inprogress']"
+              (pageChange)="pageChange($event, 'inprogress')"
+              (sortChange)="sortChange($event, 'inprogress')"
+              (filterChange)="filterChange($event, 'inprogress')"
+              ></app-data-table>
+            </mat-card-content>
+          </mat-card>
+        </ng-template>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="tab-label" matBadge="{{total.completed > 99 ? '99+' : total.completed }}" *ngIf="total.completed > 0; else matLabelCompleted" matBadgeOverlap="false">Completed</span>
+          <ng-template #matLabelCompleted>Completed</ng-template>
+        </ng-template>
+        <ng-template matTabContent>
+          <mat-card [ngClass]="{ 'hidden': isLoading }">
+            <mat-card-content fxLayout="column" >
+              <app-data-table
+              [isLoading]="isLoading"
+              [dataSource]="dataSource['completed']"
+              [columnDefs]="appConfig.config.tableColumns.workOrder"
+              [total]="total['completed']"
+              (pageChange)="pageChange($event, 'completed')"
+              (sortChange)="sortChange($event, 'completed')"
+              (filterChange)="filterChange($event, 'completed')"
+              ></app-data-table>
+            </mat-card-content>
+          </mat-card>
+        </ng-template>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="tab-label" matBadge="{{total.cancelled > 99 ? '99+' : total.cancelled }}" *ngIf="total.cancelled > 0; else matLabelCancelled" matBadgeOverlap="false">Cancelled</span>
+          <ng-template #matLabelCancelled>Cancelled</ng-template>
+        </ng-template>
+        <ng-template matTabContent>
+          <mat-card [ngClass]="{ 'hidden': isLoading }">
+            <mat-card-content fxLayout="column" >
+              <app-data-table
+              [isLoading]="isLoading"
+              [dataSource]="dataSource['cancelled']"
+              [columnDefs]="appConfig.config.tableColumns.workOrder"
+              [total]="total['cancelled']"
+              (pageChange)="pageChange($event, 'cancelled')"
+              (sortChange)="sortChange($event, 'cancelled')"
+              (filterChange)="filterChange($event, 'cancelled')"
+              ></app-data-table>
+            </mat-card-content>
+          </mat-card>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+

@@ -36,7 +36,7 @@ __decorate([
     __metadata("design:type", Object)
 ], Lot.prototype, "mapData", void 0);
 __decorate([
-    (0, typeorm_1.Column)("character varying", { name: "Status", default: () => "'EMPTY'" }),
+    (0, typeorm_1.Column)("character varying", { name: "Status", default: () => "'AVAILABLE'" }),
     __metadata("design:type", String)
 ], Lot.prototype, "status", void 0);
 __decorate([

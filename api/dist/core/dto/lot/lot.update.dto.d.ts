@@ -14,3 +14,6 @@ export declare class LotMapDataDto {
 export declare class UpdateLotMapDataDto {
     mapData: LotMapDataDto;
 }
+export declare class UpdateLotStatusDto {
+    status: "AVAILABLE" | "UNAVAILABLE";
+}

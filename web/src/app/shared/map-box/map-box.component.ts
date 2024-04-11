@@ -114,6 +114,12 @@ export class MapBoxComponent implements OnInit{
     }
   }
 
+  updateLotStatus(lotCode, status) {
+    const classList = document.querySelector(`#${lotCode}`).classList;
+    const newClass = Array.from(classList).filter(x=> !["AVAILABLE","OCCUPIED","UNAVAILABLE"].some(s => s.toLowerCase() === x));
+    document.querySelector(`#${lotCode}`).setAttribute("class", `${Array.from(newClass).join(" ")} ${status.toLowerCase()}`);
+  }
+
   clearSelection() {
     this.selectedLot = null;
     const selected = document.querySelectorAll("foreignObjects.selected");
@@ -207,13 +213,11 @@ export class MapBoxComponent implements OnInit{
     })
   }
 
-  lotSelected() {
-  }
-
   ngAfterViewInit() {
     this.panZoom = Panzoom(this.map.nativeElement, { contain: 'outside', startScale: 1, maxScale: 20 })
     this.map.nativeElement.parentElement.addEventListener('wheel', this.panZoom.zoomWithWheel);
     this.map.nativeElement.parentElement.addEventListener('wheel', ()=> {
+      console.log(this.panZoom.getScale());
       this.resizeSelector(this.panZoom.getScale());
     });
   }
@@ -259,32 +263,42 @@ export class MapBoxComponent implements OnInit{
 
   resizeSelector(zoom) {
     if(zoom <= 20 && zoom >= 16.1) {
-      this.selectorSize = 0.12;
+      this.selectorSize = 0.08;
     } else if(zoom <= 16 && zoom >= 14.1) {
-      this.selectorSize = 0.13;
+      this.selectorSize = 0.09;
     } else if(zoom <= 14 && zoom >= 12.1) {
-      this.selectorSize = 0.15;
+      this.selectorSize = 0.10;
     } else if(zoom <= 12 && zoom >= 10.1) {
-      this.selectorSize = 0.16;
+      this.selectorSize = 0.12;
     } else if(zoom <= 10 && zoom >= 9.1) {
-      this.selectorSize = 0.19;
+      this.selectorSize = 0.14;
     } else if(zoom <= 9 && zoom >= 8.1) {
-      this.selectorSize = 0.24;
+      this.selectorSize = 0.15;
     } else if(zoom <= 8 && zoom >= 7.1) {
-      this.selectorSize = 0.28;
+      this.selectorSize = 0.18;
     } else if(zoom <= 7 && zoom >= 6) {
-      this.selectorSize = 0.32;
+      this.selectorSize = 0.21;
     } else if(zoom <= 5.9 && zoom >= 4.3) {
-      this.selectorSize = 0.38;
+      this.selectorSize = 0.24;
     } else if(zoom <= 4.2 && zoom >= 3.3) {
-      this.selectorSize = 0.43;
+      this.selectorSize = 0.27;
     } else if(zoom <= 3.2 && zoom >= 2.6) {
-      this.selectorSize = 0.54;
-    } else if(zoom <= 2.5 && zoom >= 1.9) {
+      this.selectorSize = 0.34;
+    } else if(zoom <= 2.5 && zoom >= 2.0) {
+      this.selectorSize = 0.38;
+    } else if(zoom <= 1.99 && zoom >= 1.7) {
+      this.selectorSize = 0.48;
+    } else if(zoom <= 1.69 && zoom >= 1.5) {
       this.selectorSize = 0.65;
-    } else if(zoom <= 1.8 && zoom >= 1.4) {
+    } else if(zoom <= 1.4 && zoom >= 1.2) {
+      this.selectorSize = 0.75;
+    } else if(zoom <= 1.1 && zoom >= 1.09) {
+      this.selectorSize = 0.58;
+    } else if(zoom <= 1.08 && zoom >= 1.04) {
+      this.selectorSize = 0.71;
+    } else if(zoom <= 1.03 && zoom >= 1) {
       this.selectorSize = 0.85;
-    } else if(zoom <= 1.3 && zoom >= 1) {
+    } else if(zoom <= 0.9 && zoom >= 0.8) {
       this.selectorSize = 1;
     }
   }

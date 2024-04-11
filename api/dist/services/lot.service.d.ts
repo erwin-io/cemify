@@ -1,4 +1,4 @@
-import { UpdateLotMapDataDto } from "src/core/dto/lot/lot.update.dto";
+import { UpdateLotMapDataDto, UpdateLotStatusDto } from "src/core/dto/lot/lot.update.dto";
 import { Lot } from "src/db/entities/Lot";
 import { Repository } from "typeorm";
 export declare class LotService {
@@ -15,5 +15,6 @@ export declare class LotService {
     }>;
     getByBlock(block: any): Promise<Lot[]>;
     getByCode(lotCode: any): Promise<any>;
+    updateStatus(lotCode: any, dto: UpdateLotStatusDto): Promise<Lot>;
     updateMapData(lotCode: any, dto: UpdateLotMapDataDto): Promise<Lot>;
 }

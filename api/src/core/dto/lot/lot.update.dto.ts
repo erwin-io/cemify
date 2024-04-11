@@ -1,9 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform, Type } from "class-transformer";
 import {
+  IsIn,
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsUppercase,
   ValidateNested,
 } from "class-validator";
 export class PanMapData {
@@ -90,3 +92,12 @@ export class UpdateLotMapDataDto {
   @ValidateNested()
   mapData: LotMapDataDto;
 }
+
+export class UpdateLotStatusDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsIn(["AVAILABLE", "UNAVAILABLE"])
+  @IsUppercase()
+  status: "AVAILABLE" | "UNAVAILABLE";
+}
+

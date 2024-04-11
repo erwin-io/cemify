@@ -70,6 +70,22 @@ let PusherService = class PusherService {
             throw ex;
         }
     }
+    async workOrderChanges(userIds, data) {
+        try {
+            if (userIds && userIds.length > 0) {
+                for (const userId of userIds) {
+                    this.pusher.trigger(userId, "workOrderChanges", data);
+                }
+            }
+            this.pusher.trigger("all", "reSync", {
+                type: "WORK_ORDER",
+                data: null,
+            });
+        }
+        catch (ex) {
+            throw ex;
+        }
+    }
     async sendNotif(userIds, title, description) {
         try {
             if (userIds && userIds.length > 0) {

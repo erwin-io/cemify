@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Access } from 'src/app/model/access.model';
+import { Access, AccessPages } from 'src/app/model/access.model';
 import { Burial } from 'src/app/model/burial.model';
 import { Lot } from 'src/app/model/lot.model';
 import { AppConfigService } from 'src/app/services/app-config.service';
@@ -12,6 +12,7 @@ import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 import { MapBoxComponent } from 'src/app/shared/map-box/map-box.component';
 import { MapSearchComponent } from './map-search/map-search.component';
+import { MapSearchDetailsComponent } from './map-search-details/map-search-details.component';
 
 @Component({
   selector: 'app-map',
@@ -25,6 +26,12 @@ export class MapComponent {
   details: Lot;
   @ViewChild('mapBox') mapBox: MapBoxComponent;
   @ViewChild('search') search: MapSearchComponent;
+  @ViewChild('searchDetails') searchDetails: MapSearchDetailsComponent;
+
+  pageAccess: AccessPages = {
+    view: true,
+    modify: false,
+  } as any;
   constructor(
     private userService: UserService,
     private snackBar: MatSnackBar,
@@ -36,13 +43,32 @@ export class MapComponent {
     private route: ActivatedRoute,
     public router: Router) {
       if(this.route.snapshot.data) {
+        this.pageAccess = {
+          ...this.pageAccess,
+          ...this.route.snapshot.data["access"]
+        };
       }
     }
 
+  get pageRights() {
+    let rights = {};
+    for(var right of this.pageAccess.rights) {
+      rights[right] = this.pageAccess.modify;
+    }
+    return rights;
+  }
   onSearchComplete(event: Lot) {
+    if(this.searchDetails) {
+      this.searchDetails.showManageLot = false;
+    }
     if(event) {
       this.details = event;
       this.mapBox.selectLot(this.details.lotCode, this.details.block);
+      if(this.searchDetails && this.searchDetails.showManageLot) {
+        setTimeout(()=> {
+          this.searchDetails.showManageLot = false;
+        }, 500);
+      }
     } else {
       this.details = null;
       this.mapBox.clearSelection();
@@ -50,6 +76,9 @@ export class MapComponent {
   }
 
   onSelectChange({ lotCode }) {
+    if(this.searchDetails) {
+      this.searchDetails.showManageLot = false;
+    }
     this.lotService.getByCode(lotCode).subscribe(res=> {
       this.details = res.data;
       this.search.searchCtrl.setValue(res.data.lotCode);
@@ -57,6 +86,11 @@ export class MapComponent {
       this.search.showMenu = false;
       this.search.lot = [];
       this.search.burial = [];
+      if(this.searchDetails && this.searchDetails.showManageLot) {
+        setTimeout(()=> {
+          this.searchDetails.showManageLot = false;
+        }, 500);
+      }
     });
   }
 }

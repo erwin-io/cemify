@@ -27,7 +27,7 @@ export class Lot {
   @Column("json", { name: "MapData", default: {} })
   mapData: object;
 
-  @Column("character varying", { name: "Status", default: () => "'EMPTY'" })
+  @Column("character varying", { name: "Status", default: () => "'AVAILABLE'" })
   status: string;
 
   @OneToMany(() => Burial, (burial) => burial.lot)

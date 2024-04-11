@@ -1,6 +1,7 @@
 <div fxFlex="100" fxLayout="column">
-  <div fxLayout="column" fxFlex="100" fxLayoutGap="16">
+  <div fxLayout="column" fxFlex="100">
     <mat-label >Lot</mat-label>
+    <br/>
     <div
       fxFlex="100"
       fxLayout="column">
@@ -29,7 +30,52 @@
           />
       </mat-form-field>
     </div>
+    <div fxFlex fxLayout.gt-md="row" fxLayout="column" *ngIf="canManageLot ? (!lot?.burial || !lot?.burial?.burialCode) : false">
+      <button
+        mat-flat-button
+        color="primary"
+        matTooltip="Manage selected lot"
+        (click)="showManageLot = true;"
+        *ngIf="!showManageLot">
+        Manage selected lot
+      </button>
+      <div fxLayout="column" fxFlex="100" *ngIf="showManageLot" class="manage-lot-status">
+        <mat-label>Manage selected lot</mat-label>
+        <br/>
+        <mat-form-field
+          appearance="outline"
+          fxFlex="100"
+          fxLayout="column">
+          <mat-label>Update status</mat-label>
+          <mat-select #lotStatus value="{{lot?.status}}">
+            <mat-option value="AVAILABLE">Available</mat-option>
+            <mat-option value="UNAVAILABLE">Unavailable</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div fxFlex="100" fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="10">
+          <button
+            fxFlex.gt-md="50"
+            fxFlex="100"
+            mat-flat-button
+            color="primary"
+            matTooltip="Save"
+            [disabled]="lotStatus.value === lot?.status"
+            (click)="updateStatus(lotStatus.value)">
+            Save
+          </button>
+          <button
+            fxFlex.gt-md="50"
+            fxFlex="100"
+            mat-flat-button
+            matTooltip="Cancel"
+            (click)="showManageLot = false;">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
+  <br/>
   <div fxLayout="column" fxFlex="100" fxLayoutGap="16">
     <mat-label >Burial</mat-label>
     <div

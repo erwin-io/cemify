@@ -64,12 +64,12 @@
       },
       {
         "name": "access",
-        "label": "User group",
+        "label": "Access",
         "apiNotation": "access.name",
         "type": "string",
         "filterOptions": {
           "enable": true,
-          "placeholder": "User group"
+          "placeholder": "Access"
         }
       },
       {
@@ -86,7 +86,7 @@
     "access": [
       {
         "name": "accessCode",
-        "label": "User group #",
+        "label": "Access #",
         "sticky": true,
         "apiNotation": "accessCode",
         "type": "string",
@@ -96,18 +96,18 @@
         },
         "filterOptions": {
           "enable": true,
-          "placeholder": "User group #"
+          "placeholder": "Access #"
         },
         "urlPropertyName": "url"
       },
       {
         "name": "name",
-        "label": "User group name",
+        "label": "Access name",
         "apiNotation": "name",
         "type": "string",
         "filterOptions": {
           "enable": true,
-          "placeholder": "User group name"
+          "placeholder": "Access name"
         }
       }
     ],
@@ -322,6 +322,79 @@
           "placeholder": "Requested by"
         }
       }
+    ],
+    "workOrder": [
+      {
+        "sticky": true,
+        "name": "workOrderCode",
+        "label": "Code #",
+        "apiNotation": "workOrderCode",
+        "type": "string",
+        "style": {
+          "width": "100px",
+          "left": "0px"
+        },
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Code #"
+        },
+        "urlPropertyName": "url"
+      },
+      {
+        "name": "dateTargetCompletion",
+        "label": "Target date completion",
+        "apiNotation": "dateTargetCompletion",
+        "type": "date",
+        "format": {
+          "type": "date",
+          "custom": "MMM dd, yyyy"
+        },
+        "filterOptions": {
+          "enable": true,
+          "label": "Target date completion",
+          "type": "date-range"
+        }
+      },
+      {
+        "name": "type",
+        "label": "Type",
+        "apiNotation": "type",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Type"
+        }
+      },
+      {
+        "name": "title",
+        "label": "Title",
+        "apiNotation": "title",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Title"
+        }
+      },
+      {
+        "name": "description",
+        "label": "Description",
+        "apiNotation": "description",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Description"
+        }
+      },
+      {
+        "name": "assignedStaffUser",
+        "label": "Assignee",
+        "apiNotation": "assignedStaffUser.fullName",
+        "type": "string",
+        "filterOptions": {
+          "enable": true,
+          "placeholder": "Assignee"
+        }
+      }
     ]
   },
   "sessionConfig": {
@@ -333,19 +406,18 @@
         "page": "Map",
         "view": true,
         "modify": true,
-        "rights": []
+        "rights": ["Status"]
       },
       {
         "page": "Burial",
         "view": false,
-        "modify": false,
-        "rights": ["Status"]
+        "modify": false
       },
       {
         "page": "Reservation",
         "view": false,
         "modify": false,
-        "rights": ["Approval"]
+        "rights": ["Status"]
       },
       {
         "page": "Work Order",
@@ -405,10 +477,18 @@
       "update": "/reservation/",
       "updateStatus": "/reservation/updateStatus/"
     },
+    "workOrder": {
+      "getByAdvanceSearch": "/work-order/page/",
+      "getByCode": "/work-order/",
+      "create": "/work-order/",
+      "update": "/work-order/",
+      "updateStatus": "/work-order/updateStatus/"
+    },
     "lot": {
       "getByAdvanceSearch": "/lot/page/",
       "getByCode": "/lot/",
       "getByBlock": "/lot/getByBlock/",
+      "updateStatus": "/lot/updateStatus/",
       "updateMapData": "/lot/updateMapData/"
     },
     "notifications": {

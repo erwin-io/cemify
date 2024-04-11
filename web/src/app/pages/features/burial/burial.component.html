@@ -3,7 +3,7 @@
   <span class="toolbar-item-spacer"></span>
 </mat-toolbar>
 <div class="component-floating-actions vertical-actions">
-  <button mat-fab color="primary" aria-label="New Burial" matTooltip="New Burial" routerLink="/burial/new">
+  <button mat-fab color="primary" aria-label="New Burial" matTooltip="New Burial" routerLink="/burial/new" *ngIf="pageAccess.modify">
     <mat-icon>add</mat-icon>
   </button>
 </div>

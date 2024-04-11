@@ -18,6 +18,7 @@ export interface AppConfig {
       access: ColumnDefinition[];
       reservation: ColumnDefinition[];
       burial: ColumnDefinition[];
+      workOrder: ColumnDefinition[];
     };
     sessionConfig: {
       sessionTimeout: string;
@@ -63,10 +64,18 @@ export interface AppConfig {
         update: string;
         updateStatus: string;
       },
+      workOrder: {
+        getByAdvanceSearch: string;
+        getByCode: string;
+        create: string;
+        update: string;
+        updateStatus: string;
+      },
       lot: {
         getByAdvanceSearch: string;
         getByCode: string;
         getByBlock: string;
+        updateStatus: string;
         updateMapData: string;
       },
       notifications: {

@@ -100,6 +100,13 @@ export class NotificationWindowComponent {
     await this.notificationsService.marAsRead(notification.notificationId).toPromise();
     this.readNotif.emit();
     // window.open("http://www.google.com/");
+    if(notification.type === "RESERVATION") {
+      window.open(`/reservation/${notification.referenceId}/details`);
+    } else if(notification.type === "WORK_ORDER") {
+      window.open(`/work-order/${notification.referenceId}/details`);
+    } else {
+      window.open(`/map`);
+    }
   }
 
 }

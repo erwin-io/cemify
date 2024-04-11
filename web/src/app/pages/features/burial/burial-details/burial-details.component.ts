@@ -97,7 +97,7 @@ export class BurialDetailsComponent {
 
   ngOnInit(): void {
     const channel = this.pusherService.init(this.currentUserProfile.userId);
-    channel.bind('rentContractChanges', (res: Burial) => {
+    channel.bind('burialChanges', (res: Burial) => {
       console.log(res);
       if(res.burialId === this.burial.burialId) {
         this.snackBar.open("Someone has updated this document.", "",{
@@ -123,16 +123,11 @@ export class BurialDetailsComponent {
       this.initBookingDetails();
       this.canAddEdit = true;
       this.isLoading = false;
-    } else {
+    } else if(this.pageAccess.modify) {
       this.canAddEdit = true;
       this.isLoading = false;
-      // this.burialForm.form.controls["dateCreated"].setValue(moment().format("YYYY-MM-DD"));
-      // this.burialForm.form.controls["dateCreated"].setValidators([Validators.required]);
-      // this.burialForm.form.controls["dateCreated"].setValidators([Validators.required]);
-      // this.burialForm.form.controls["dateStart"].setValue(value?.dateStart ? moment(value?.dateStart).format("MMM DD, YYYY") : "");
-      // this.burialForm.form.controls["stallCode"].setValue(value?.stall?.stallCode ? value?.stall?.stallCode : "");
-      // this.burialForm.form.controls["otherCharges"].setValue(value?.otherCharges ? value?.otherCharges : "");
-      // this.burialForm.form.controls["tenantUserCode"].setValue(value?.tenantUser?.userCode ? value?.tenantUser?.userCode : "");
+    } else {
+      this.router.navigate(['/burial/']);
     }
   }
 
@@ -146,7 +141,7 @@ export class BurialDetailsComponent {
 
           if (this.isReadOnly) {
             this.burialForm.form.disable();
-          } else if(!this.isReadOnly && !this.burial.active) {
+          } else if(this.pageAccess.modify ? !this.isReadOnly && !this.burial.active : false) {
             this.router.navigate(['/burial/' + this.burialCode]);
           }
           this.isLoading = false;
@@ -183,7 +178,9 @@ export class BurialDetailsComponent {
           this.burialForm.form.controls["lotCode"].setValue(res.data.lot?.lotCode && res.data.lot?.lotCode ? res.data.lot?.lotCode : "");
           this.burialForm.form.controls["familyContactPerson"].setValue(res.data.familyContactPerson);
           this.burialForm.form.controls["familyContactNumber"].setValue(res.data.familyContactNumber);
-
+          if(!this.pageAccess.modify) {
+            this.router.navigate(['/burial/' + this.burialCode]);
+          }
           this.isLoading = false;
         } else {
           this.isLoading = false;
@@ -215,7 +212,7 @@ export class BurialDetailsComponent {
     }
     const dialogData = new AlertDialogModel();
     dialogData.title = 'Confirm';
-    dialogData.message = 'Save contract?';
+    dialogData.message = 'Save burial?';
     dialogData.confirmButton = {
       visible: true,
       text: 'yes',

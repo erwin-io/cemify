@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const lot_constant_1 = require("../common/constant/lot.constant");
 const utils_1 = require("../common/utils/utils");
+const Burial_1 = require("../db/entities/Burial");
 const Lot_1 = require("../db/entities/Lot");
 const typeorm_2 = require("typeorm");
 let LotService = class LotService {
@@ -99,6 +100,36 @@ let LotService = class LotService {
             },
         };
     }
+    async updateStatus(lotCode, dto) {
+        return await this.lotsRepo.manager.transaction(async (entityManager) => {
+            const { status } = dto;
+            let lot = await entityManager.findOne(Lot_1.Lot, {
+                where: {
+                    lotCode,
+                },
+            });
+            if (!lot) {
+                throw Error(lot_constant_1.LOT_ERROR_NOT_FOUND);
+            }
+            if (lot.status === status) {
+                throw Error("Lot was already " + status.toLowerCase());
+            }
+            const burial = await entityManager.findOne(Burial_1.Burial, {
+                where: {
+                    active: true,
+                    lot: {
+                        lotCode,
+                    },
+                },
+            });
+            if (burial) {
+                throw Error(`Cannot update ${status.toLowerCase()} to unavailable, lot was already occupied for burial`);
+            }
+            lot.status = status;
+            lot = await entityManager.save(Lot_1.Lot, lot);
+            return lot;
+        });
+    }
     async updateMapData(lotCode, dto) {
         return await this.lotsRepo.manager.transaction(async (entityManager) => {
             let lot = await entityManager.findOne(Lot_1.Lot, {
@@ -106,6 +137,9 @@ let LotService = class LotService {
                     lotCode,
                 },
             });
+            if (!lot) {
+                throw Error(lot_constant_1.LOT_ERROR_NOT_FOUND);
+            }
             const currentMapData = lot.mapData;
             currentMapData.pan = dto.mapData.pan;
             currentMapData.zoom = dto.mapData.zoom;

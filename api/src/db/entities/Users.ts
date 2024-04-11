@@ -16,8 +16,8 @@ import { UserProfilePic } from "./UserProfilePic";
 import { Access } from "./Access";
 import { WorkOrder } from "./WorkOrder";
 
-@Index("u_username", ["active", "userName"], { unique: true })
 @Index("u_user_number", ["active", "mobileNumber"], { unique: true })
+@Index("u_username", ["active", "userName"], { unique: true })
 @Index("pk_users_1557580587", ["userId"], { unique: true })
 @Entity("Users", { schema: "dbo" })
 export class Users {

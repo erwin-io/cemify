@@ -44,6 +44,10 @@ __decorate([
     __metadata("design:type", Boolean)
 ], WorkOrder.prototype, "active", void 0);
 __decorate([
+    (0, typeorm_1.Column)("character varying", { name: "Type" }),
+    __metadata("design:type", String)
+], WorkOrder.prototype, "type", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => Burial_1.Burial, (burial) => burial.workOrder),
     __metadata("design:type", Array)
 ], WorkOrder.prototype, "burials", void 0);

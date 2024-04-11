@@ -98,8 +98,8 @@ __decorate([
     __metadata("design:type", Array)
 ], Users.prototype, "workOrders", void 0);
 Users = __decorate([
-    (0, typeorm_1.Index)("u_username", ["active", "userName"], { unique: true }),
     (0, typeorm_1.Index)("u_user_number", ["active", "mobileNumber"], { unique: true }),
+    (0, typeorm_1.Index)("u_username", ["active", "userName"], { unique: true }),
     (0, typeorm_1.Index)("pk_users_1557580587", ["userId"], { unique: true }),
     (0, typeorm_1.Entity)("Users", { schema: "dbo" })
 ], Users);

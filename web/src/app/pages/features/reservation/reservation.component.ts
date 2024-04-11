@@ -17,6 +17,7 @@ import { AlertDialogModel } from 'src/app/shared/alert-dialog/alert-dialog-model
 import { AlertDialogComponent } from 'src/app/shared/alert-dialog/alert-dialog.component';
 import { Location } from '@angular/common';
 import { Observable, Subject, catchError, of, takeUntil } from 'rxjs';
+import { AccessPages } from 'src/app/model/access.model';
 
 @Component({
   selector: 'app-reservation',
@@ -102,10 +103,10 @@ export class ReservationComponent  {
       type: string;
     }[]
   };
-  // pageReservation: Reservation = {
-  //   view: true,
-  //   modify: false,
-  // };
+  pageAccess: AccessPages = {
+    view: true,
+    modify: false,
+  };
 
   @ViewChild('reservationFormDialog') reservationFormDialogTemp: TemplateRef<any>;
   constructor(
@@ -137,7 +138,7 @@ export class ReservationComponent  {
     channel.bind("reSync", (res: any) => {
       const { type, data } = res;
       console.log(type);
-      if(type && type === "TENANT_RENT_BOOKING") {
+      if(type && type === "RESERVATION") {
         setTimeout(()=> {
           this.getReservationPaginated("pending", false);
           this.getReservationPaginated("approved", false);

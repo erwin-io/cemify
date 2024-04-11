@@ -154,7 +154,7 @@ export class AccessComponent {
   saveNewAccess(formData) {
     const dialogData = new AlertDialogModel();
     dialogData.title = 'Confirm';
-    dialogData.message = 'Save User group?';
+    dialogData.message = 'Save Access?';
     dialogData.confirmButton = {
       visible: true,
       text: 'yes',

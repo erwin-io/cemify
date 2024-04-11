@@ -80,3 +80,14 @@ export class BurialTableColumn {
   workOrder?: string;
   url?: string;
 }
+
+export class WorkOrderTableColumn {
+  workOrderCode?: string;
+  dateTargetCompletion?: string;
+  type?: string;
+  title?: string;
+  description?: string;
+  assignedStaffUser?: string;
+  status?: string;
+  url?: string;
+}

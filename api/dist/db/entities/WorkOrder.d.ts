@@ -8,6 +8,7 @@ export declare class WorkOrder {
     description: string;
     status: string;
     active: boolean;
+    type: string;
     burials: Burial[];
     assignedStaffUser: Users;
 }

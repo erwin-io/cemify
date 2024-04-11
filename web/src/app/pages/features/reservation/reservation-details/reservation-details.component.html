@@ -15,7 +15,7 @@
   <div class="inner-content" fxLayout="column" fxLayoutGap="20">
     <div fxFlex="100" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="16px">
       <div fxFlex="100" fxLayout="row">
-        <div *ngIf="isReadOnly && pageRights['Approval'] && (reservation?.status === 'PENDING' || reservation?.status === 'APPROVED')" [ngStyle.gt-xs]="{ 'flex-direction': 'row' }" [ngStyle]="{ 'flex-direction': 'column'}" style=" display: flex; width: 100%; justify-content: flex-start;gap: 16px;">
+        <div *ngIf="isReadOnly && pageRights['Status'] && (reservation?.status === 'PENDING' || reservation?.status === 'APPROVED')" [ngStyle.gt-xs]="{ 'flex-direction': 'row' }" [ngStyle]="{ 'flex-direction': 'column'}" style=" display: flex; width: 100%; justify-content: flex-start;gap: 16px;">
           <button *ngIf="reservation?.status === 'PENDING'" aria-label="Approve" matTooltip="Approve" mat-fab extended color="primary" (click)="updateStatus('APPROVED')">
             <mat-icon>check</mat-icon>
             Approve

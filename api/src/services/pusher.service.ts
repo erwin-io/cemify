@@ -63,6 +63,22 @@ export class PusherService {
     }
   }
 
+  async workOrderChanges(userIds: string[], data: any) {
+    try {
+      if (userIds && userIds.length > 0) {
+        for (const userId of userIds) {
+          this.pusher.trigger(userId, "workOrderChanges", data);
+        }
+      }
+      this.pusher.trigger("all", "reSync", {
+        type: "WORK_ORDER",
+        data: null,
+      });
+    } catch (ex) {
+      throw ex;
+    }
+  }
+
   async sendNotif(userIds: string[], title: string, description) {
     try {
       if (userIds && userIds.length > 0) {

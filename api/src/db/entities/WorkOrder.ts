@@ -34,6 +34,9 @@ export class WorkOrder {
   @Column("boolean", { name: "Active", default: () => "true" })
   active: boolean;
 
+  @Column("character varying", { name: "Type" })
+  type: string;
+
   @OneToMany(() => Burial, (burial) => burial.workOrder)
   burials: Burial[];
 

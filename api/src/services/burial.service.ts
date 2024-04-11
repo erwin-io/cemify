@@ -1,3 +1,4 @@
+import { type } from 'os';
 import { Notifications } from "src/db/entities/Notifications";
 import { Reservation } from "src/db/entities/Reservation";
 import { Burial } from "src/db/entities/Burial";
@@ -49,6 +50,7 @@ import {
 } from "src/common/constant/lot.constant";
 import { Lot } from "src/db/entities/Lot";
 import { WorkOrder } from "src/db/entities/WorkOrder";
+import { WORK_ORDER_TYPE } from 'src/common/constant/work-order.constant';
 
 @Injectable()
 export class BurialService {
@@ -252,6 +254,7 @@ export class BurialService {
       burial.lot = lot;
 
       let workOrder = new WorkOrder();
+      workOrder.type = WORK_ORDER_TYPE.MAINTENANCE;
       workOrder.dateTargetCompletion = dateOfBurial;
       workOrder.title = `Burial work order on ${moment(dateOfBurial).format(
         "MMM DD, YYYY"
@@ -397,6 +400,7 @@ export class BurialService {
       }`;
 
       let workOrder = new WorkOrder();
+      workOrder.type = WORK_ORDER_TYPE.MAINTENANCE;
       workOrder.dateTargetCompletion = dateOfBurial;
       workOrder.title = `Burial work order on ${moment(dateOfBurial).format(
         "MMM DD, YYYY"
@@ -414,6 +418,7 @@ export class BurialService {
         where: {
           userId: dto.assignedStaffUserId,
           userType: USER_TYPE.STAFF,
+          active: true,
         },
       });
       workOrder.assignedStaffUser = assignedStaffUser;
@@ -633,6 +638,8 @@ export class BurialService {
         const newAssignedStaffUser = await entityManager.findOne(Users, {
           where: {
             userId: dto.assignedStaffUserId,
+            userType: USER_TYPE.STAFF,
+            active: true,
           },
         });
         if (!newAssignedStaffUser) {

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LotController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const api_response_constant_1 = require("../../common/constant/api-response.constant");
 const lot_update_dto_1 = require("../../core/dto/lot/lot.update.dto");
 const pagination_params_dto_1 = require("../../core/dto/pagination-params.dto");
 const lot_service_1 = require("../../services/lot.service");
@@ -61,6 +62,20 @@ let LotController = class LotController {
             return res;
         }
     }
+    async updateStatus(lotCode, dto) {
+        const res = {};
+        try {
+            res.data = await this.lotService.updateStatus(lotCode, dto);
+            res.success = true;
+            res.message = `Lot status ${api_response_constant_1.UPDATE_SUCCESS}`;
+            return res;
+        }
+        catch (e) {
+            res.success = false;
+            res.message = e.message !== undefined ? e.message : e;
+            return res;
+        }
+    }
     async updateMapData(lotCode, body) {
         const res = {};
         try {
@@ -96,6 +111,14 @@ __decorate([
     __metadata("design:paramtypes", [pagination_params_dto_1.PaginationParamsDto]),
     __metadata("design:returntype", Promise)
 ], LotController.prototype, "getPaginated", null);
+__decorate([
+    (0, common_1.Put)("/updateStatus/:lotCode"),
+    __param(0, (0, common_1.Param)("lotCode")),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, lot_update_dto_1.UpdateLotStatusDto]),
+    __metadata("design:returntype", Promise)
+], LotController.prototype, "updateStatus", null);
 __decorate([
     (0, common_1.Put)("/updateMapData/:lotCode"),
     __param(0, (0, common_1.Param)("lotCode")),

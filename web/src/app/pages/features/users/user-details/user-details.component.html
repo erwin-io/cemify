@@ -356,16 +356,16 @@
       </mat-card-content>
     </mat-card>
     <div [hidden]="!showAccess">
-      <h4 class="inner-content-title">User group</h4>
+      <h4 class="inner-content-title">Access</h4>
       <mat-card>
         <mat-card-content>
           <div fxFlex="100" class="content-inner" fxLayout="column"
           [ngClass]="{'readonly' : isReadOnly}">
             <mat-form-field class="example-full-width" appearance="outline" style="position: relative!important;">
-              <mat-label>User group</mat-label>
+              <mat-label>Access</mat-label>
               <input type="text"
-                     placeholder="Select User group"
-                     aria-label="Select User group"
+                     placeholder="Select Access"
+                     aria-label="Select Access"
                      matInput
                      [formControl]="accessSearchCtrl"
                      [matAutocomplete]="autoAccess"
@@ -382,10 +382,10 @@
               >
                 {{
                   (getError("accessCode") && getError("accessCode").required
-                    ? "Please select User group"
+                    ? "Please select Access"
                     : "") ||
                   (accessSearchCtrl.errors && accessSearchCtrl.errors.required
-                    ? "Please select User group"
+                    ? "Please select Access"
                     : "")
                 }}
               </mat-error>

@@ -84,7 +84,7 @@ export class ReservationDetailsComponent {
 
   ngOnInit(): void {
     const channel = this.pusherService.init(this.currentUserProfile.userId);
-    channel.bind('rentBookingChanges', (res: Reservation) => {
+    channel.bind('reservationChanges', (res: Reservation) => {
       console.log(res);
       if(res.reservationId === this.reservation.reservationId) {
         this.snackBar.open("Someone has updated this document.", "",{
@@ -144,11 +144,11 @@ export class ReservationDetailsComponent {
     const dialogData = new AlertDialogModel();
     dialogData.title = 'Confirm';
     if(status === "CANCELLED") {
-      dialogData.message = 'Are you sure you want to cancel tenant rent booking?';
+      dialogData.message = 'Are you sure you want to cancel reservation?';
     } else if(status === "REJECTED") {
-      dialogData.message = 'Are you sure you want to reject tenant rent booking?';
+      dialogData.message = 'Are you sure you want to reject reservation?';
     } else if(status === "APPROVED") {
-      dialogData.message = 'Are you sure you want to complete tenant rent booking?';
+      dialogData.message = 'Are you sure you want to complete reservation?';
     }
     dialogData.confirmButton = {
       visible: true,
@@ -170,7 +170,7 @@ export class ReservationDetailsComponent {
 
       if(status === "LEASED") {
         this.dialog.closeAll();
-        this.router.navigate(['/tenant-rent-contract/' + this.reservationCode + '/from-booking' ]);
+        this.router.navigate(['/burial/' + this.reservationCode + '/from-reservation' ]);
       } else {
         this.isProcessing = true;
         dialogRef.componentInstance.isProcessing = this.isProcessing;

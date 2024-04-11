@@ -35,6 +35,7 @@ const reservation_constant_1 = require("../common/constant/reservation.constant"
 const lot_constant_1 = require("../common/constant/lot.constant");
 const Lot_1 = require("../db/entities/Lot");
 const WorkOrder_1 = require("../db/entities/WorkOrder");
+const work_order_constant_1 = require("../common/constant/work-order.constant");
 let BurialService = class BurialService {
     constructor(burialRepo, pusherService, oneSignalNotificationService) {
         this.burialRepo = burialRepo;
@@ -221,6 +222,7 @@ let BurialService = class BurialService {
             burial.fromReservation = false;
             burial.lot = lot;
             let workOrder = new WorkOrder_1.WorkOrder();
+            workOrder.type = work_order_constant_1.WORK_ORDER_TYPE.MAINTENANCE;
             workOrder.dateTargetCompletion = dateOfBurial;
             workOrder.title = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")}`;
             workOrder.description =
@@ -324,6 +326,7 @@ let BurialService = class BurialService {
             const workOrderNotifTitle = `New Burial work order assigned to you!`;
             const workOrderNotifDesc = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} at block ${reservation.lot.block}, lot ${reservation.lot.lotCode}`;
             let workOrder = new WorkOrder_1.WorkOrder();
+            workOrder.type = work_order_constant_1.WORK_ORDER_TYPE.MAINTENANCE;
             workOrder.dateTargetCompletion = dateOfBurial;
             workOrder.title = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")}`;
             workOrder.description =
@@ -339,6 +342,7 @@ let BurialService = class BurialService {
                 where: {
                     userId: dto.assignedStaffUserId,
                     userType: user_type_constant_1.USER_TYPE.STAFF,
+                    active: true,
                 },
             });
             workOrder.assignedStaffUser = assignedStaffUser;
@@ -488,6 +492,8 @@ let BurialService = class BurialService {
                 const newAssignedStaffUser = await entityManager.findOne(Users_1.Users, {
                     where: {
                         userId: dto.assignedStaffUserId,
+                        userType: user_type_constant_1.USER_TYPE.STAFF,
+                        active: true,
                     },
                 });
                 if (!newAssignedStaffUser) {

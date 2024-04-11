@@ -5,7 +5,9 @@ import { columnDefToTypeORMCondition } from "src/common/utils/utils";
 import {
   LotMapDataDto,
   UpdateLotMapDataDto,
+  UpdateLotStatusDto,
 } from "src/core/dto/lot/lot.update.dto";
+import { Burial } from "src/db/entities/Burial";
 import { Lot } from "src/db/entities/Lot";
 import { Repository } from "typeorm";
 
@@ -107,6 +109,39 @@ export class LotService {
     } as any;
   }
 
+  async updateStatus(lotCode, dto: UpdateLotStatusDto) {
+    return await this.lotsRepo.manager.transaction(async (entityManager) => {
+      const { status } = dto;
+      let lot = await entityManager.findOne(Lot, {
+        where: {
+          lotCode,
+        },
+      });
+      if (!lot) {
+        throw Error(LOT_ERROR_NOT_FOUND);
+      }
+      if (lot.status === status) {
+        throw Error("Lot was already " + status.toLowerCase());
+      }
+      const burial = await entityManager.findOne(Burial, {
+        where: {
+          active: true,
+          lot: {
+            lotCode,
+          },
+        },
+      });
+      if (burial) {
+        throw Error(
+          `Cannot update ${status.toLowerCase()} to unavailable, lot was already occupied for burial`
+        );
+      }
+      lot.status = status;
+      lot = await entityManager.save(Lot, lot);
+      return lot;
+    });
+  }
+
   async updateMapData(lotCode, dto: UpdateLotMapDataDto) {
     return await this.lotsRepo.manager.transaction(async (entityManager) => {
       let lot = await entityManager.findOne(Lot, {
@@ -114,6 +149,9 @@ export class LotService {
           lotCode,
         },
       });
+      if (!lot) {
+        throw Error(LOT_ERROR_NOT_FOUND);
+      }
       const currentMapData = lot.mapData as LotMapDataDto;
       currentMapData.pan = dto.mapData.pan;
       currentMapData.zoom = dto.mapData.zoom;

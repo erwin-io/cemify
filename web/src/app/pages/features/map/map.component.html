@@ -10,7 +10,7 @@
         <app-map-box [ngClass.gt-xs]="{'big-screen': true}" fxFlex="100" (click)="search.showMenu = false" [disablePan]="true" [showLegend]="true" [disableSelection]="false" #mapBox (onSelectChange)="onSelectChange($event)"></app-map-box>
       </div>
       <div fxFlex="100" fxFlex.gt-xs="25" *ngIf="details">
-        <app-map-search-details [lot]="details"></app-map-search-details>
+        <app-map-search-details #searchDetails [lot]="details" [canManageLot]="pageRights['Status']" (onLotStatusUpdated)="mapBox && mapBox.updateLotStatus(details.lotCode, $event)"></app-map-search-details>
       </div>
     </div>
   </div>

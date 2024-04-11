@@ -44,6 +44,12 @@ export class AccessDetailsComponent {
   @ViewChild('accessForm', { static: true}) accessForm: AccessFormComponent;
   @ViewChild('accessPagesTable', { static: true}) accessPagesTable: AccessPagesTableComponent;
 
+
+  pageAccess: AccessPages = {
+    view: true,
+    modify: false,
+  } as any;
+
   constructor(
     private accessService: AccessService,
     private snackBar: MatSnackBar,
@@ -59,10 +65,10 @@ export class AccessDetailsComponent {
     this.code = this.route.snapshot.paramMap.get('accessCode');
     this.isReadOnly = !edit && !isNew;
     if (this.route.snapshot.data) {
-      // this.pageAccess = {
-      //   ...this.pageAccess,
-      //   ...this.route.snapshot.data['access'],
-      // };
+      this.pageAccess = {
+        ...this.pageAccess,
+        ...this.route.snapshot.data['access'],
+      };
     }
   }
 
@@ -98,6 +104,9 @@ export class AccessDetailsComponent {
         if (this.isReadOnly) {
           this.accessForm.form.disable();
         }
+        if(!this.pageAccess.modify ) {
+          this.router.navigate(['/acess/' + this.code]);
+        }
       } else {
         this.error = Array.isArray(res.message) ? res.message[0] : res.message;
         this.snackBar.open(this.error, 'close', {
@@ -121,7 +130,7 @@ export class AccessDetailsComponent {
   onDelete() {
     const dialogData = new AlertDialogModel();
     dialogData.title = 'Confirm';
-    dialogData.message = 'Delete User group?';
+    dialogData.message = 'Delete Access?';
     dialogData.confirmButton = {
       visible: true,
       text: 'yes',
@@ -180,7 +189,7 @@ export class AccessDetailsComponent {
     }
     const dialogData = new AlertDialogModel();
     dialogData.title = 'Confirm';
-    dialogData.message = 'Update User group?';
+    dialogData.message = 'Update Access?';
     dialogData.confirmButton = {
       visible: true,
       text: 'yes',

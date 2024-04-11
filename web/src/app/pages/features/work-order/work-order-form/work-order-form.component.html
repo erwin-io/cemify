@@ -1,0 +1,241 @@
+
+<div class="inner-content">
+  <form
+  [formGroup]="form"
+  fxLayout="row wrap"
+  id="form"
+  class="readonly">
+  <fieldset fxFlex="100" fxLayout="row wrap" style="row-gap: 16px">
+    <div
+      *ngIf="!isNew"
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-xs="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-xs="33.33%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Code #</mat-label>
+        <input
+          matInput
+          readonly
+          placeholder="Code #"
+          formControlName="workOrderCode"/>
+      </mat-form-field>
+      <div
+      fxFlex.gt-xs="33.33%"
+      fxFlex="100"
+      fxLayout="column"></div>
+      <div
+      fxFlex.gt-xs="33.33%"
+      fxFlex="100"
+      fxLayout="column"></div>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout.gt-xs="row"
+      fxLayout="column"
+      style="gap: 16px">
+      <mat-form-field
+        *ngIf="!isNew && isReadOnly"
+        fxFlex.gt-xs="33.33%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Type</mat-label>
+        <input
+          matInput
+          readonly
+          placeholder="Type"
+          [value]="isReadOnly && workOrder && workOrder?.workOrderCode ? workOrder?.type : 'MAINTENANCE'"/>
+      </mat-form-field>
+
+      <mat-form-field
+        fxFlex.gt-xs="33.33%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline"
+        (click)="dateTargetCompletionPicker.open()"
+        *ngIf="!isReadOnly; else dateTargetCompletion">
+        <mat-label>Target date completion</mat-label>
+        <input
+          matInput
+          placeholder="Target date completion"
+          formControlName="dateTargetCompletion"
+          [matDatepicker]="dateTargetCompletionPicker"/>
+        <mat-datepicker-toggle matIconSuffix [for]="dateTargetCompletionPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateTargetCompletionPicker></mat-datepicker>
+      </mat-form-field>
+      <ng-template #dateTargetCompletion>
+        <mat-form-field
+          fxFlex.gt-xs="33.33%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Target date completion</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="Target date completion"
+            [value]="workOrder?.dateTargetCompletion | date: 'MMM dd, yyyy'"/>
+        </mat-form-field>
+      </ng-template>
+      <div
+      fxFlex.gt-xs="33.33%"
+      fxFlex="100"
+        fxLayout="column"></div>
+      <ng-container
+      *ngIf="!isReadOnly">
+        <div
+        fxLayout="column"
+        fxFlex.gt-xs="33.33%"
+        fxFlex="100"></div>
+      </ng-container>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Title</mat-label>
+        <input
+          matInput
+          placeholder="Title"
+          formControlName="title"/>
+      </mat-form-field>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          placeholder="Description"
+          formControlName="description"></textarea>
+      </mat-form-field>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-xs="row"
+      style="gap: 16px;"
+      class="readonly">
+      <mat-form-field
+        fxFlex="100"
+        fxFlex.gt-xs="33.33%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Search staff</mat-label>
+        <input
+          matInput
+          disabled
+          placeholder="Search staff"
+          [value]="assignedStaffUser?.fullName"/>
+        <mat-icon
+          class="icon-right"
+          style="cursor: pointer;"
+          matSuffix
+          *ngIf="!isReadOnly"
+          matTooltip="Search staff"
+          (click)="showSelectStaff()">
+          search
+        </mat-icon>
+      </mat-form-field>
+      <div
+      fxFlex.gt-xs="33.33%"
+      fxFlex="100"
+        fxLayout="column"></div>
+        <div
+        fxFlex.gt-xs="33.33%"
+        fxFlex="100"
+          fxLayout="column"></div>
+    </div>
+    <div fxLayout="column" fxFlex="100" fxLayoutGap="16" *ngIf="isReadOnly ? workOrder && workOrder?.type === 'BURIAL' : false">
+      <mat-label >Burial</mat-label>
+      <div
+        fxFlex="100"
+        fxLayout="column"
+        fxLayout.gt-xs="row"
+        style="gap: 16px">
+        <mat-form-field
+          fxFlex.gt-xs="33.33%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Date of burial</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="Date of burial"
+            [value]="workOrder?.burials[0]?.dateOfBurial | date: 'MMM dd, yyyy'"/>
+        </mat-form-field>
+        <mat-form-field
+          fxFlex.gt-xs="33.33%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Date of birth</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="Date of birth"
+            [value]="workOrder?.burials[0]?.dateOfBirth | date: 'MMM dd, yyyy'"/>
+        </mat-form-field>
+        <mat-form-field
+          fxFlex.gt-xs="33.33%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Date of death</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="Date of death"
+            [value]="workOrder?.burials[0]?.dateOfDeath | date: 'MMM dd, yyyy'"/>
+        </mat-form-field>
+      </div>
+      <div
+        fxFlex="100"
+        fxLayout="column"
+        fxLayout.gt-xs="row"
+        style="gap: 16px">
+        <mat-form-field
+          fxFlex.gt-xs="50%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Block</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="Block"
+            [value]="workOrder?.burials[0]?.lot?.block"/>
+        </mat-form-field>
+        <mat-form-field
+          fxFlex.gt-xs="50%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Lot</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="Lot"
+            [value]="workOrder?.burials[0]?.lot?.lotCode"/>
+        </mat-form-field>
+      </div>
+    </div>
+  </fieldset>
+  </form>
+</div>
