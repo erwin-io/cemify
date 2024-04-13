@@ -22,13 +22,10 @@ export declare class AuthService {
         userName: string;
         password: string;
         fullName: string;
-        gender: string;
-        birthDate: string;
         mobileNumber: string;
         accessGranted: boolean;
         active: boolean;
         userCode: string;
-        address: string;
         userType: string;
         gatewayConnectedUsers: import("../db/entities/GatewayConnectedUsers").GatewayConnectedUsers[];
         notifications: import("../db/entities/Notifications").Notifications[];
@@ -47,13 +44,10 @@ export declare class AuthService {
         userName: string;
         password: string;
         fullName: string;
-        gender: string;
-        birthDate: string;
         mobileNumber: string;
         accessGranted: boolean;
         active: boolean;
         userCode: string;
-        address: string;
         userType: string;
         gatewayConnectedUsers: import("../db/entities/GatewayConnectedUsers").GatewayConnectedUsers[];
         notifications: import("../db/entities/Notifications").Notifications[];

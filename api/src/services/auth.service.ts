@@ -43,9 +43,6 @@ export class AuthService {
           user.accessGranted = true;
           user.fullName = dto.fullName;
           user.mobileNumber = dto.mobileNumber;
-          user.birthDate = moment(dto.birthDate.toString()).format("YYYY-MM-DD");
-          user.gender = dto.gender;
-          user.address = dto.address;
           user.userType = USER_TYPE.CLIENT.toUpperCase();
           user = await transactionalEntityManager.save(user);
           user.userCode = generateIndentityCode(user.userId);

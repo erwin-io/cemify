@@ -91,8 +91,6 @@ export class EditProfileComponent {
           this.user.fullName,
           [Validators.required, Validators.pattern('^[a-zA-Z0-9\\-\\s]+$')],
         ],
-        gender: [this.user?.gender ,[Validators.required]],
-        birthDate: [new Date(this.user.birthDate),[Validators.required]],
         mobileNumber: [
           this.user.mobileNumber,
           [
@@ -102,7 +100,6 @@ export class EditProfileComponent {
             Validators.required,
           ],
         ],
-        address: [this.user.address,[Validators.required]],
       }
     );
     this.profileForm.markAllAsTouched();
@@ -191,10 +188,7 @@ export class EditProfileComponent {
           dialogRef.close();
           this.profileForm.markAsPristine();
           this.user.fullName = this.formData.fullName;
-          this.user.gender = this.formData.gender;
-          this.user.birthDate = this.formData.birthDate;
           this.user.mobileNumber = this.formData.mobileNumber;
-          this.user.address = this.formData.address;
           this.user.userProfilePic = res.data.userProfilePic;
           this.storageService.saveLoginProfile(this.user);
           window.location.reload();
@@ -226,10 +220,6 @@ export class EditProfileComponent {
   }
 
   getDeafaultProfilePicture() {
-    if(this.user && this.user.gender?.toUpperCase() === "FEMALE") {
-      return '../../../../assets/img/person-female.png';
-    } else {
-      return '../../../../assets/img/person.png';
-    }
+    return '../../../../assets/img/person.png';
   }
 }

@@ -11,15 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const utils_1 = require("./../common/utils/utils");
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const moment_1 = __importDefault(require("moment"));
 const path_1 = require("path");
 const access_constant_1 = require("../common/constant/access.constant");
 const user_error_constant_1 = require("../common/constant/user-error.constant");
@@ -138,7 +134,6 @@ let UsersService = class UsersService {
             user.fullName = dto.fullName;
             user.mobileNumber = dto.mobileNumber;
             user.userType = dto.userType;
-            user.birthDate = (0, moment_1.default)(dto.birthDate).format("YYYY-MM-DD");
             if (dto.accessCode) {
                 const access = await entityManager.findOne(Access_1.Access, {
                     where: {
@@ -195,9 +190,6 @@ let UsersService = class UsersService {
             user.fullName = dto.fullName;
             user.userName = dto.mobileNumber;
             user.mobileNumber = dto.mobileNumber;
-            user.birthDate = (0, moment_1.default)(dto.birthDate.toString()).format("YYYY-MM-DD");
-            user.gender = dto.gender;
-            user.address = dto.address;
             user = await entityManager.save(Users_1.Users, user);
             if (dto.userProfilePic) {
                 const newFileName = (0, uuid_1.v4)();
@@ -356,9 +348,6 @@ let UsersService = class UsersService {
             user.fullName = dto.fullName;
             user.mobileNumber = dto.mobileNumber;
             user.userName = dto.mobileNumber;
-            user.birthDate = (0, moment_1.default)(dto.birthDate.toString()).format("YYYY-MM-DD");
-            user.gender = dto.gender;
-            user.address = dto.address;
             if (dto.accessCode) {
                 const access = await entityManager.findOne(Access_1.Access, {
                     where: {

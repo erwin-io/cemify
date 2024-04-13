@@ -10,13 +10,10 @@ export declare class Users {
     userName: string;
     password: string;
     fullName: string;
-    gender: string;
-    birthDate: string;
     mobileNumber: string;
     accessGranted: boolean;
     active: boolean;
     userCode: string | null;
-    address: string;
     userType: string;
     gatewayConnectedUsers: GatewayConnectedUsers[];
     notifications: Notifications[];

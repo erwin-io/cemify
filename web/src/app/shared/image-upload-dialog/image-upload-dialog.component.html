@@ -2,7 +2,7 @@
 <h4 mat-dialog-title>Change profile picture</h4>
 <div mat-dialog-content>
   <div class="image-upload-content-holder">
-    <div fxFlex="100" fxLayout="row" class="image-upload-content">
+    <div fxFlex="100" fxLayout="column" class="image-upload-content">
       <div class="webcam-holder">
         <webcam *ngIf="showWebCam" [trigger]="invokeObservable" (imageCapture)="captureImg($event)"></webcam>
         <div class="webcam-controls">

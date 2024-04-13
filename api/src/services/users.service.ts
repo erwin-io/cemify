@@ -155,7 +155,6 @@ export class UsersService {
       user.fullName = dto.fullName;
       user.mobileNumber = dto.mobileNumber;
       user.userType = dto.userType;
-      user.birthDate = moment(dto.birthDate).format("YYYY-MM-DD");
       if (dto.accessCode) {
         const access = await entityManager.findOne(Access, {
           where: {
@@ -223,9 +222,6 @@ export class UsersService {
       user.fullName = dto.fullName;
       user.userName = dto.mobileNumber;
       user.mobileNumber = dto.mobileNumber;
-      user.birthDate = moment(dto.birthDate.toString()).format("YYYY-MM-DD");
-      user.gender = dto.gender;
-      user.address = dto.address;
       user = await entityManager.save(Users, user);
 
       if (dto.userProfilePic) {
@@ -421,9 +417,6 @@ export class UsersService {
       user.fullName = dto.fullName;
       user.mobileNumber = dto.mobileNumber;
       user.userName = dto.mobileNumber;
-      user.birthDate = moment(dto.birthDate.toString()).format("YYYY-MM-DD");
-      user.gender = dto.gender;
-      user.address = dto.address;
       if (dto.accessCode) {
         const access = await entityManager.findOne(Access, {
           where: {

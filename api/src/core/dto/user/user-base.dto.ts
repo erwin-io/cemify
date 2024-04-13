@@ -32,23 +32,6 @@ export class DefaultUserDto {
     return obj[key].toString();
   })
   mobileNumber: string;
-
-  @ApiProperty({
-    default: moment().format("YYYY-MM-DD")
-  })
-  @IsNotEmpty()
-  @IsDateString({ strict: true } as any)
-  birthDate: Date;
-  
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsIn(["MALE", "FEMALE", "OTHERS"])
-  @IsUppercase()
-  gender: "MALE" | "FEMALE" | "OTHERS";
-
-  @ApiProperty()
-  @IsNotEmpty()
-  address: string;
 }
 
 export class UpdateProfilePictureDto {

@@ -142,8 +142,6 @@ export class UserDetailsComponent implements OnInit {
               '',
               [Validators.required, Validators.pattern('^[a-zA-Z0-9\\-\\s]+$')],
             ],
-            gender: ['',[Validators.required]],
-            birthDate: ['',[Validators.required]],
             mobileNumber: [
               '',
               [
@@ -153,7 +151,6 @@ export class UserDetailsComponent implements OnInit {
                 Validators.required,
               ],
             ],
-            address: ['',[Validators.required]],
             password: [
               '',
               [
@@ -175,8 +172,6 @@ export class UserDetailsComponent implements OnInit {
             '',
             [Validators.required, Validators.pattern('^[a-zA-Z0-9\\-\\s]+$')],
           ],
-          gender: ['',[Validators.required]],
-          birthDate: ['',[Validators.required]],
           mobileNumber: [
             '',
             [
@@ -186,7 +181,6 @@ export class UserDetailsComponent implements OnInit {
               Validators.required,
             ],
           ],
-          address: ['',[Validators.required]],
           accessCode: [],
         });
 
@@ -210,10 +204,7 @@ export class UserDetailsComponent implements OnInit {
             this.userForm.patchValue({
               userType: user.data.userType,
               fullName: user.data.fullName,
-              gender: user.data.gender && ["MALE", "FEMALE"].includes(user.data.gender) ? user.data.gender : "OTHERS",
-              birthDate: user.data.birthDate,
               mobileNumber: user.data.mobileNumber,
-              address: user.data.address,
               accessCode: user.data.access?.accessCode,
             });
             this.userForm.updateValueAndValidity();
@@ -475,10 +466,6 @@ export class UserDetailsComponent implements OnInit {
   }
 
   getDeafaultProfilePicture() {
-    if(this.user && this.user.gender?.toUpperCase() === "FEMALE") {
-      return '../../../../../assets/img/person-female.png';
-    } else {
-      return '../../../../../assets/img/person.png';
-    }
+    return '../../../../../assets/img/person.png';
   }
 }

@@ -33,12 +33,6 @@ export class Users {
   @Column("character varying", { name: "FullName" })
   fullName: string;
 
-  @Column("character varying", { name: "Gender", default: () => "'Others'" })
-  gender: string;
-
-  @Column("date", { name: "BirthDate" })
-  birthDate: string;
-
   @Column("character varying", { name: "MobileNumber" })
   mobileNumber: string;
 
@@ -50,9 +44,6 @@ export class Users {
 
   @Column("character varying", { name: "UserCode", nullable: true })
   userCode: string | null;
-
-  @Column("character varying", { name: "Address", default: () => "'NA'" })
-  address: string;
 
   @Column("character varying", { name: "UserType" })
   userType: string;

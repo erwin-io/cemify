@@ -37,14 +37,6 @@ __decorate([
     __metadata("design:type", String)
 ], Users.prototype, "fullName", void 0);
 __decorate([
-    (0, typeorm_1.Column)("character varying", { name: "Gender", default: () => "'Others'" }),
-    __metadata("design:type", String)
-], Users.prototype, "gender", void 0);
-__decorate([
-    (0, typeorm_1.Column)("date", { name: "BirthDate" }),
-    __metadata("design:type", String)
-], Users.prototype, "birthDate", void 0);
-__decorate([
     (0, typeorm_1.Column)("character varying", { name: "MobileNumber" }),
     __metadata("design:type", String)
 ], Users.prototype, "mobileNumber", void 0);
@@ -60,10 +52,6 @@ __decorate([
     (0, typeorm_1.Column)("character varying", { name: "UserCode", nullable: true }),
     __metadata("design:type", String)
 ], Users.prototype, "userCode", void 0);
-__decorate([
-    (0, typeorm_1.Column)("character varying", { name: "Address", default: () => "'NA'" }),
-    __metadata("design:type", String)
-], Users.prototype, "address", void 0);
 __decorate([
     (0, typeorm_1.Column)("character varying", { name: "UserType" }),
     __metadata("design:type", String)

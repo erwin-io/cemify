@@ -4,9 +4,6 @@ export declare class UserDto {
 export declare class DefaultUserDto {
     fullName: string;
     mobileNumber: string;
-    birthDate: Date;
-    gender: "MALE" | "FEMALE" | "OTHERS";
-    address: string;
 }
 export declare class UpdateProfilePictureDto {
     userProfilePic: any;

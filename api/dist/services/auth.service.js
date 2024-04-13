@@ -11,9 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
@@ -21,7 +18,6 @@ const jwt_1 = require("@nestjs/jwt");
 const utils_1 = require("../common/utils/utils");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const moment_1 = __importDefault(require("moment"));
 const Users_1 = require("../db/entities/Users");
 const auth_error_constant_1 = require("../common/constant/auth-error.constant");
 const user_type_constant_1 = require("../common/constant/user-type.constant");
@@ -41,9 +37,6 @@ let AuthService = class AuthService {
                 user.accessGranted = true;
                 user.fullName = dto.fullName;
                 user.mobileNumber = dto.mobileNumber;
-                user.birthDate = (0, moment_1.default)(dto.birthDate.toString()).format("YYYY-MM-DD");
-                user.gender = dto.gender;
-                user.address = dto.address;
                 user.userType = user_type_constant_1.USER_TYPE.CLIENT.toUpperCase();
                 user = await transactionalEntityManager.save(user);
                 user.userCode = (0, utils_1.generateIndentityCode)(user.userId);
