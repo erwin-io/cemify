@@ -136,7 +136,6 @@ let AuthService = class AuthService {
                     userType: user_type_constant_1.USER_TYPE.CLIENT.toUpperCase()
                 },
                 relations: {
-                    access: true,
                     userProfilePic: {
                         file: true,
                     },

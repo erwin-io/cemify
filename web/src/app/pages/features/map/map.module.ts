@@ -8,7 +8,6 @@ import { MapComponent } from './map.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DataTableModule } from 'src/app/shared/data-table/data-table.module';
 import { MapBoxModule } from 'src/app/shared/map-box/map-box.module';
-import { MapSearchComponent } from './map-search/map-search.component';
 import { MapSearchDetailsComponent } from './map-search-details/map-search-details.component';
 
 export const routes: Routes = [
@@ -21,7 +20,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [MapComponent, MapSearchComponent, MapSearchDetailsComponent],
+  declarations: [MapComponent, MapSearchDetailsComponent],
   imports: [
     CommonModule,
     FormsModule,

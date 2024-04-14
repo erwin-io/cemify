@@ -151,7 +151,6 @@ export class AuthService {
           userType: USER_TYPE.CLIENT.toUpperCase()
         },
         relations: {
-          access: true,
           userProfilePic: {
             file: true,
           },
