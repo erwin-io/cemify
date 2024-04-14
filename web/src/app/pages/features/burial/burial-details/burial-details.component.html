@@ -61,9 +61,9 @@
           (onSelectChange)="isNew ? onSelectChange($event) : false"
           [disablePan]="true"
           [showLegend]="isNew"
-          [disableSelection]="!isNew"
+          [disableSelection]="!isNew || isNewFromReservation"
           [mode]="isNew ? 'PICK' : 'NAVIGATE'"
-          (onLoadComplete)="!isNew ? onLoadComplete(): false"
+          (onLoadComplete)="!isNew || isNewFromReservation ? onLoadComplete(): false"
           #mapBox></app-map-box>
       </div>
       <div fxLayout="column" fxFlex.gt-xs="40" fxFlex="100">

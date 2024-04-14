@@ -163,6 +163,9 @@
     </div>
     <div fxLayout="column" fxFlex="100" fxLayoutGap="16" *ngIf="isReadOnly ? workOrder && workOrder?.type === 'BURIAL' : false">
       <mat-label >Burial</mat-label>
+      <a fxLayout="row" fxFlexAlign="center center" href="/burial/{{workOrder?.burials[0]?.burialCode}}/details" target="_blank">Open burial details
+        <mat-icon>open_in_new</mat-icon>
+      </a>
       <div
         fxFlex="100"
         fxLayout="column"

@@ -52,6 +52,16 @@ export class MapComponent {
     e: []
   }
   canSearch = false;
+
+  get countLot() {
+    return Number(this.lot.a.length) + Number(this.lot.b.length) +
+    Number(this.lot.c.length) + Number(this.lot.d.length) + Number(this.lot.e.length);
+  }
+
+  get countBurial() {
+    return this.burial.length;
+  }
+
   constructor(
     private userService: UserService,
     private snackBar: MatSnackBar,

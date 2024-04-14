@@ -175,6 +175,7 @@ export class BurialDetailsComponent {
           this.burialForm.form.controls["dateOfBirth"].setValue(this.isReadOnly ? (res.data.dateOfBirth ? moment(res.data.dateOfBirth).format("MMMM DD, YYYY") : "") : res.data.dateOfBirth);
           this.burialForm.form.controls["dateOfDeath"].setValue(this.isReadOnly ? (res.data.dateOfDeath ? moment(res.data.dateOfDeath).format("MMMM DD, YYYY") : "") : res.data.dateOfDeath);
           this.burialForm.form.controls["dateOfBurial"].setValue(this.isReadOnly ? (res.data.dateOfBurial ? moment(res.data.dateOfBurial).format("MMMM DD, YYYY") : "") : res.data.dateOfBurial);
+          this.burialForm.form.controls["block"].setValue(res.data.lot?.block && res.data.lot?.block ? res.data.lot?.block : "");
           this.burialForm.form.controls["lotCode"].setValue(res.data.lot?.lotCode && res.data.lot?.lotCode ? res.data.lot?.lotCode : "");
           this.burialForm.form.controls["familyContactPerson"].setValue(res.data.familyContactPerson);
           this.burialForm.form.controls["familyContactNumber"].setValue(res.data.familyContactNumber);
@@ -291,7 +292,7 @@ export class BurialDetailsComponent {
   }
 
   onLoadComplete() {
-    const { mapData, lotCode, block } = this.burial?.lot;
+    const { mapData, lotCode, block } = this.isNewFromReservation ? this.burialForm.lot : this.burial?.lot;
     const { zoom, pan } = mapData;
     // this.mapBox.setZoom(Number(zoom));
     this.mapBox.setPan(pan.x, pan.y);

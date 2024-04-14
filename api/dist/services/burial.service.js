@@ -222,7 +222,7 @@ let BurialService = class BurialService {
             burial.fromReservation = false;
             burial.lot = lot;
             let workOrder = new WorkOrder_1.WorkOrder();
-            workOrder.type = work_order_constant_1.WORK_ORDER_TYPE.MAINTENANCE;
+            workOrder.type = work_order_constant_1.WORK_ORDER_TYPE.BURIAL;
             workOrder.dateTargetCompletion = dateOfBurial;
             workOrder.title = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")}`;
             workOrder.description =
@@ -320,13 +320,8 @@ let BurialService = class BurialService {
             reservation.status = reservation_constant_1.RESERVATION_STATUS.LEASED;
             reservation = await entityManager.save(Reservation_1.Reservation, reservation);
             burial.lot = reservation.lot;
-            burial = await entityManager.save(Burial_1.Burial, burial);
-            burial.burialCode = (0, utils_1.generateIndentityCode)(burial.burialId);
-            burial = await entityManager.save(Burial_1.Burial, burial);
-            const workOrderNotifTitle = `New Burial work order assigned to you!`;
-            const workOrderNotifDesc = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} at block ${reservation.lot.block}, lot ${reservation.lot.lotCode}`;
             let workOrder = new WorkOrder_1.WorkOrder();
-            workOrder.type = work_order_constant_1.WORK_ORDER_TYPE.MAINTENANCE;
+            workOrder.type = work_order_constant_1.WORK_ORDER_TYPE.BURIAL;
             workOrder.dateTargetCompletion = dateOfBurial;
             workOrder.title = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")}`;
             workOrder.description =
@@ -342,7 +337,6 @@ let BurialService = class BurialService {
                 where: {
                     userId: dto.assignedStaffUserId,
                     userType: user_type_constant_1.USER_TYPE.STAFF,
-                    active: true,
                 },
             });
             workOrder.assignedStaffUser = assignedStaffUser;
@@ -351,6 +345,10 @@ let BurialService = class BurialService {
             workOrder = await entityManager.save(WorkOrder_1.WorkOrder, workOrder);
             burial.workOrder = workOrder;
             burial = await entityManager.save(Burial_1.Burial, burial);
+            burial.burialCode = (0, utils_1.generateIndentityCode)(burial.burialId);
+            burial = await entityManager.save(Burial_1.Burial, burial);
+            const workOrderNotifTitle = `New Burial work order assigned to you!`;
+            const workOrderNotifDesc = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} at block ${reservation.lot.block}, lot ${reservation.lot.lotCode}`;
             const staffNotificationIds = await this.logNotification([assignedStaffUser], "WORK_ORDER", workOrder, entityManager, workOrderNotifTitle, workOrderNotifDesc);
             await this.syncRealTime([assignedStaffUser.userId], burial);
             const pushNotifResults = await Promise.all([

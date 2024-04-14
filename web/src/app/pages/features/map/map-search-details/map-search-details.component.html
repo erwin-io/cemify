@@ -82,6 +82,10 @@
       fxFlex="100"
       fxLayout="column"
       *ngIf="lot?.burial && lot?.burial?.burialCode; else noBurialInfo" >
+      <a fxLayout="row" fxFlexAlign="center center" href="/burial/{{lot?.burial?.burialCode}}/details" target="_blank">Open burial details
+        <mat-icon>open_in_new</mat-icon>
+      </a>
+      <br>
       <mat-form-field
         fxFlex="100"
         fxLayout="column"

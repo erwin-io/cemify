@@ -1,4 +1,4 @@
-import { type } from 'os';
+import { type } from "os";
 import { Notifications } from "src/db/entities/Notifications";
 import { Reservation } from "src/db/entities/Reservation";
 import { Burial } from "src/db/entities/Burial";
@@ -50,7 +50,7 @@ import {
 } from "src/common/constant/lot.constant";
 import { Lot } from "src/db/entities/Lot";
 import { WorkOrder } from "src/db/entities/WorkOrder";
-import { WORK_ORDER_TYPE } from 'src/common/constant/work-order.constant';
+import { WORK_ORDER_TYPE } from "src/common/constant/work-order.constant";
 
 @Injectable()
 export class BurialService {
@@ -254,7 +254,7 @@ export class BurialService {
       burial.lot = lot;
 
       let workOrder = new WorkOrder();
-      workOrder.type = WORK_ORDER_TYPE.MAINTENANCE;
+      workOrder.type = WORK_ORDER_TYPE.BURIAL;
       workOrder.dateTargetCompletion = dateOfBurial;
       workOrder.title = `Burial work order on ${moment(dateOfBurial).format(
         "MMM DD, YYYY"
@@ -388,19 +388,8 @@ export class BurialService {
       reservation = await entityManager.save(Reservation, reservation);
       burial.lot = reservation.lot;
 
-      burial = await entityManager.save(Burial, burial);
-      burial.burialCode = generateIndentityCode(burial.burialId);
-      burial = await entityManager.save(Burial, burial);
-
-      const workOrderNotifTitle = `New Burial work order assigned to you!`;
-      const workOrderNotifDesc = `Burial work order on ${moment(
-        dateOfBurial
-      ).format("MMM DD, YYYY")} at block ${reservation.lot.block}, lot ${
-        reservation.lot.lotCode
-      }`;
-
       let workOrder = new WorkOrder();
-      workOrder.type = WORK_ORDER_TYPE.MAINTENANCE;
+      workOrder.type = WORK_ORDER_TYPE.BURIAL;
       workOrder.dateTargetCompletion = dateOfBurial;
       workOrder.title = `Burial work order on ${moment(dateOfBurial).format(
         "MMM DD, YYYY"
@@ -418,7 +407,6 @@ export class BurialService {
         where: {
           userId: dto.assignedStaffUserId,
           userType: USER_TYPE.STAFF,
-          active: true,
         },
       });
       workOrder.assignedStaffUser = assignedStaffUser;
@@ -426,8 +414,17 @@ export class BurialService {
       workOrder.workOrderCode = generateIndentityCode(workOrder.workOrderId);
       workOrder = await entityManager.save(WorkOrder, workOrder);
       burial.workOrder = workOrder;
+
+      burial = await entityManager.save(Burial, burial);
+      burial.burialCode = generateIndentityCode(burial.burialId);
       burial = await entityManager.save(Burial, burial);
 
+      const workOrderNotifTitle = `New Burial work order assigned to you!`;
+      const workOrderNotifDesc = `Burial work order on ${moment(
+        dateOfBurial
+      ).format("MMM DD, YYYY")} at block ${reservation.lot.block}, lot ${
+        reservation.lot.lotCode
+      }`;
       const staffNotificationIds = await this.logNotification(
         [assignedStaffUser],
         "WORK_ORDER",
@@ -758,23 +755,14 @@ export class BurialService {
       burial.active = false;
       burial = await entityManager.save(Burial, burial);
 
-      
       burial.lot.status = LOT_STATUS.AVAILABLE;
-      burial.lot = await entityManager.save(
-        Lot,
-        burial.lot
-      );
-      
+      burial.lot = await entityManager.save(Lot, burial.lot);
+
       const workOrderNotifTitle = `Burial work order schedule was canceled!`;
-      const workOrderNotifDesc = `Burial Burial work order schedule at block ${
-        burial.lot.block
-      }, lot ${burial.lot.lotCode} was canceled!`;
+      const workOrderNotifDesc = `Burial Burial work order schedule at block ${burial.lot.block}, lot ${burial.lot.lotCode} was canceled!`;
 
       burial.active = false;
-      burial.workOrder = await entityManager.save(
-        WorkOrder,
-        burial.workOrder
-      );
+      burial.workOrder = await entityManager.save(WorkOrder, burial.workOrder);
 
       const staffNotificationIds = await this.logNotification(
         [burial.workOrder.assignedStaffUser],

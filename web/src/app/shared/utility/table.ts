@@ -76,7 +76,7 @@ export class BurialTableColumn {
   block?: string;
   familyContactPerson?: string;
   familyContactNumber?: string;
-  fromReservation?: string;
+  fromReservation: boolean;
   workOrder?: string;
   url?: string;
 }

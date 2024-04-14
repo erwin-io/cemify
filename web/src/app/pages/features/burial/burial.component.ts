@@ -154,7 +154,7 @@ export class BurialComponent  {
               block: d.lot?.block,
               familyContactPerson: d.familyContactPerson,
               familyContactNumber: d.familyContactNumber,
-              fromReservation: d.fromReservation ? "Yes" : "No",
+              fromReservation: d.fromReservation,
               workOrder: d.workOrder?.status,
               url: `/burial/${d.burialCode}/details`,
             } as BurialTableColumn

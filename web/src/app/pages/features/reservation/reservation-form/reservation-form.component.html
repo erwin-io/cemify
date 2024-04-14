@@ -78,6 +78,57 @@
     <div
       fxFlex="100"
       fxLayout="column"
+      fxLayout.gt-lg="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-lg="50%"
+        fxFlex="100"
+        appearance="outline">
+        <mat-label>Burial name</mat-label>
+        <input
+          matInput
+          placeholder="Name"
+          formControlName="burialName"/>
+      </mat-form-field>
+      <div
+        fxFlex.gt-lg="50%"
+        fxFlex="100"
+        appearance="outline"></div>
+    </div>
+    <div fxLayout="column" fxFlex="100">
+      <mat-label >Contact Person</mat-label>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-lg="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-lg="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Family contact person</mat-label>
+        <input
+          matInput
+          placeholder="Family contact person"
+          formControlName="familyContactPerson"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.gt-lg="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Family contact number</mat-label>
+        <input
+          matInput
+          placeholder="Family contact number"
+          formControlName="familyContactNumber"/>
+      </mat-form-field>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
       fxLayout.gt-xs="row"
       style="gap: 16px">
       <mat-form-field

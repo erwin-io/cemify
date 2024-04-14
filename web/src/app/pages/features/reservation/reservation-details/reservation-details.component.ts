@@ -149,6 +149,8 @@ export class ReservationDetailsComponent {
       dialogData.message = 'Are you sure you want to reject reservation?';
     } else if(status === "APPROVED") {
       dialogData.message = 'Are you sure you want to complete reservation?';
+    } else if(status === "LEASED") {
+      dialogData.message = "Do you really want to proceed with this reservation's lease processing?";
     }
     dialogData.confirmButton = {
       visible: true,

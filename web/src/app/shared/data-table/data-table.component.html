@@ -76,7 +76,7 @@
                     <a matTooltip="Open new tab" [href]="element[colDef.urlPropertyName]" target="_blank">{{element[colDef.name]}}</a>
                 </ng-container>
                 <ng-template #textCell>
-                    <span *ngIf="colDef.type === 'boolean'; else nonBoolean">{{element[colDef.name] ? 'Yes' : 'No'}}</span>
+                    <span *ngIf="colDef.type === 'boolean'; else nonBoolean">{{element[colDef.name].toString().toLowerCase() === "true" ? 'Yes' : 'No'}}</span>
                     <ng-template #nonBoolean>
                       <ng-container *ngIf="colDef.type !== 'boolean' && colDef.type !== 'image' && colDef.format && colDef.format.type !== ''; else image">
                         <span *ngIf="colDef.format.type === 'currency' && (!colDef.format.custom || colDef.format.custom === '')">{{element[colDef.name] | currency: 'PHP'}}</span>
