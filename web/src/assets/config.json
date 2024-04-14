@@ -1,5 +1,5 @@
 {
-  "appName": "Cemetery Mapping",
+  "appName": "Cemify",
   "reservationConfig": {
     "maxCancellation": "3",
     "daysCancellationLimitReset": "5",
