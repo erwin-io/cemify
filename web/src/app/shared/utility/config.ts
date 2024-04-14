@@ -56,6 +56,7 @@ export interface AppConfig {
         createFromReservation: string;
         update: string;
         delete: string;
+        generateReport: string;
       };
       reservation: {
         getByAdvanceSearch: string;

@@ -42,6 +42,16 @@ let BurialService = class BurialService {
         this.pusherService = pusherService;
         this.oneSignalNotificationService = oneSignalNotificationService;
     }
+    async getAll() {
+        return this.burialRepo.find({
+            where: {
+                active: true,
+            },
+            relations: {
+                lot: true,
+            },
+        });
+    }
     async searchMap(key) {
         const [burial, lot] = await Promise.all([
             this.burialRepo.manager.query(`

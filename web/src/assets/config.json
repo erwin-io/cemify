@@ -468,7 +468,8 @@
       "create": "/burial/",
       "createFromReservation": "/burial/createFromReservation",
       "update": "/burial/",
-      "delete": "/burial/"
+      "delete": "/burial/",
+      "generateReport": "/burial/generateReport/"
     },
     "reservation": {
       "getByAdvanceSearch": "/reservation/page/",

@@ -115,6 +115,13 @@ const routes: Routes = [
     ],
   },
   {
+    path: 'burial-reports',
+    canActivate: [AuthGuard],
+    data: { title: 'Burial', group: 'Burial' },
+    loadChildren: () =>
+      import('./shared/burial-reports/burial-reports.module').then((m) => m.BurialReportsModule),
+  },
+  {
     path: 'no-access',
     component: NoAccessComponent,
   },

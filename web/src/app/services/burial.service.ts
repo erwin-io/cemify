@@ -37,6 +37,14 @@ export class BurialService implements IServices {
     );
   }
 
+  generateReport(): Observable<ApiResponse<Burial>> {
+    return this.http.get<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.burial.generateReport)
+    .pipe(
+      tap(_ => this.log('burial')),
+      catchError(this.handleError('burial', []))
+    );
+  }
+
   searchMap(key: string): Observable<ApiResponse<{burial: Burial[]; lot: Lot[]}>> {
     return this.http.get<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.burial.searchMap + key)
     .pipe(
