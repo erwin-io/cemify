@@ -1,0 +1,79 @@
+{
+  "reservationConfig": {},
+  "auth": {
+    "requireOTP": "false"
+  },
+  "sessionConfig": {
+    "sessionTimeout": "1800"
+  },
+  "heartRate": {
+    "captureInterval": 1000
+  },
+  "lookup": {},
+  "apiEndPoints": {
+    "auth": {
+      "loginClient": "/auth/login/client",
+      "loginStaff": "/auth/login/staff",
+      "registerClient": "/auth/register/client"
+    },
+    "user": {
+      "getByCode": "/users/",
+      "createUsers": "/users/",
+      "updateProfile": "/users/updateProfile/",
+      "updateUsers": "/users/",
+      "getUsersByAdvanceSearch": "/users/page/",
+      "resetUserPassword": "/users/",
+      "approveAccessRequest": "/users/"
+    },
+    "access": {
+      "getByAdvanceSearch": "/access/page/",
+      "getByCode": "/access/",
+      "create": "/access/",
+      "update": "/access/",
+      "delete": "/access/"
+    },
+    "burial": {
+      "getByAdvanceSearch": "/burial/page/",
+      "getAllByClientUserCode": "/burial/getAllByClientUserCode/",
+      "getByCode": "/burial/",
+      "searchMap": "/burial/searchMap/",
+      "create": "/burial/",
+      "createFromReservation": "/burial/createFromReservation",
+      "update": "/burial/",
+      "delete": "/burial/"
+    },
+    "reservation": {
+      "getByAdvanceSearch": "/reservation/page/",
+      "getByCode": "/reservation/",
+      "create": "/reservation/",
+      "update": "/reservation/",
+      "updateStatus": "/reservation/updateStatus/"
+    },
+    "workOrder": {
+      "getByAdvanceSearch": "/work-order/page/",
+      "getByCode": "/work-order/",
+      "create": "/work-order/",
+      "update": "/work-order/",
+      "updateStatus": "/work-order/updateStatus/"
+    },
+    "lot": {
+      "getByAdvanceSearch": "/lot/page/",
+      "getByCode": "/lot/",
+      "getByBlock": "/lot/getByBlock/",
+      "updateStatus": "/lot/updateStatus/",
+      "updateMapData": "/lot/updateMapData/"
+    },
+    "notifications": {
+      "getByAdvanceSearch": "/notifications/page/",
+      "getUnreadByUser": "/notifications/getUnreadByUser/",
+      "marAsRead": "/notifications/marAsRead/"
+    },
+    "userOneSignalSubscription": {
+      "getByDevice": "/user-one-signal-subscription/getBySubscriptionId/",
+      "create": "/user-one-signal-subscription/"
+    },
+    "message": {
+      "create": "/message/"
+    }
+  }
+}

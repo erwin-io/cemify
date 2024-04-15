@@ -1,0 +1,50 @@
+<div id="box" class="box" [class]="{'big-screen': width >= 600}">
+  <div class="svg-box">
+    <svg #map id="svg" class="svg {{mode.toLowerCase()}} {{disableSelection ? 'no-select' : 'can-select'}} {{showLegend ? 'show-legend' : 'hide-legend'}}" version="1.1" width="1594px" height="1673px" viewBox="-0.5 -0.5 1594 1673">
+      <g>
+        <rect x="2" y="2" width="1530" height="1630" fill="#84d793" stroke="rgb(0, 0, 0)" stroke-dasharray="5 10" stroke-width="4" pointer-events="all" />
+        <!-- block a -->
+        <g class="block block-a">
+        </g>
+        <!-- block b -->
+        <g class="block block-b">
+        </g>
+        <!-- block c -->
+        <g class="block block-c">
+
+        </g>
+        <!-- block d -->
+        <g class="block block-d">
+        </g>
+        <!-- block e -->
+        <g class="block block-e">
+
+        </g>
+        <foreignObject class="selector" *ngIf="selectedLot">
+          <span class="lot-container" style="scale: {{selectorSize}};">
+            <span class="ripple"></span>
+            <img src="../../../assets/img/pin-location.png"/>
+          </span>
+        </foreignObject>
+      </g>
+    </svg>
+  </div>
+  <div class="legend" *ngIf="showLegend">
+    <div class="legend-content">
+      <ul>
+        <li available>
+          <ion-icon *ngIf="width < 600" name="checkmark-circle-outline"></ion-icon>
+          Available
+        </li>
+        <li occupied>
+          <ion-icon *ngIf="width < 600" name="checkmark-circle-outline"></ion-icon>
+          Occupied
+        </li>
+        <li unavailable>
+          <ion-icon *ngIf="width < 600" name="remove-circle-outline"></ion-icon>
+          Unavailable
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

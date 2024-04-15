@@ -1,0 +1,7 @@
+{
+  "name": "Cemify",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

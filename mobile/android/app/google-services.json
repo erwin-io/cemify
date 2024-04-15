@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1000537717427",
+    "project_id": "cemify-app",
+    "storage_bucket": "cemify-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000537717427:android:30e07852faffc5a1c78ec6",
+        "android_client_info": {
+          "package_name": "com.cemify.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6VIiUr6aIIR1qnJMCQRj0qF7uKe-4LI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

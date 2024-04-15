@@ -23,6 +23,7 @@ const docx_templates_1 = __importDefault(require("docx-templates"));
 const fs_1 = __importDefault(require("fs"));
 const moment_1 = __importDefault(require("moment"));
 const config_1 = require("@nestjs/config");
+const path_1 = __importDefault(require("path"));
 let CertificateController = class CertificateController {
     constructor(burialService, config) {
         this.burialService = burialService;
@@ -35,8 +36,8 @@ let CertificateController = class CertificateController {
             if (!burial) {
                 throw new Error("Burial records not found");
             }
-            console.log(this.config.get("CERTIFICATE_TEMPLATE"));
-            const templatePath = this.config.get("CERTIFICATE_TEMPLATE");
+            const templatePath = path_1.default.resolve(__dirname, "certificate.docx");
+            console.log(templatePath);
             const template = fs_1.default.readFileSync(templatePath);
             const buffer = await (0, docx_templates_1.default)({
                 template,

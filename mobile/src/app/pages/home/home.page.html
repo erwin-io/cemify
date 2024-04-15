@@ -1,0 +1,175 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <div slot="start" style="width: 48px"></div>
+    <ion-title class="ion-text-center">Cemify</ion-title>
+    <div slot="end" style="width: 48px"></div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button id="open-search-modal">
+      <ion-icon name="search-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <div class="map-wrapper">
+    <app-map-box
+      fxFlex="100"
+      [disablePan]="true"
+      [showLegend]="false"
+      mode="NAVIGATE"
+      [disableSelection]="false"
+      #mapBox
+      (onSelectChange)="onSelectChange($event);detailsModal.present()"></app-map-box>
+  </div>
+
+  <ion-modal #searchModal trigger="open-search-modal" (willPresent)="onFullModalWillPresent()" (willDismiss)="onFullModalWillDismiss()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar >
+          <ion-searchbar style="font-size: larger;border: 0 !important; --box-shadow: none !important" inputmode="search" (ionCancel)="searchModal.dismiss()" [debounce]="1000" (ionChange)="onSearchChange($event)" show-cancel-button="focus" placeholder="Search name or lot code"></ion-searchbar>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-segment #searchTab value="burial">
+          <ion-segment-button value="burial">
+            <ion-label>Burial {{countBurial > 0 ? '(' + countBurial + ')' : ''}}</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="lot">
+            <ion-label>Lot {{countLot > 0 ? '(' + countLot + ')' : '' }}</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+        <ion-list lines="full" *ngIf="searchTab.value === 'burial'">
+          <ion-item *ngFor="let item of burial" [button]="true" [detail]="false" (click)="onSearchComplete({
+            lotCode: item?.lot?.lotCode,
+            block: item?.lot?.block,
+            status: item?.lot?.status,
+            burial: item})">
+            <ion-label>{{item.fullName}}</ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-list lines="full" *ngIf="searchTab.value === 'lot'">
+          <ion-item-group *ngIf="lot.a.length > 0">
+            <ion-item-divider>
+              <ion-label> Block A </ion-label>
+            </ion-item-divider>
+            <ion-item *ngFor="let item of lot.a" [button]="true" [detail]="false" (click)="onSearchComplete(item)">
+              <ion-label>{{item.lotCode}}</ion-label>
+            </ion-item>
+          </ion-item-group>
+          <ion-item-group *ngIf="lot.b.length > 0">
+            <ion-item-divider>
+              <ion-label> Block B </ion-label>
+            </ion-item-divider>
+            <ion-item *ngFor="let item of lot.b" [button]="true" [detail]="false" (click)="onSearchComplete(item)">
+              <ion-label>{{item.lotCode}}</ion-label>
+            </ion-item>
+          </ion-item-group>
+          <ion-item-group *ngIf="lot.c.length > 0">
+            <ion-item-divider>
+              <ion-label> Block C </ion-label>
+            </ion-item-divider>
+            <ion-item *ngFor="let item of lot.c" [button]="true" [detail]="false" (click)="onSearchComplete(item)">
+              <ion-label>{{item.lotCode}}</ion-label>
+            </ion-item>
+          </ion-item-group>
+          <ion-item-group *ngIf="lot.d.length > 0">
+            <ion-item-divider>
+              <ion-label> Block D </ion-label>
+            </ion-item-divider>
+            <ion-item *ngFor="let item of lot.d" [button]="true" [detail]="false" (click)="onSearchComplete(item)">
+              <ion-label>{{item.lotCode}}</ion-label>
+            </ion-item>
+          </ion-item-group>
+          <ion-item-group *ngIf="lot.e.length > 0">
+            <ion-item-divider>
+              <ion-label> Block E </ion-label>
+            </ion-item-divider>
+            <ion-item *ngFor="let item of lot.e" [button]="true" [detail]="false" (click)="onSearchComplete(item)">
+              <ion-label>{{item.lotCode}}</ion-label>
+            </ion-item>
+          </ion-item-group>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  <ion-modal id="lot-details-modal" #detailsModal trigger="open-details-modal" [initialBreakpoint]="0.4" [breakpoints]="[0, 0.4, 0.7, 1]">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar >
+          <div slot="start" style="width: 48px"></div>
+          <ion-title class="ion-text-center">{{details.lotCode}}{{details.burial?.fullName ? '/' + details.burial?.fullName : ''}}</ion-title>
+          <div slot="end" style="width: 48px"></div>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content >
+        <ion-list lines="none">
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label> <h2>Lot</h2> </ion-label>
+            </ion-item-divider>
+            <ion-item >
+              <ion-label>
+                <h2><strong>Status</strong>: <ion-badge color="{{
+                  details.status === 'AVAILABLE' ? 'secondary': ''||
+                  details.status === 'OCCUPIED' ? 'danger': ''||
+                  details.status === 'UNAVAILABLE' ? 'light': ''
+                  }}">{{details.status}}</ion-badge></h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Lot</strong>: {{details.lotCode}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Block</strong>: {{details.lotCode}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-item-group>
+          <ion-item-group *ngIf="details.burial && details.burial?.fullName">
+            <ion-item-divider>
+              <ion-label> <h2>Burial</h2> </ion-label>
+            </ion-item-divider>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Name</strong>: {{details.burial?.fullName}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Date of Burial</strong>: {{details.burial?.dateOfBurial | date: 'MMM dd, yyyy'}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Date of Birth</strong>: {{details.burial?.dateOfBirth | date: 'MMM dd, yyyy'}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Date of Death</strong>: {{details.burial?.dateOfDeath | date: 'MMM dd, yyyy'}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-item-group>
+          <ion-item-group *ngIf="details.burial && details.burial?.fullName">
+            <ion-item-divider>
+              <ion-label> <h2>Family Contact Person</h2> </ion-label>
+            </ion-item-divider>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Representative</strong>: {{details.burial?.familyContactPerson}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Contact #</strong>: {{details.burial?.familyContactNumber}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-item-group>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

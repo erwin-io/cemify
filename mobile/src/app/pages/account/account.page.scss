@@ -1,0 +1,40 @@
+::ng-deep {
+  ion-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .profile {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      gap: 20px;
+      .image {
+        display: flex;
+        flex-direction: column;
+        max-width: 100px;
+        min-width: 100px;
+        height: 100px;
+        overflow: hidden;
+        border-radius: 50%;
+        border: 3px solid #004d40;
+        img {
+          width: 100%;
+        };
+      }
+      .name {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+        * {
+          margin: 0!important;
+        }
+      }
+    }
+    .settings {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+}

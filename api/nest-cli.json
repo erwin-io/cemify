@@ -5,7 +5,7 @@
   "compilerOptions": {
     "assets": [
       "common/envs/*",
-      "files/*"
+      "controller/certificate/*"
     ]
   }
 }

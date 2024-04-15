@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="modal.dismiss()">
+        <ion-icon name="arrow-back-outline" style="font-size: 2rem!important;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Reservation</ion-title>
+    <div slot="end" style="width: 48px"></div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list lines="full">
+    <ion-item button="true" detail="false">
+      <ion-icon color="warning" slot="start" name="checkmark-circle-outline" size="large"></ion-icon>
+      <ion-label>
+        <strong>Lot AL1 </strong><br />
+        <!-- <ion-text></ion-text> -->
+        <ion-note color="medium" class="ion-text-wrap">
+          <h4 style="margin: 0;">April 14, 2024</h4>
+        </ion-note>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
