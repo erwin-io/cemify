@@ -17,11 +17,15 @@ import { BurialService } from "src/services/burial.service";
 import createReport from "docx-templates";
 import fs from "fs";
 import moment from "moment";
+import { ConfigService } from "@nestjs/config";
 
 @ApiTags("certificate")
 @Controller("certificate")
 export class CertificateController {
-  constructor(private burialService: BurialService) {}
+  constructor(
+    private burialService: BurialService,
+    private readonly config: ConfigService
+  ) {}
 
   @Get("/:burialCode")
   //   @UseGuards(JwtAuthGuard)
@@ -36,7 +40,9 @@ export class CertificateController {
         throw new Error("Burial records not found");
       }
 
-      const template = fs.readFileSync("src/files/certificate.docx");
+      console.log(this.config.get<string>("CERTIFICATE_TEMPLATE"));
+      const templatePath = this.config.get<string>("CERTIFICATE_TEMPLATE");
+      const template = fs.readFileSync(templatePath);
 
       const buffer = await createReport({
         template,
