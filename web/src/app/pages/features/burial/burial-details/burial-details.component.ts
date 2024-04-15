@@ -358,7 +358,7 @@ export class BurialDetailsComponent {
   onGenerateCertificate() {
     const generateLink = environment.apiBaseUrl + this.appconfig.config.apiEndPoints.certificate.generateCertificate + this.burial?.burialCode;
     if(environment.production) {
-      window.open("https://view.officeapps.live.com/op/view.aspx?src=" + generateLink, "_blank");
+      window.open(environment.pdfViewerLinkTemplate + generateLink, "_blank");
     } else {
       window.open(generateLink, "_blank");
     }
