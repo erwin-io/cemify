@@ -497,6 +497,9 @@
       "getUnreadByUser": "/notifications/getUnreadByUser/",
       "marAsRead": "/notifications/marAsRead/"
     },
+    "certificate": {
+      "generateCertificate": "/certificate/"
+    },
     "message": {
       "create": "/message/"
     }

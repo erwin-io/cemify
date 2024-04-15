@@ -71,9 +71,13 @@ export class CertificateController {
         "Content-Type",
         `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
       );
+
+      const fileName =
+        templatePath.split(".")[templatePath.split(".").length - 1];
+      console.log();
       response.setHeader(
         "Content-Disposition",
-        `attachment; filename=${burial.fullName}`
+        `attachment; filename=${burial.fullName}.${fileName}`
       );
       return new StreamableFile(Buffer.from(buffer));
     } catch (e) {

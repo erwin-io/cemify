@@ -85,6 +85,7 @@ export interface AppConfig {
         marAsRead: string;
       };
       dashboard: {};
+      certificate: { generateCertificate: string };
       message: { create: string };
     };
   }

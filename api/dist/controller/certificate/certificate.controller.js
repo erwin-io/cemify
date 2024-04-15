@@ -53,7 +53,9 @@ let CertificateController = class CertificateController {
                 cmdDelimiter: ["{", "}"],
             });
             response.setHeader("Content-Type", `application/vnd.openxmlformats-officedocument.wordprocessingml.document`);
-            response.setHeader("Content-Disposition", `attachment; filename=${burial.fullName}`);
+            const fileName = templatePath.split(".")[templatePath.split(".").length - 1];
+            console.log();
+            response.setHeader("Content-Disposition", `attachment; filename=${burial.fullName}.${fileName}`);
             return new common_1.StreamableFile(Buffer.from(buffer));
         }
         catch (e) {

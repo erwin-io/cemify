@@ -22,6 +22,7 @@ import { ApiResponse } from 'src/app/model/api-response.model';
 import { ReservationService } from 'src/app/services/reservation.service';
 import { DateConstant } from 'src/app/constant/date';
 import { MapBoxComponent } from 'src/app/shared/map-box/map-box.component';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-burial-details',
   templateUrl: './burial-details.component.html',
@@ -352,5 +353,14 @@ export class BurialDetailsComponent {
         dialogRef.close();
       }
     });
+  }
+
+  onGenerateCertificate() {
+    const generateLink = environment.apiBaseUrl + this.appconfig.config.apiEndPoints.certificate.generateCertificate + this.burial?.burialCode;
+    if(environment.production) {
+      window.open("https://view.officeapps.live.com/op/embed.aspx?src=" + generateLink, "_blank");
+    } else {
+      window.open(generateLink, "_blank");
+    }
   }
 }

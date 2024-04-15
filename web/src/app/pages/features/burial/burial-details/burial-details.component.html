@@ -52,6 +52,11 @@
     </button>
   </div>
 </mat-toolbar>
+<div class="component-floating-actions vertical-actions">
+  <button mat-fab color="primary" aria-label="New Burial" matTooltip="New Burial" (click)="onGenerateCertificate()">
+    <mat-icon>print</mat-icon>
+  </button>
+</div>
 <div class="content">
   <div class="inner-content" >
     <div fxFlex="100" fxLayout.gt-xs="row" fxLayout="column">
