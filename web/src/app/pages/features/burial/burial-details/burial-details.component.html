@@ -52,13 +52,16 @@
     </button>
   </div>
 </mat-toolbar>
-<div class="component-floating-actions vertical-actions">
-  <button mat-fab color="primary" aria-label="New Burial" matTooltip="New Burial" (click)="onGenerateCertificate()">
-    <mat-icon>print</mat-icon>
-  </button>
-</div>
 <div class="content">
-  <div class="inner-content" >
+  <div class="inner-content" fxLayout="column" fxLayoutGap="16px">
+    <div fxFlex="100" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="16px" *ngIf="!isNew">
+      <div fxFlex="100" fxLayout="row">
+        <button *ngIf="!isNew && !isNewFromReservation" aria-label="Generate Certificate" matTooltip="Generate Certificate" mat-fab extended color="primary" (click)="onGenerateCertificate()">
+          <mat-icon>print</mat-icon>
+          Generate Certificate
+        </button>
+      </div>
+    </div>
     <div fxFlex="100" fxLayout.gt-xs="row" fxLayout="column">
       <div fxLayout="column" fxFlex >
         <app-map-box
