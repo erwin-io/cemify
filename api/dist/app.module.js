@@ -47,6 +47,7 @@ const burial_module_1 = require("./controller/burial/burial.module");
 const lot_module_1 = require("./controller/lot/lot.module");
 const reservation_module_1 = require("./controller/reservation/reservation.module");
 const work_order_module_1 = require("./controller/work-order/work-order.module");
+const certificate_module_1 = require("./controller/certificate/certificate.module");
 const envFilePath = (0, utils_1.getEnvPath)(`${__dirname}/common/envs`);
 let AppModule = class AppModule {
 };
@@ -70,7 +71,8 @@ AppModule = __decorate([
             reservation_module_1.ReservationModule,
             burial_module_1.BurialModule,
             reminder_module_1.ReminderModule,
-            work_order_module_1.WorkOrderModule
+            work_order_module_1.WorkOrderModule,
+            certificate_module_1.CertificateModule
         ],
         providers: [app_service_1.AppService],
         controllers: [],

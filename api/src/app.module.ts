@@ -15,6 +15,7 @@ import { BurialModule } from "./controller/burial/burial.module";
 import { LotModule } from "./controller/lot/lot.module";
 import { ReservationModule } from "./controller/reservation/reservation.module";
 import { WorkOrderModule } from "./controller/work-order/work-order.module";
+import { CertificateModule } from "./controller/certificate/certificate.module";
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
 @Module({
@@ -36,7 +37,8 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     ReservationModule,
     BurialModule,
     ReminderModule,
-    WorkOrderModule
+    WorkOrderModule,
+    CertificateModule
   ],
   providers: [AppService],
   controllers: [],
