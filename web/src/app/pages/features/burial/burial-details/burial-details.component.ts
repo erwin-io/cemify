@@ -96,6 +96,10 @@ export class BurialDetailsComponent {
     return rights;
   }
 
+  get generateCertificateLink() {
+    return environment.apiBaseUrl + this.appconfig.config.apiEndPoints.certificate.generateCertificate + this.burial?.burialCode + "?date=" + moment().format("YYYY-MM-DD")
+  }
+
   ngOnInit(): void {
     const channel = this.pusherService.init(this.currentUserProfile.userId);
     channel.bind('burialChanges', (res: Burial) => {
@@ -356,11 +360,11 @@ export class BurialDetailsComponent {
   }
 
   onGenerateCertificate() {
-    const generateLink = environment.apiBaseUrl + this.appconfig.config.apiEndPoints.certificate.generateCertificate + this.burial?.burialCode;
     if(environment.production) {
-      window.open(environment.pdfViewerLinkTemplate + generateLink, "_blank");
+      window.open(environment.pdfViewerLinkTemplate + this.generateCertificateLink, "_blank");
     } else {
-      window.open(generateLink, "_blank");
+      // window.open(this.generateCertificateLink, "_blank");
+      window.open(this.generateCertificateLink,'width=650,height=800').print()
     }
   }
 }

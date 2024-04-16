@@ -7,6 +7,7 @@ import { FeaturesComponent } from './pages/features/features.component';
 import { AuthComponent } from './auth/auth.component';;
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { NoAccessComponent } from './pages/no-access/no-access.component';
+import { HowToComponent } from './pages/how-to/how-to.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'map' },
@@ -70,6 +71,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/features/users/users.module').then((m) => m.UsersModule),
       },
+      {
+        path: 'settings',
+        canActivate: [AuthGuard],
+        data: { title: 'Settings' },
+        loadChildren: () =>
+          import('./pages/features/settings/settings.module').then((m) => m.SettingsModule),
+      },
     ],
   },
   {
@@ -120,6 +128,10 @@ const routes: Routes = [
     data: { title: 'Burial', group: 'Burial' },
     loadChildren: () =>
       import('./shared/burial-reports/burial-reports.module').then((m) => m.BurialReportsModule),
+  },
+  {
+    path: 'how-to',
+    component: HowToComponent,
   },
   {
     path: 'no-access',

@@ -1,0 +1,102 @@
+<mat-toolbar color="#fff" class="mat-elevation-z4">
+  <span class="title">Settings</span>
+  <span class="toolbar-item-spacer"></span>
+</mat-toolbar>
+<div class="content">
+  <div class="inner-content" fxLayout="column">
+    <div fxFlex="100" fxLayout="column">
+      <mat-card>
+        <mat-card-content fxFlex="100" fxLayout="column" fxLayoutGap="16">
+          <div fxFlex="100" fxLayout="column" *ngFor="let item of settings;" fxLayoutGap="16">
+            <ng-container *ngIf="item.key === 'CERTIFICATE_TEMPLATE'">
+              <h4>Certificate template</h4>
+              <div fxFlex="100" fxLayout="column">
+                <p>Upload the certificate template using an Office Word file.<br>
+                  The following Office Word file types are only accepted:
+                </p>
+                <ul>
+                  <li><a
+                      href="https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-doc/ccd7b486-7881-484c-a137-51170af7cc22"
+                      target="_blank">DOC</a></li>
+                  <li><a
+                      href="https://learn.microsoft.com/en-us/openspecs/office_standards/ms-docx/b839fe1f-e1ca-4fa6-8c26-5954d0abbccd"
+                      target="_blank">DOCX</a>
+                  </li>
+                </ul>
+              </div>
+              <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16">
+                <span>{{item.value}}</span>
+                <input #uploadFile (change)="uploadFile?.files[0] ? item.value = uploadFile?.files[0].name : false"
+                  style="display: none!important;" type="file"
+                  accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                <button mat-stroked-button aria-label="Upload certificate file" (click)="uploadFile.click()"
+                  matTooltip="Upload certificate file">
+                  <mat-icon>upload_file</mat-icon>
+                  Upload
+                </button>
+              </div>
+              <div fxFlex="100" fxLayout="row">
+                <button [disabled]="!uploadFile.value || !uploadFile?.files[0]"
+                  (click)="onSaveTemplate(uploadFile.files[0], item);uploadFile.value = null;" mat-raised-button
+                  color="primary" aria-label="Saved template" matTooltip="Saved template">
+                  Saved template
+                </button>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="item.key === 'CERTIFICATE_TEMPLATE_PROPS'">
+              <h4>Certificate template delimiters for your template keywords </h4>
+              <p>
+                Delimiters are characters or strings that mark the beginning and end of a keyword within the document
+                content.<br>
+                Keywords are entered between the beginning and end of delimiters. Example, Given that the configured delimiters are <i>{{'"{"'}}</i> and <i>{{'"}"'}}</i>, then the expected format in your document file should be:
+                <i>{{'Hello my name is {name}, {age} years old from {address}'}}.</i>&nbsp;
+                <a href="https://www.docugenerate.com/product/" target="_blank">See examples of document template using delimiters.</a><br>
+              </p>
+              If you want to add the current date to your certificate, please use the following default fields to your certificate template:
+              <ul>
+                <li><i>{{'[[day]]'}}</i> - The output will be an ordinal number representation of the day from the calendar, e.g. 1st</li>
+                <li><i>{{'[[month]]'}}</i> - The output will be an ISO standard date format for the name of the month, e.g. January</li>
+                <li><i>{{'[[year]]'}}</i> - The output will be an ISO representation for the year, consisting of four-digit numbers, e.g. 2000</li>
+              </ul>
+              <br>
+              <div fxFlex="100" fxLayout="column">
+                <mat-label>Enter the beginning delimiter. ex: {{'"{" or "+" or "-" or "["'}}</mat-label>
+                <div fxFlex="100" fxLayout.gt-xs="row" fxLayout="column">
+                  <mat-form-field fxFlex.gt-xs="33.33%" fxFlex="100" fxLayout="column" appearance="outline"
+                    floatLabel="never" floatPlaceholder="never">
+                    <input matInput placeholder="Opening delimiter character here. ex: '{' or `+` or `-` or `[`"
+                      value="{{item.value.split(',')[0]}}" [(ngModel)]="item.value.split(',')[0]"
+                      #startDelimiter="ngModel" />
+                  </mat-form-field>
+                </div>
+                <mat-label>Enter the end delimiter. ex: {{'"}" or "+" or "-" or "]"'}}</mat-label>
+                <div fxFlex="100" fxLayout.gt-xs="row" fxLayout="column">
+                  <mat-form-field fxFlex.gt-xs="33.33%" fxFlex="100" fxLayout="column" appearance="outline"
+                    floatLabel="never" floatPlaceholder="never">
+                    <input matInput placeholder="Closing delimiter character here. ex: '}' or `+` or `-` or `]`"
+                      value="{{item.value.split(',')[1]}}" [(ngModel)]="item.value.split(',')[1]"
+                      #endDelimiter="ngModel" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxFlex="100" fxLayout="column">
+                <div>Using the entered delimiter above, this should be the field format on your template:</div>
+                <i>{{startDelimiter.value}}your_keyword{{endDelimiter.value}}</i>
+              </div>
+              <div fxFlex="100" fxLayout="row">
+                <button
+                  [disabled]="(!startDelimiter.dirty && !endDelimiter.dirty) || startDelimiter.value === '' || endDelimiter.value === ''"
+                  mat-raised-button color="primary" aria-label="Save keywords and delimiters"
+                  matTooltip="Save keywords and delimiters"
+                  (click)="onSaveSettings({ key: item.key, value: (startDelimiter.value + ',' + endDelimiter.value)})">
+                  Save keywords and delimiters
+                </button>
+              </div>
+            </ng-container>
+            <mat-divider *ngIf="settings.length > item.index + 1"></mat-divider>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

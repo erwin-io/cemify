@@ -20,38 +20,65 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const burial_service_1 = require("../../services/burial.service");
 const docx_templates_1 = __importDefault(require("docx-templates"));
-const fs_1 = __importDefault(require("fs"));
 const moment_1 = __importDefault(require("moment"));
 const config_1 = require("@nestjs/config");
-const path_1 = __importDefault(require("path"));
+const firebase_provider_1 = require("../../core/provider/firebase/firebase-provider");
+const settings_service_1 = require("../../services/settings.service");
 let CertificateController = class CertificateController {
-    constructor(burialService, config) {
+    constructor(firebaseProvoder, burialService, settingsService, config) {
+        this.firebaseProvoder = firebaseProvoder;
         this.burialService = burialService;
+        this.settingsService = settingsService;
         this.config = config;
     }
-    async download(response, burialCode) {
+    async download(response, burialCode, date) {
         const res = {};
         try {
+            if (!date || date === undefined || date === "") {
+                date = new Date();
+            }
             const burial = await this.burialService.getByCode(burialCode);
             if (!burial) {
                 throw new Error("Burial records not found");
             }
-            const templatePath = path_1.default.resolve(__dirname, "certificate.docx");
+            const templateConfig = await this.settingsService.find("CERTIFICATE_TEMPLATE");
+            if (!templateConfig) {
+                throw new Error("Certificate error: Template path not set!");
+            }
+            const delimitersConfig = await this.settingsService.find("CERTIFICATE_TEMPLATE_PROPS");
+            if (!delimitersConfig ||
+                !(delimitersConfig === null || delimitersConfig === void 0 ? void 0 : delimitersConfig.value) ||
+                (delimitersConfig === null || delimitersConfig === void 0 ? void 0 : delimitersConfig.value) === "" ||
+                (delimitersConfig === null || delimitersConfig === void 0 ? void 0 : delimitersConfig.value.toString().split(",").length) === 0 ||
+                (delimitersConfig === null || delimitersConfig === void 0 ? void 0 : delimitersConfig.value.toString().split(",").length) > 2) {
+                throw new Error("Certificate error: Template delimiters not set!");
+            }
+            const delimiters = delimitersConfig.value.toString().split(",");
+            const templatePath = templateConfig.value;
             console.log(templatePath);
-            const template = fs_1.default.readFileSync(templatePath);
-            const buffer = await (0, docx_templates_1.default)({
-                template,
+            const bucket = this.firebaseProvoder.app.storage().bucket();
+            const file = bucket.file(`${templatePath}`);
+            const result = await file.download();
+            const generatedDocumentWithDate = await (0, docx_templates_1.default)({
+                template: result[0],
+                data: {
+                    day: (0, moment_1.default)(date, "YYYY-MM-DD").format("Do"),
+                    month: (0, moment_1.default)(date, "YYYY-MM-DD").format("MMMM"),
+                    year: (0, moment_1.default)(date, "YYYY-MM-DD").format("YYYY"),
+                },
+                cmdDelimiter: ["[[", "]]"],
+            });
+            const generatedDocument = await (0, docx_templates_1.default)({
+                template: generatedDocumentWithDate,
                 data: {
                     fullName: burial === null || burial === void 0 ? void 0 : burial.fullName,
                     dateOfDeath: (0, moment_1.default)(burial === null || burial === void 0 ? void 0 : burial.dateOfDeath).format("MMMM DD, YYYY"),
                     dateOfBurial: (0, moment_1.default)(burial === null || burial === void 0 ? void 0 : burial.dateOfBurial).format("MMMM DD, YYYY"),
                     familyContactPerson: burial === null || burial === void 0 ? void 0 : burial.familyContactPerson,
-                    day: (0, moment_1.default)().format("DD"),
-                    month: (0, moment_1.default)().format("MMMM"),
-                    year: (0, moment_1.default)().format("YYYY"),
                 },
-                cmdDelimiter: ["{", "}"],
+                cmdDelimiter: [delimiters[0], delimiters[1]],
             });
+            const buffer = generatedDocument;
             response.setHeader("Content-Type", `application/vnd.openxmlformats-officedocument.wordprocessingml.document`);
             const fileName = templatePath.split(".")[templatePath.split(".").length - 1];
             console.log();
@@ -67,14 +94,17 @@ __decorate([
     (0, common_1.Get)("/:burialCode"),
     __param(0, (0, common_1.Res)({ passthrough: true })),
     __param(1, (0, common_1.Param)("burialCode")),
+    __param(2, (0, common_1.Query)("date")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
 ], CertificateController.prototype, "download", null);
 CertificateController = __decorate([
     (0, swagger_1.ApiTags)("certificate"),
     (0, common_1.Controller)("certificate"),
-    __metadata("design:paramtypes", [burial_service_1.BurialService,
+    __metadata("design:paramtypes", [firebase_provider_1.FirebaseProvider,
+        burial_service_1.BurialService,
+        settings_service_1.SettingsService,
         config_1.ConfigService])
 ], CertificateController);
 exports.CertificateController = CertificateController;

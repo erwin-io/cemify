@@ -1,0 +1,32 @@
+/* how-to-use.component.css */
+.page-container {
+  padding: 20px;
+  box-sizing: border-box;
+  height: fit-content;
+}
+.how-to-use-card {
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.section {
+  margin-bottom: 50px;
+}
+
+.features {
+  padding: 50px 0;
+}
+
+h2 {
+  color: #333;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}

@@ -13,11 +13,18 @@ const burial_service_1 = require("../../services/burial.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const Burial_1 = require("../../db/entities/Burial");
 const burial_module_1 = require("../burial/burial.module");
+const firebase_provider_module_1 = require("../../core/provider/firebase/firebase-provider.module");
+const settings_module_1 = require("../settings/settings.module");
 let CertificateModule = class CertificateModule {
 };
 CertificateModule = __decorate([
     (0, common_1.Module)({
-        imports: [burial_module_1.BurialModule, typeorm_1.TypeOrmModule.forFeature([Burial_1.Burial])],
+        imports: [
+            burial_module_1.BurialModule,
+            settings_module_1.SettingsModule,
+            firebase_provider_module_1.FirebaseProviderModule,
+            typeorm_1.TypeOrmModule.forFeature([Burial_1.Burial]),
+        ],
         controllers: [certificate_controller_1.CertificateController],
         providers: [burial_service_1.BurialService],
         exports: [burial_service_1.BurialService],

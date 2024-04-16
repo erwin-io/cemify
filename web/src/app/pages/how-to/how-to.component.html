@@ -1,0 +1,268 @@
+<div class="top-header mat-elevation-z4">
+  <mat-toolbar color="primary">
+    <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer;" routerLink="/">
+      <img id="banner" src="../assets/img/banner-white.png">
+      <span id="title">Cemify</span>
+    </div>
+    <span class="toolbar-item-spacer"></span>
+    <span [style.cursor]="'pointer'" routerLink="/auth/">Login</span>
+  </mat-toolbar>
+</div>
+
+<div class="page-wrapper" >
+  <div class="page-container">
+    <mat-card class="how-to-use-card">
+      <mat-card-header>
+        <mat-card-title>
+          <h4>How to Use</h4>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+        <!-- Getting Started -->
+        <div class="section">
+          <h3>Getting Started</h3>
+          <h4>
+            To get started, follow these steps:
+          </h4>
+          <ol>
+            <li>Request a user account from the admin.</li>
+            <li>Wait for the admin to create your account.</li>
+            <li>Once your account is ready, log in with the provided temporary credentials.</li>
+          </ol>
+        </div>
+
+        <!-- Reset Password -->
+        <div class="section">
+          <h3>How to Reset Password</h3>
+          <h4>
+            If you need to reset your password, follow these steps:
+          </h4>
+          <ol>
+            <li>Contact the admin or support team to request a password reset.</li>
+            <li>Provide necessary information for identity verification.</li>
+            <li>Wait for the admin or support team to handle your request.</li>
+            <li>Follow the instructions provided to reset your password.</li>
+          </ol>
+        </div>
+
+        <!-- Features -->
+        <div class="section">
+          <h3>Features</h3>
+          <h4>
+            Here are some of the key features of our platform:
+          </h4>
+          <ul>
+            <li><a (click)="scrollTo('map')">Cemetery mapping</a></li>
+            <li><a (click)="scrollTo('burial')">Burial Records</a></li>
+            <li><a (click)="scrollTo('reservation')">Manage Lot Reservation</a></li>
+            <li><a (click)="scrollTo('workOrder')">Work Order</a></li>
+            <li><a (click)="scrollTo('users')">User and Access Management</a></li>
+          </ul>
+        </div>
+
+        <!-- FAQs -->
+        <div class="section">
+          <h3>FAQs</h3>
+          <h4>
+            Commonly asked questions about our platform:
+          </h4><br>
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  How do I request a user account?
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>
+                To request a user account, please contact our admin team via email or phone.
+                They will assist you in creating an account and provide you with the necessary credentials to log in.
+              </p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  How long does it take for my account to be ready after requesting?
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>
+                The time it takes for your account to be ready may vary depending on administrative processes. Our team strives to process requests promptly, and you will receive an email notification once your account is created.
+              </p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Can I access all features immediately after logging in?
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>
+                No, upon logging in, you can only access the how to use page.
+                Some advanced features may require additional permissions or administrative approval.
+                If you encounter any restrictions, please contact the admin for assistance.
+              </p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  How can I generate reports for burial records?
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>
+                To generate reports for burial records, navigate to the "Burial Records" section, click the generate report button
+                and {{title}} will generate a comprehensive report for you to review.
+              </p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  How do I generate a burial record certificate?
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>
+                Generating a burial record certificate is simple.
+                Navigate to the specific burial record for which you need a certificate,
+                then locate the option to generate a certificate within the burial details page.
+                Follow the prompts to customize the certificate, and our system will generate it for you instantly.
+              </p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  How do I navigate to specific features such as cemetery mapping or burial records?
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>
+                {{title}}'s user-friendly interface allows you to navigate easily to specific features.
+                Simply use the main menu to access different sections such as cemetery mapping,
+                burial records, reservation, work orders, and user management.
+              </p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  What if I forget my password?
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>
+                If you forget your password, please contact the admin or support team for assistance.
+              </p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  How can I learn more about each feature and its usage?
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>
+                Each feature on our platform comes with detailed instructions on how to use it effectively.
+                You can find this information in the <a (click)="scrollTo('map')">How to use this feature</a> section page of how to page, which provides step-by-step guides for each feature.
+              </p>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+
+        <!-- Mapping  -->
+        <div class="features" #map>
+          <h3>Cemetery Mapping</h3>
+          <h4>
+            Visualize and manage cemetery lot information on an interactive map.
+          </h4>
+          <br>
+          <h3>How to use Cemetery Mapping</h3>
+          <h4>
+            To use the cemetery mapping, follow these steps:
+          </h4>
+          <ol>
+            <li>Navigate to the "Cemetery Mapping" section.</li>
+            <li>Explore the map by zooming in/out and dragging.</li>
+            <li>Click on a lot to view detailed information.</li>
+            <li>Use the search function to search burial records.</li>
+          </ol>
+        </div>
+
+        <!-- Burial  -->
+        <div class="features" #burial>
+          <h3>Burial Records</h3>
+          <h4>
+            Manage and maintain burial records, deactivate or removing records as necessary. Generate burial record certificate or reports.
+          </h4>
+          <br>
+          <h3>How to use Burial Records</h3>
+          <h4>
+            To use the burial records, follow these steps:
+          </h4>
+          <ol>
+            <li>Access the "Burial Records" section from the main menu.</li>
+            <li>Add burial record by entering burial details.</li>
+            <li>Update existing record as needed.</li>
+            <li>Track burial recrods and generate certificate or reports.</li>
+          </ol>
+        </div>
+
+        <!-- Reservation -->
+        <div class="features" #reservation>
+          <h3>Manage Lot Reservation</h3>
+          <h4>
+            Manage incoming lot reservation requests from clients with approval and reject functionality.
+          </h4>
+          <br>
+          <h3>How to manage Lot Reservation</h3>
+          <h4>
+            To manage Lot Reservation, follow these steps:
+          </h4>
+          <ol>
+            <li>Go to the "Reservation" feature from the main menu.</li>
+            <li>View the list of incoming reservation requests.</li>
+            <li>Review each request and approve or reject it accordingly.</li>
+            <li>For approved reservations, allocate the lot to the client and confirm the reservation.</li>
+          </ol>
+        </div>
+
+        <!-- Work Order -->
+        <div class="features" #workOrder>
+          <h3>Work Order</h3>
+          <h4>
+            Create and manage work orders for staff members.
+          </h4>
+          <br>
+          <h3>How to use Work Order</h3>
+          <h4>
+            To use the Work Order, follow these steps:
+          </h4>
+          <ol>
+            <li>Access the "Work Order" section from the main menu.</li>
+            <li>Create a new work order by providing details of the task.</li>
+            <li>Assign the task to a specific staff member.</li>
+            <li>Track the progress of the work order and mark it as complete when done.</li>
+          </ol>
+        </div>
+
+        <!-- User and Access Management -->
+        <div class="features" #users>
+          <h3>User and Access Management</h3>
+          <h4>
+            Administer user accounts, permissions, and roles.
+          </h4>
+          <br>
+          <h3>How to manage Users and Access</h3>
+          <h4>
+            To manage the Users and Access, follow these steps:
+          </h4>
+          <ol>
+            <li>Go to the "User Management" panel accessible to admin users.</li>
+            <li>Add new users by entering their details.</li>
+            <li>Assign access and permissions to users based on their responsibilities.</li>
+            <li>Manage user accounts and password.</li>
+          </ol>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

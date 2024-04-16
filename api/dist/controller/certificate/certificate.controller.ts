@@ -20,12 +20,16 @@ import moment from "moment";
 import { ConfigService } from "@nestjs/config";
 import { getEnvPath } from "src/common/utils/utils";
 import path from "path";
+import { FirebaseProvider } from "src/core/provider/firebase/firebase-provider";
+import { SettingsService } from "src/services/settings.service";
 
 @ApiTags("certificate")
 @Controller("certificate")
 export class CertificateController {
   constructor(
+    private firebaseProvoder: FirebaseProvider,
     private burialService: BurialService,
+    private settingsService: SettingsService,
     private readonly config: ConfigService
   ) {}
 
@@ -42,14 +46,23 @@ export class CertificateController {
         throw new Error("Burial records not found");
       }
 
-      // console.log(this.config.get<string>("CERTIFICATE_TEMPLATE"));
-      // const templatePath = this.config.get<string>("CERTIFICATE_TEMPLATE");
-      const templatePath = path.resolve(__dirname, "certificate.docx");
+      const settings = await this.settingsService.find("CERTIFICATE_TEMPLATE");
+
+      if (!settings) {
+        throw new Error("Certificate error: Template path not set!");
+      }
+
+      const templatePath = settings.value;
       console.log(templatePath);
-      const template = fs.readFileSync(templatePath);
+      // const templatePath = path.resolve(__dirname, "certificate.docx");
+      // const template = fs.readFileSync(templatePath);
+
+      const bucket = this.firebaseProvoder.app.storage().bucket();
+      const file = bucket.file(`${templatePath}`);
+      const result = await file.download();
 
       const buffer = await createReport({
-        template,
+        template: result[0],
         data: {
           fullName: burial?.fullName,
           dateOfDeath: moment(burial?.dateOfDeath).format("MMMM DD, YYYY"),
@@ -71,9 +84,13 @@ export class CertificateController {
         "Content-Type",
         `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
       );
+
+      const fileName =
+        templatePath.split(".")[templatePath.split(".").length - 1];
+      console.log();
       response.setHeader(
         "Content-Disposition",
-        `attachment; filename=${burial.fullName}`
+        `attachment; filename=${burial.fullName}.${fileName}`
       );
       return new StreamableFile(Buffer.from(buffer));
     } catch (e) {

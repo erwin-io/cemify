@@ -1,8 +1,15 @@
-<mat-toolbar color="primary" class="mat-elevation-z5" >
-    <img id="banner" src="../assets/img/banner-white.png">
-    <span id="title" href="/">Cemify</span>
+<div class="top-header mat-elevation-z4">
+  <mat-toolbar color="primary">
+    <div style="display: flex;flex-direction: row;align-items: center;cursor: pointer;" routerLink="/">
+      <img id="banner" src="../assets/img/banner-white.png">
+      <span id="title">Cemify</span>
+    </div>
     <span class="toolbar-item-spacer"></span>
-</mat-toolbar>
+    <a mat-icon-button matTooltip="Help center" href="/how-to">
+      <mat-icon>help</mat-icon>
+    </a>
+  </mat-toolbar>
+</div>
 <div class="page-wrapper">
   <div class="page-container">
       <router-outlet>

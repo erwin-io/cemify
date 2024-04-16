@@ -436,6 +436,12 @@
         "view": false,
         "modify": false,
         "rights": []
+      },
+      {
+        "page": "Setings",
+        "view": false,
+        "modify": false,
+        "rights": []
       }
     ]
   },
@@ -496,6 +502,12 @@
       "getByAdvanceSearch": "/notifications/page/",
       "getUnreadByUser": "/notifications/getUnreadByUser/",
       "marAsRead": "/notifications/marAsRead/"
+    },
+    "settings": {
+      "getAll": "/settings/",
+      "find": "/settings/",
+      "update": "/settings/",
+      "uploadCertificateTemplate": "/settings/uploadCertificateTemplate"
     },
     "certificate": {
       "generateCertificate": "/certificate/"

@@ -84,6 +84,12 @@ export interface AppConfig {
         getUnreadByUser: string;
         marAsRead: string;
       };
+      settings: {
+        getAll: string;
+        find: string;
+        update: string;
+        uploadCertificateTemplate: string;
+      };
       dashboard: {};
       certificate: { generateCertificate: string };
       message: { create: string };

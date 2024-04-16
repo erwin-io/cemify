@@ -23,6 +23,7 @@ const Reservation_1 = require("../entities/Reservation");
 const Burial_1 = require("../entities/Burial");
 const Lot_1 = require("../entities/Lot");
 const WorkOrder_1 = require("../entities/WorkOrder");
+const SystemConfig_1 = require("../entities/SystemConfig");
 let TypeOrmConfigService = class TypeOrmConfigService {
     createTypeOrmOptions() {
         const ssl = this.config.get("SSL");
@@ -45,6 +46,7 @@ let TypeOrmConfigService = class TypeOrmConfigService {
                 Burial_1.Burial,
                 Lot_1.Lot,
                 WorkOrder_1.WorkOrder,
+                SystemConfig_1.SystemConfig,
             ],
             synchronize: false,
             ssl: ssl.toLocaleLowerCase().includes("true"),

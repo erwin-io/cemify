@@ -14,6 +14,9 @@
           <mat-icon matBadgeColor="warn">notifications</mat-icon>
         </ng-template>
     </button>
+    <a mat-icon-button matTooltip="Help center" href="/how-to?focus=map" target="_blank">
+      <mat-icon>help</mat-icon>
+    </a>
     <button class="profile-mat-menu" mat-icon-button matTooltip="My profile" [matMenuTriggerFor]="userAccountMenu">
         <mat-icon *ngIf="!profileLoaded">account_circle</mat-icon>
         <img [hidden]="!profileLoaded" style="width: 50px;height: 50px;" (load)="profileLoaded = true" (error)="profileLoaded = false" [src]="profile?.userProfilePic?.file?.url">
@@ -38,13 +41,13 @@
             <mat-list-item routerLink="map" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
                 <mat-icon>map</mat-icon><span>Map</span>
             </mat-list-item>
-            <mat-list-item routerLink="burial" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
+            <mat-list-item routerLink="burial" *ngIf="showMenu('Burial')" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
                 <mat-icon>museum</mat-icon><span>Burial</span>
             </mat-list-item>
-            <mat-list-item routerLink="reservation" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
+            <mat-list-item routerLink="reservation" *ngIf="showMenu('Reservation')" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
                 <mat-icon>assignment_turned_in</mat-icon><span>Reservation</span>
             </mat-list-item>
-            <mat-list-item routerLink="work-order" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
+            <mat-list-item routerLink="work-order" *ngIf="showMenu('Work Order')" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
                 <mat-icon>engineering</mat-icon><span>Work Order</span>
             </mat-list-item>
             <mat-expansion-panel *ngIf="showGroupMenu(['Access', 'Users'])" [@.disabled]="disableGroupAnimation" (afterExpand)="disableGroupAnimation = false" [expanded]="expand('User Management')" [ngClass]="{'mat-expansion-active':expand('User Management') }" [class.mat-elevation-z0]="true" >
@@ -60,6 +63,9 @@
                 </mat-list-item>
               </mat-nav-list>
             </mat-expansion-panel>
+            <mat-list-item routerLink="settings" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
+                <mat-icon>settings</mat-icon><span>Settings</span>
+            </mat-list-item>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>

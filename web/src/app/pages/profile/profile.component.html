@@ -13,6 +13,9 @@
         <mat-icon matBadgeColor="warn">notifications</mat-icon>
       </ng-template>
   </button>
+  <a mat-icon-button matTooltip="Help center" href="/how-to">
+    <mat-icon>help</mat-icon>
+  </a>
   <button class="profile-mat-menu" mat-icon-button matTooltip="My Account" [matMenuTriggerFor]="userAccountMenu">
     <mat-icon *ngIf="!profileLoaded">account_circle</mat-icon>
     <img [hidden]="!profileLoaded" style="width: 50px;height: 50px;" (load)="profileLoaded = true" (error)="profileLoaded = false" [src]="profile?.userProfilePic?.file?.url">

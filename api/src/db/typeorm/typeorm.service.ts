@@ -12,6 +12,7 @@ import { Reservation } from "../entities/Reservation";
 import { Burial } from "../entities/Burial";
 import { Lot } from "../entities/Lot";
 import { WorkOrder } from "../entities/WorkOrder";
+import { SystemConfig } from "../entities/SystemConfig";
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -39,6 +40,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         Burial,
         Lot,
         WorkOrder,
+        SystemConfig,
       ],
       synchronize: false, // never use TRUE in production!
       ssl: ssl.toLocaleLowerCase().includes("true"),
