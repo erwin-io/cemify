@@ -63,7 +63,7 @@
                 </mat-list-item>
               </mat-nav-list>
             </mat-expansion-panel>
-            <mat-list-item routerLink="settings" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
+            <mat-list-item routerLink="settings" *ngIf="showMenu('Settings')" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
                 <mat-icon>settings</mat-icon><span>Settings</span>
             </mat-list-item>
         </mat-nav-list>
