@@ -9,6 +9,7 @@ import {
   HttpStatus,
   Get,
   Param,
+  Query,
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { CertificateDto } from "src/core/dto/certificate/certificate.dto";
@@ -37,48 +38,68 @@ export class CertificateController {
   //   @UseGuards(JwtAuthGuard)
   async download(
     @Res({ passthrough: true }) response,
-    @Param("burialCode") burialCode: string
+    @Param("burialCode") burialCode: string,
+    @Query("date") date
   ): Promise<StreamableFile> {
     const res: ApiResponseModel<any> = {} as any;
     try {
+      if (!date || date === undefined || date === "") {
+        date = new Date();
+      }
       const burial = await this.burialService.getByCode(burialCode);
       if (!burial) {
         throw new Error("Burial records not found");
       }
 
-      const settings = await this.settingsService.find("CERTIFICATE_TEMPLATE");
-
-      if (!settings) {
+      const templateConfig = await this.settingsService.find(
+        "CERTIFICATE_TEMPLATE"
+      );
+      if (!templateConfig) {
         throw new Error("Certificate error: Template path not set!");
       }
+      const delimitersConfig = await this.settingsService.find(
+        "CERTIFICATE_TEMPLATE_PROPS"
+      );
+      if (
+        !delimitersConfig ||
+        !delimitersConfig?.value ||
+        delimitersConfig?.value === "" ||
+        delimitersConfig?.value.toString().split(",").length === 0 ||
+        delimitersConfig?.value.toString().split(",").length > 2
+      ) {
+        throw new Error("Certificate error: Template delimiters not set!");
+      }
+      const delimiters = delimitersConfig.value.toString().split(",");
 
-      const templatePath = settings.value;
+      const templatePath = templateConfig.value;
       console.log(templatePath);
-      // const templatePath = path.resolve(__dirname, "certificate.docx");
-      // const template = fs.readFileSync(templatePath);
 
       const bucket = this.firebaseProvoder.app.storage().bucket();
       const file = bucket.file(`${templatePath}`);
       const result = await file.download();
 
-      const buffer = await createReport({
+      const generatedDocumentWithDate = await createReport({
         template: result[0],
+        data: {
+          day: moment(date, "YYYY-MM-DD").format("Do"),
+          month: moment(date, "YYYY-MM-DD").format("MMMM"),
+          year: moment(date, "YYYY-MM-DD").format("YYYY"),
+        },
+        cmdDelimiter: ["[[", "]]"],
+      });
+
+      const generatedDocument = await createReport({
+        template: generatedDocumentWithDate,
         data: {
           fullName: burial?.fullName,
           dateOfDeath: moment(burial?.dateOfDeath).format("MMMM DD, YYYY"),
           dateOfBurial: moment(burial?.dateOfBurial).format("MMMM DD, YYYY"),
           familyContactPerson: burial?.familyContactPerson,
-          day: moment().format("DD"),
-          month: moment().format("MMMM"),
-          year: moment().format("YYYY"),
         },
-        cmdDelimiter: ["{", "}"],
+        cmdDelimiter: [delimiters[0], delimiters[1]],
       });
 
-      // res.data = Buffer.from(buffer).toString("base64");
-      // res.success = true;
-      // res.message = `Certificate generated`;
-      // return res;
+      const buffer = generatedDocument;
 
       response.setHeader(
         "Content-Type",
