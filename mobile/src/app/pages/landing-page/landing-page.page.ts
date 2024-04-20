@@ -75,11 +75,7 @@ export class LandingPagePage implements OnInit {
       canDismiss: true,
       enterAnimation: this.animationService.flyUpAnimation,
       leaveAnimation: this.animationService.leaveFlyUpAnimation,
-    });
-    modal.onWillDismiss().then(async (res) => {
-      if(res.data.register) {
-        await this.onOpenSignUp();
-      }
+      componentProps: { modal, },
     });
     modal.onDidDismiss().then(()=> {
       this.statusBarService.overLay();
@@ -98,11 +94,7 @@ export class LandingPagePage implements OnInit {
       canDismiss: true,
       enterAnimation: this.animationService.flyUpAnimation,
       leaveAnimation: this.animationService.leaveFlyUpAnimation,
-    });
-    modal.onWillDismiss().then(async (res) => {
-      if(res.data.register) {
-        await this.onOpenSignUp();
-      }
+      componentProps: { modal, },
     });
     modal.onDidDismiss().then(()=> {
       this.statusBarService.overLay();
@@ -121,11 +113,7 @@ export class LandingPagePage implements OnInit {
       canDismiss: true,
       enterAnimation: this.animationService.flyUpAnimation,
       leaveAnimation: this.animationService.leaveFlyUpAnimation,
-    });
-    modal.onWillDismiss().then(async (res: any) => {
-      if (res.data && res.role === 'confirm') {
-        await this.onOpenLogin();
-      }
+      componentProps: { modal, },
     });
     modal.onDidDismiss().then(()=> {
       this.statusBarService.overLay();

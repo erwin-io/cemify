@@ -16,16 +16,16 @@
     </ion-refresher-content>
   </ion-refresher>
   <ng-container *ngIf="!isLoading; else loadingTemplate">
-    <ng-container *ngIf="notofications.length > 0; else noCollectionTemplate">
+    <ng-container *ngIf="notofications.length > 0; else noRecordsTemplate">
       <ng-container *ngFor="let item of notofications">
-        <!-- <ion-item class="item {{!item.isRead ? 'unread' : ''}}" lines="full" detail="false" button (click)="onNotificationClick(item)">
+        <ion-item class="item {{!item.isRead ? 'unread' : ''}}" lines="full" detail="false" button (click)="onNotificationClick(item)">
           <ion-label color="primary">
             <h2 [class]="item.isRead ? 'desc' : 'desc unread'">{{item.title}}</h2>
             <h3 [class]="item.isRead ? 'sub-title' : 'sub-title unread'">{{ item.description}}</h3>
             <h3 [class]="item.isRead ? 'desc' : 'desc unread'">{{item.date | timeAgo }}</h3>
             <span *ngIf="!item.isRead" class="unread-symbol" ></span>
           </ion-label>
-        </ion-item> -->
+        </ion-item>
       </ng-container>
       <br>
       <ion-button *ngIf="notofications && notofications.length >= pageSize && notofications.length < total" fill="clear" size="small" expand="full" (click)="loadMore()"><h2>Load more...</h2></ion-button>
@@ -34,10 +34,10 @@
     </ng-container>
   </ng-container>
 
-  <ng-template #noCollectionTemplate>
-    <div class="no-collections-result">
+  <ng-template #noRecordsTemplate>
+    <div class="no-records">
       <ion-icon name="notifications-outline"></ion-icon>
-      <h1>No collections to show</h1>
+      <h1>No notification to show</h1>
       <br>
     </div>
   </ng-template>

@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable @angular-eslint/no-output-on-prefix */
 import { v4asuuid } from 'uuid';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { LotService } from 'src/app/services/lot.service';
 import { Lot } from 'src/app/model/lot.model';
 import { ApiResponse } from 'src/app/model/api-response.model';
@@ -18,8 +18,8 @@ import { Platform } from '@ionic/angular';
   templateUrl: './map-box.component.html',
   styleUrls: ['./map-box.component.scss']
 })
-export class MapBoxComponent implements OnInit{
-
+export class MapBoxComponent implements OnInit, AfterViewInit{
+  _id;
   isLoading = false;
   protected ngUnsubscribe: Subject<void> = new Subject<void>();
   @Output() onLoadComplete = new EventEmitter();
@@ -63,7 +63,9 @@ export class MapBoxComponent implements OnInit{
   _width;
   _height;
 
+
   constructor(private lotService: LotService, private platform: Platform) {
+    this._id = Math.random().toString().split('.')[1];
     platform.ready().then(() => {
       this._width = platform.width();
       this._height = platform.height();
@@ -71,6 +73,10 @@ export class MapBoxComponent implements OnInit{
       console.log('this._width', this._width);
       console.log('this._height', this._height);
     });
+  }
+
+  get id() {
+    return this._id;
   }
 
   get width() {
@@ -96,6 +102,7 @@ export class MapBoxComponent implements OnInit{
 
   setZoom(zoom: number) {
     this.panZoom.zoom(zoom);
+    this.resizeSelector(zoom);
   }
 
   setPan(x , y) {
@@ -109,26 +116,27 @@ export class MapBoxComponent implements OnInit{
     };
     if(saveSelected) {
       this.savedSelected = this.selectedLot;
-      document.querySelector(`#${lotCode}`).classList.add('selected');
+      document.querySelector('.dom-' + this.id).querySelector(`#${lotCode}`).classList.add('selected');
     }
-    if(document.querySelector(`#${lotCode}`)) {
-      document.querySelectorAll('.lot').forEach(res=> {
+    if(document.querySelector('.dom-' + this.id).querySelector(`#${lotCode}`)) {
+      document.querySelector('.dom-' + this.id).querySelectorAll('.lot').forEach(res=> {
         res.classList.remove('active');
       });
-      document.querySelector(`#${lotCode}`).classList.add('active');
-      const x = document.querySelector(`#${lotCode}`).getAttribute('x');
-      const y = document.querySelector(`#${lotCode}`).getAttribute('y');
-      const width = document.querySelector(`#${lotCode}`).getAttribute('width');
-      const height = document.querySelector(`#${lotCode}`).getAttribute('height');
-      const transform = document.querySelector(`#${lotCode}`).getAttribute('transform');
-      const classList = document.querySelector(`#${lotCode}`).classList;
-      if(document.querySelector(`.selector`)) {
-        document.querySelector(`.selector`).setAttribute('x', x);
-        document.querySelector(`.selector`).setAttribute('y', y);
-        document.querySelector(`.selector`).setAttribute('width', width);
-        document.querySelector(`.selector`).setAttribute('height', height);
-        document.querySelector(`.selector`).setAttribute('transform', transform);
-        document.querySelector(`.selector`).setAttribute('class', `selector ${Array.from(classList).join(' ')}`);
+      document.querySelector('.dom-' + this.id).querySelector(`#${lotCode}`).classList.add('active');
+      const x = document.querySelector('.dom-' + this.id).querySelector(`#${lotCode}`).getAttribute('x');
+      const y = document.querySelector('.dom-' + this.id).querySelector(`#${lotCode}`).getAttribute('y');
+      const width = document.querySelector('.dom-' + this.id).querySelector(`#${lotCode}`).getAttribute('width');
+      const height = document.querySelector('.dom-' + this.id).querySelector(`#${lotCode}`).getAttribute('height');
+      const transform = document.querySelector('.dom-' + this.id).querySelector(`#${lotCode}`).getAttribute('transform');
+      const classList = document.querySelector('.dom-' + this.id).querySelector(`#${lotCode}`).classList;
+      if(document.querySelector('.dom-' + this.id).querySelector(`.selector`)) {
+        document.querySelector('.dom-' + this.id).querySelector(`.selector`).setAttribute('x', x);
+        document.querySelector('.dom-' + this.id).querySelector(`.selector`).setAttribute('y', y);
+        document.querySelector('.dom-' + this.id).querySelector(`.selector`).setAttribute('width', width);
+        document.querySelector('.dom-' + this.id).querySelector(`.selector`).setAttribute('height', height);
+        document.querySelector('.dom-' + this.id).querySelector(`.selector`).setAttribute('transform', transform);
+        document.querySelector('.dom-' + this.id).querySelector(`.selector`)
+        .setAttribute('class', `selector ${Array.from(classList).join(' ')}`);
       } else {
         setTimeout(()=> {
           this.selectLot(lotCode, block);
@@ -138,19 +146,20 @@ export class MapBoxComponent implements OnInit{
   }
 
   updateLotStatus(lotCode, status) {
-    const classList = document.querySelector(`#${lotCode}`).classList;
+    const classList = document.querySelector('.dom-' + this.id).querySelector(`#${lotCode}`).classList;
     const newClass = Array.from(classList).filter(x=> !['AVAILABLE','OCCUPIED','UNAVAILABLE'].some(s => s.toLowerCase() === x));
-    document.querySelector(`#${lotCode}`).setAttribute('class', `${Array.from(newClass).join(' ')} ${status.toLowerCase()}`);
+    document.querySelector('.dom-' + this.id)
+    .querySelector(`#${lotCode}`).setAttribute('class', `${Array.from(newClass).join(' ')} ${status.toLowerCase()}`);
   }
 
   clearSelection() {
     this.selectedLot = null;
-    const selected = document.querySelectorAll('foreignObjects.selected');
+    const selected = document.querySelector('.dom-' + this.id).querySelectorAll('foreignObjects.selected');
     selected.forEach(l=> {
       const newClass = Array.from(l.classList).filter(x=> !x.includes('selected')).join(' ');
       l.setAttribute('class', newClass);
     });
-    const active = document.querySelectorAll('foreignObjects.active');
+    const active = document.querySelector('.dom-' + this.id).querySelectorAll('foreignObjects.active');
     selected.forEach(l=> {
       const newClass = Array.from(l.classList).filter(x=> !x.includes('active')).join(' ');
       l.setAttribute('class', newClass);
@@ -177,26 +186,26 @@ export class MapBoxComponent implements OnInit{
       const e = res[4].data.sort((a, b) => Number(a.lotId) - Number(b.lotId)).map(res=> this.createBox(res));
 
       for (const lot of a) {
-        document.querySelector('.block-a').appendChild(lot);
+        document.querySelector('.dom-' + this.id).querySelector('.block-a').appendChild(lot);
       }
 
       for (const lot of b) {
-        document.querySelector('.block-b').appendChild(lot);
+        document.querySelector('.dom-' + this.id).querySelector('.block-b').appendChild(lot);
       }
 
       for (const lot of c) {
-        document.querySelector('.block-c').appendChild(lot);
+        document.querySelector('.dom-' + this.id).querySelector('.block-c').appendChild(lot);
       }
 
       for (const lot of d) {
-        document.querySelector('.block-d').appendChild(lot);
+        document.querySelector('.dom-' + this.id).querySelector('.block-d').appendChild(lot);
       }
 
       for (const lot of e) {
-        document.querySelector('.block-e').appendChild(lot);
+        document.querySelector('.dom-' + this.id).querySelector('.block-e').appendChild(lot);
       }
 
-      const blocks = document.querySelectorAll('.block');
+      const blocks = document.querySelector('.dom-' + this.id).querySelectorAll('.block');
       blocks.forEach(element=> {
          const foreignObjects = element.querySelectorAll('foreignObject');
          foreignObjects.forEach(p=> {

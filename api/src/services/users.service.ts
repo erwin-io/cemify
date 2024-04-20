@@ -452,9 +452,6 @@ export class UsersService {
           userCode,
           active: true,
         },
-        relations: {
-          access: true,
-        },
       });
 
       if (!user) {

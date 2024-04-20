@@ -98,12 +98,12 @@
       <ion-header>
         <ion-toolbar >
           <div slot="start" style="width: 48px"></div>
-          <ion-title class="ion-text-center">{{details.lotCode}}{{details.burial?.fullName ? '/' + details.burial?.fullName : ''}}</ion-title>
+          <ion-title class="ion-text-center">{{details ? details?.lotCode : ''}}{{details && details?.burial?.fullName ? '/' + details?.burial?.fullName : ''}}</ion-title>
           <div slot="end" style="width: 48px"></div>
         </ion-toolbar>
       </ion-header>
       <ion-content >
-        <ion-list lines="none">
+        <ion-list *ngIf="details" lines="none">
           <ion-item-group>
             <ion-item-divider>
               <ion-label> <h2>Lot</h2> </ion-label>

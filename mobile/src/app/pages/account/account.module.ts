@@ -9,6 +9,7 @@ import { AccountPageRoutingModule } from './account-routing.module';
 import { AccountPage } from './account.page';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { MaterialModule } from 'src/app/shared/material/material.module';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { MaterialModule } from 'src/app/shared/material/material.module';
     MaterialModule,
     AccountPageRoutingModule
   ],
-  declarations: [AccountPage, AccountSettingsComponent]
+  declarations: [AccountPage, AccountSettingsComponent, ResetPasswordComponent]
 })
 export class AccountPageModule {}

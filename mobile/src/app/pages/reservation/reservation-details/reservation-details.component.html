@@ -1,0 +1,273 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start" *ngIf="isNew; else reservationDetails">
+      <ion-button (click)="modal.dismiss(isModified ? reservation : null)">
+        <ion-icon name="close-outline" style="font-size: 2rem!important;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ng-template #reservationDetails>
+      <ion-buttons slot="start" *ngIf="isEditMode">
+        <ion-button (click)="onEdit(false)">
+          <ion-icon name="close-outline" style="font-size: 2rem!important;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="start" *ngIf="!isEditMode">
+        <ion-button (click)="modal.dismiss(isModified ? reservation : null)">
+          <ion-icon name="arrow-back-outline" style="font-size: 2rem!important;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ng-template>
+    <ion-title class="ion-text-center">{{isNew ? 'New Reservation': reservation ? reservation?.lot?.lotCode : 'Details'}}</ion-title>
+    <div slot="end" *ngIf="isEditMode; else notEditMode" style="width: 48px"></div>
+    <ng-template #notEditMode>
+      <ion-buttons *ngIf="canEdit; else cantEdit" slot="end">
+        <ion-button (click)="onEdit(true)">
+          <h3>Edit</h3>
+        </ion-button>
+      </ion-buttons>
+    </ng-template>
+    <ng-template #cantEdit>
+      <div style="width: 48px" slot="end"></div>
+    </ng-template>
+  </ion-toolbar>
+</ion-header>
+<ion-content >
+  <div *ngIf="!isNew && !isEditMode" class="status-section ion-padding {{reservation.status.toLowerCase()}}">{{reservation.status}}</div>
+  <div class="lot-section">
+    <ion-col size="12" >
+      <ion-item lines="none">
+        <ion-icon name="location" slot="start"></ion-icon>
+        <ng-container *ngIf="!isNew; else newReservationLot">
+          <ion-label fixed>
+            <h1>{{selectedLot?.lotCode}}</h1>
+            <h3>Block - {{selectedLot?.block}}</h3>
+          </ion-label>
+
+          <ion-button slot="end" fill="clear"(click)="onShowPickLotModal()">
+            <ion-icon *ngIf="isEditMode" name="pencil" slot="end"></ion-icon>
+            <h3>{{isEditMode ? 'Change' : 'View'}}</h3>
+          </ion-button>
+        </ng-container>
+
+        <ng-template #newReservationLot>
+          <ion-label *ngIf="selectedLot && selectedLot?.lotCode; else noSelected">
+            <h1>{{selectedLot?.lotCode}}</h1>
+            <h3>Block - {{selectedLot?.block}}</h3>
+          </ion-label>
+          <ng-template #noSelected>
+            <ion-label> No selected lot </ion-label>
+          </ng-template>
+
+
+          <ion-button slot="end" fill="clear"(click)="onShowPickLotModal()">
+            <h3>Select</h3>
+          </ion-button>
+        </ng-template>
+      </ion-item>
+    </ion-col>
+  </div>
+
+  <form [formGroup]="form" id="form" (submit)="onSaveReservation()" novalidate class="{{isEditMode ? 'ion-padding':''}}" >
+    <fieldset>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeBurialName">
+            <ion-label position="floating">Burial name</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="burialName" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeBurialName>
+            <ion-label fixed>
+              <h3>Burial name</h3>
+              <h1>{{reservation.burialName}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.burialName.dirty && formControls.burialName?.errors?.required">Burial name is
+            required.</ion-note>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'" (click)="isEditMode ? dateOfBirthPicker.present() : false">
+          <ng-container *ngIf="isEditMode; else viewModeDateOfBirth">
+            <ion-label position="floating">Date of birth</ion-label>
+            <ion-input readonly [value]="formControls.dateOfBirth.value | date: 'MMM dd, YYYY'" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeDateOfBirth>
+            <ion-label fixed>
+              <h3>Date of birth</h3>
+              <h1>{{reservation.dateOfBirth | date: 'MMM dd, YYYY'}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error"
+            *ngIf="isEditMode && formControls.dateOfBirth.dirty && formControls.dateOfBirth?.errors?.required">Date of birth is
+            required.</ion-note>
+        </ion-item>
+        <ion-modal #dateOfBirthPicker [cssClass]="'bottom-end'" >
+          <ng-template>
+            <ion-datetime
+              presentation="date"
+              size="cover"
+              locale="en-ph"
+              showDefaultTitle="true"
+              showDefaultButtons="true"
+              formControlName="dateOfBirth"
+              (ionChange)="triggerControlStatus('dateOfBirth')"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}" >
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'" (click)="isEditMode ? dateOfDeathPicker.present() : false">
+          <ng-container *ngIf="isEditMode; else viewModeDateOfDeath">
+            <ion-label position="floating">Date of death</ion-label>
+            <ion-input readonly [value]="formControls.dateOfDeath.value | date: 'MMM dd, YYYY'" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeDateOfDeath>
+            <ion-label fixed>
+              <h3>Date of death</h3>
+              <h1>{{reservation.dateOfDeath | date: 'MMM dd, YYYY'}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error"
+            *ngIf="isEditMode && formControls.dateOfDeath.dirty && formControls.dateOfDeath?.errors?.required">Date of death is
+            required.</ion-note>
+        </ion-item>
+        <ion-modal #dateOfDeathPicker [cssClass]="'bottom-end'" >
+          <ng-template>
+            <ion-datetime
+              presentation="date"
+              size="cover"
+              locale="en-ph"
+              showDefaultTitle="true"
+              showDefaultButtons="true"
+              formControlName="dateOfDeath"
+              (ionChange)="triggerControlStatus('dateOfDeath')"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'" (click)="isEditMode ? dateOfBurialPicker.present() : false">
+          <ng-container *ngIf="isEditMode; else viewModeDateOfBurial">
+            <ion-label position="floating">Date of burial</ion-label>
+            <ion-input readonly [value]="formControls.dateOfBurial.value | date: 'MMM dd, YYYY'" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeDateOfBurial>
+            <ion-label fixed>
+              <h3>Date of burial</h3>
+              <h1>{{reservation.dateOfBurial | date: 'MMM dd, YYYY'}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error"
+            *ngIf="isEditMode && formControls.dateOfBurial.dirty && formControls.dateOfBurial?.errors?.required">Date of burial is
+            required.</ion-note>
+        </ion-item>
+        <ion-modal #dateOfBurialPicker [cssClass]="'bottom-end'" >
+          <ng-template>
+            <ion-datetime
+              presentation="date"
+              size="cover"
+              locale="en-ph"
+              showDefaultTitle="true"
+              showDefaultButtons="true"
+              formControlName="dateOfBurial"
+              (ionChange)="triggerControlStatus('dateOfBurial')"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeFamilyContactPerson">
+            <ion-label position="floating">Family contact person</ion-label>
+            <ion-textarea [readonly]="!isEditMode" formControlName="familyContactPerson" type="text"> </ion-textarea>
+          </ng-container>
+          <ng-template #viewModeFamilyContactPerson>
+            <ion-label fixed>
+              <h3>Family contact person</h3>
+              <h1>{{reservation.familyContactPerson}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error"
+            *ngIf="isEditMode && formControls.familyContactPerson.dirty && formControls.familyContactPerson?.errors?.required">Family
+            contact person is required.</ion-note>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeFamilyContactNumber">
+            <ion-label position="floating">Family contact number</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="familyContactNumber" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeFamilyContactNumber>
+            <ion-label fixed>
+              <h3>Family contact number</h3>
+              <h1>{{reservation.familyContactNumber}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error"
+            *ngIf="isEditMode && formControls.familyContactNumber.dirty && formControls.familyContactNumber?.errors?.required">You
+            need to enter a valid contact number.</ion-note>
+        </ion-item>
+      </ion-col>
+    </fieldset>
+  </form>
+
+</ion-content>
+
+<ion-footer class="ion-padding" *ngIf="canEdit">
+  <ion-toolbar mode="md">
+    <ion-button *ngIf="isEditMode" [disabled]="!form.dirty || !form.valid" type="submit" form="form" mode="md"
+      expand="full" shape="round" size="large" color="primary">
+      Save
+    </ion-button>
+    <ion-button (click)="cancelReservation()" *ngIf="!isEditMode" mode="md" expand="full" shape="round" size="large" fill="outline" color="danger">
+      Cancel
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+<ion-modal class="result-modal" [isOpen]="isOpenResultModal">
+  <ng-template>
+    <div class="success-modal-content">
+      <ion-icon name="checkmark-circle-outline" *ngIf="resultModal?.type==='success'; else errorIcon" color="primary"></ion-icon>
+      <ng-template #errorIcon>
+        <ion-icon name="checkmark-circle-outline" color="danger"></ion-icon>
+      </ng-template>
+
+      <div class="title">
+        <h1>{{resultModal?.title}}</h1>
+      </div>
+      <div class="desc">
+        <h1>{{resultModal?.desc}}</h1>
+      </div>
+      <div class="action">
+        <ion-button
+          *ngIf="resultModal?.type==='success'; else errorAction"
+          mode="md"
+          expand="outline"
+          shape="round"
+          size="large"
+          color="primary"
+          (click)="resultModal.done()">
+        Done
+      </ion-button>
+      <ng-template #errorAction>
+        <ion-button
+          mode="md"
+          expand="outline"
+          shape="round"
+          size="large"
+          color="danger"
+          (click)="resultModal.retry()">
+        Retry
+      </ion-button>
+      </ng-template>
+
+    </div>
+    </div>
+  </ng-template>
+</ion-modal>

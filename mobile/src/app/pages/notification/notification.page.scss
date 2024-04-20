@@ -86,7 +86,7 @@ ion-label {
 }
 .desc {
   opacity: 0.8!important;
-  color: var(--ion-color-primary)!important;
+  // color: var(--ion-color-tertiary)!important;
   white-space: break-spaces!important;
   -webkit-line-clamp: 2;
   &.unread {
@@ -110,7 +110,7 @@ ion-label {
   right: 10px;
   top: 50%;
   position: absolute;
-  background: var(--ion-color-primary)!important;
+  background: var(--ion-color-tertiary)!important;
 }
 
 .no-collections-result {

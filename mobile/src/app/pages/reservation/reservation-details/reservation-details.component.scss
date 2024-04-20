@@ -1,0 +1,34 @@
+::ng-deep {
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0!important;
+    white-space: break-spaces;
+  }
+  .lot-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+  }
+  .status-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    opacity: 0.6;
+    color: white;
+    &.pending {
+      background-color: var(--ion-color-warning)!important;
+    }
+    &.approved {
+      background-color: var(--ion-color-primary)!important;
+    }
+    &.rejected {
+      background-color: var(--ion-color-danger)!important;
+    }
+    &.leased {
+      background-color: var(--ion-color-secondary)!important;
+    }
+    &.cancelled {
+      background-color: var(--ion-color-danger)!important;
+    }
+  }
+}

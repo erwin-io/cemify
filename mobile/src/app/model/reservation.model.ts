@@ -1,6 +1,6 @@
-import { Burial } from "./burial.model";
-import { Lot } from "./lot.model";
-import { Users } from "./users";
+import { Burial } from './burial.model';
+import { Lot } from './lot.model';
+import { Users } from './users';
 
 export class Reservation {
   reservationId: string;
@@ -12,7 +12,7 @@ export class Reservation {
   dateOfBurial?: string;
   familyContactPerson?: string;
   familyContactNumber?: string;
-  status?: "PENDING" | "APPROVED" | "REJECTED" | "LEASED" | "CANCELLED";
+  status?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'LEASED' | 'CANCELLED';
   active?: boolean;
   burials?: Burial[];
   lot?: Lot;

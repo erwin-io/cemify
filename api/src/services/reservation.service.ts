@@ -290,7 +290,10 @@ export class ReservationService {
         const status = reservation.status;
         if (status === RESERVATION_STATUS.APPROVED) {
           title = NOTIF_TITLE.RESERVATION_APPROVED;
-          desc = `Your reservation for block ${reservation?.lot?.block} - lot ${reservation?.lot?.lotCode} has now been Approved, and the stall is now officially Leased to you!`;
+          desc = `Your reservation for block ${reservation?.lot?.block} - lot ${reservation?.lot?.lotCode} has now been Approved!`;
+        } else if (status === RESERVATION_STATUS.APPROVED) {
+          title = NOTIF_TITLE.RESERVATION_APPROVED;
+          desc = `Your reservation for block ${reservation?.lot?.block} - lot ${reservation?.lot?.lotCode} has now been officially Leased to you!`;
         } else if (status === RESERVATION_STATUS.REJECTED) {
           title = NOTIF_TITLE.RESERVATION_REJECTED;
           desc = `Your reservation for block ${reservation?.lot?.block} - lot ${reservation?.lot?.lotCode} was Rejected!`;

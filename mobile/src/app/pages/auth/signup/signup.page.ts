@@ -11,6 +11,7 @@ import { AppConfigService } from 'src/app/services/app-config.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { PageLoaderService } from 'src/app/services/page-loader.service';
 import { MyErrorStateMatcher } from 'src/app/shared/form-validation/error-state.matcher';
+import { Subject, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -18,18 +19,17 @@ import { MyErrorStateMatcher } from 'src/app/shared/form-validation/error-state.
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit, AfterViewInit {
-  @ViewChild('signUpStepper') signUpStepper: MatStepper;
+  modal;
   isSubmitting = false;
-  mobileNumberForm: FormGroup;
-  otpForm: FormGroup;
-  authForm: FormGroup;
-  personalDetailsForm: FormGroup;
+  form: FormGroup;
   defaultDate = new Date();
-  matcher = new MyErrorStateMatcher();
   isProcessed = false;
   isTouchingSlide = false;
 
   otpSent = false;
+  isOpenResultModal = false;
+  resultModal: { type: 'success' | 'failed' | 'warning'; title: string; desc: string; done?; retry? };
+  protected ngUnsubscribe: Subject<void> = new Subject<void>();
   constructor(private modalCtrl: ModalController,
     private appconfig: AppConfigService,
     private authService: AuthService,
@@ -38,84 +38,37 @@ export class SignupPage implements OnInit, AfterViewInit {
     private pageLoaderService: PageLoaderService,
     private formBuilder: FormBuilder,
     private alertController: AlertController) {
-      this.mobileNumberForm = this.formBuilder.group({
+      this.form = this.formBuilder.group({
+        fullName : [null, [Validators.required, Validators.minLength(2)]],
         mobileNumber: [null, [Validators.required,Validators.minLength(11),Validators.maxLength(11)]],
-      });
-      this.otpForm = this.formBuilder.group({
-        otp: [null, [Validators.required,Validators.minLength(6),Validators.maxLength(6)]],
-      });
-      this.authForm = this.formBuilder.group({
         password: [null, [Validators.required,Validators.minLength(3),Validators.maxLength(16)]],
         confirmPassword : '',
-      },
-      { validators: this.checkPasswords });
-      this.personalDetailsForm = this.formBuilder.group({
-        fullName : [null, [Validators.required, Validators.minLength(2)]],
-      });
+      }, { validators: this.checkPasswords });
      }
 
+  get formControls() {
+    return this.form.controls;
+  }
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
   }
 
-
   checkPasswords: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
     const pass = group.get('password')?.value;
     const confirmPass = group.get('confirmPassword')?.value;
-    return pass === confirmPass ? null : { notSame: true };
+    if(pass !== confirmPass) {
+      group.get('confirmPassword').setErrors({ notMatch: true});
+    }
+    return null;
   };
 
-  async registerNumber() {
-    if(!this.mobileNumberForm.valid) {
+  async onRegister() {
+    if(!this.form.valid) {
       return;
     }
-    if(this.appconfig.config.auth.requireOTP === true) {
-      this.signUpStepper.next();
-    } else {
-      this.signUpStepper.selectedIndex = 2;
-    }
-    this.otpSent = true;
-  }
-
-  async verifyNumber() {
-    if(!this.otpForm.valid) {
-      return;
-    }
-    this.signUpStepper.next();
-  }
-
-  async resendOTP() {
-    this.otpForm.reset();
-    this.otpSent = false;
-  }
-
-  async savePassword() {
-    if(!this.authForm.valid && this.authForm.value.password !== this.authForm.value.confirmPass) {
-      return;
-    }
-    this.signUpStepper.next();
-  }
-
-  async savePersonalDetails() {
-    if(!this.personalDetailsForm.valid) {
-      return;
-    }
-    this.signUpStepper.next();
-  }
-
-  async submit() {
-    const param  = {
-      ...this.mobileNumberForm.value,
-      ...this.authForm.value,
-      ...this.personalDetailsForm.value,
-    };
-    param.userName = param.mobileNumber;
-    await this.onFormSubmit(param);
-  }
-
-  async onFormSubmit(param) {
+    const param = this.form.value;
     try{
       this.isSubmitting = true;
       await this.pageLoaderService.open('Processing please wait...');
@@ -123,36 +76,63 @@ export class SignupPage implements OnInit, AfterViewInit {
         .subscribe(async res => {
           if (res.success) {
             console.log(res.data);
-            this.signUpStepper.next();
+            this.ngUnsubscribe.complete();
             await this.pageLoaderService.close();
+            this.isOpenResultModal = true;
             this.isSubmitting = false;
             this.isProcessed = true;
+            this.resultModal = {
+              title: 'Success!',
+              desc: 'Account successfully created!',
+              type: 'success',
+              done: ()=> {
+                this.isOpenResultModal = false;
+                this.modal.dismiss(res.data, 'confirm');
+              }
+            };
           } else {
             await this.pageLoaderService.close();
+            this.ngUnsubscribe.complete();
             this.isSubmitting = false;
-            await this.presentAlert({
-              header: 'Try again!',
-              message: Array.isArray(res.message) ? res.message[0] : res.message,
-              buttons: ['OK']
-            });
+            this.isOpenResultModal = true;
+            this.resultModal = {
+              title: 'Error!',
+              desc: 'Oops, ' + res.message,
+              type: 'failed',
+              retry: ()=> {
+                this.isOpenResultModal = false;
+              },
+            };
           }
         }, async (err) => {
           await this.pageLoaderService.close();
+          this.ngUnsubscribe.complete();
           this.isSubmitting = false;
-          await this.presentAlert({
-            header: 'Try again!',
-            message: Array.isArray(err.message) ? err.message[0] : err.message,
-            buttons: ['OK']
-          });
+          this.isOpenResultModal = true;
+          this.resultModal = {
+            title: 'Error!',
+            desc: 'Oops, ' + Array.isArray(err.message)
+            ? err.message[0]
+            : err.message,
+            type: 'failed',
+            retry: ()=> {
+              this.isOpenResultModal = false;
+            },
+          };
         });
     } catch (e){
       await this.pageLoaderService.close();
+      this.ngUnsubscribe.complete();
       this.isSubmitting = false;
-      await this.presentAlert({
-        header: 'Try again!',
-        message: Array.isArray(e.message) ? e.message[0] : e.message,
-        buttons: ['OK']
-      });
+      this.isOpenResultModal = true;
+      this.resultModal = {
+        title: 'Oops!',
+        desc: Array.isArray(e.message) ? e.message[0] : e.message,
+        type: 'failed',
+        retry: ()=> {
+          this.isOpenResultModal = false;
+        },
+      };
     }
   }
 
@@ -162,32 +142,27 @@ export class SignupPage implements OnInit, AfterViewInit {
   }
 
   close() {
-    if(this.signUpStepper.selectedIndex > 0) {
-      if(this.signUpStepper.selectedIndex === 2) {
-        this.signUpStepper.selectedIndex = 0;
-      } else {
-        this.signUpStepper.previous();
-      }
-    } else {
-      this.modalCtrl.dismiss(null, 'cancel');
-    }
+    this.modal.dismiss(null, 'cancel');
   }
 
-  async login() {
-    this.modalCtrl.dismiss();
-    let modal: any = null;
-    modal = await this.modalCtrl.create({
-      component: LoginPage,
-      cssClass: 'modal-fullscreen',
-      backdropDismiss: false,
-      canDismiss: true,
-      enterAnimation: this.animationService.flyUpAnimation,
-      leaveAnimation: this.animationService.leaveFlyUpAnimation,
-    });
-    modal.onWillDismiss().then((res: any) => {
-      this.modalCtrl.dismiss();
-    });
-    modal.present();
+
+  handleError<T>(operation, result?: T) {
+    return (error: any): Observable<T> => {
+      this.ngUnsubscribe.complete();
+        this.log(`${operation} failed: ${Array.isArray(error.message) ? error.message[0] : error.message}`);
+      return of(error as any);
+    };
   }
 
+  log(message: string) {
+    console.log(message);
+    this.resultModal = {
+      title: 'Oops!',
+      desc: message,
+      type: 'failed',
+      retry: ()=> {
+        this.isOpenResultModal = false;
+      },
+    };
+  }
 }

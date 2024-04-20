@@ -19,6 +19,10 @@ import { PageLoaderService } from 'src/app/services/page-loader.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { PusherService } from 'src/app/services/pusher.service';
+import { ReservationService } from 'src/app/services/reservation.service';
+import { ReservationDetailsComponent } from '../reservation/reservation-details/reservation-details.component';
+import { WorkOrderService } from 'src/app/services/work-order.service';
+import { WorkOrderDetailsComponent } from '../work-order/work-order-details/work-order-details.component';
 
 export class NotificationsView extends Notifications {
   icon: 'notifications' | 'checkmark-circle' | 'close-circle' | 'megaphone' | 'person' | 'enter' | 'log-out';
@@ -51,6 +55,8 @@ export class NotificationPage implements OnInit, AfterViewInit {
     private authService: AuthService,
     private animationService: AnimationService,
     private storageService: StorageService,
+    private reservationService: ReservationService,
+    private workOrderService: WorkOrderService,
     private actionSheetCtrl: ActionSheetController,
     private pusherService: PusherService) {
       this.currentUser = this.storageService.getLoginUser();
@@ -127,74 +133,56 @@ export class NotificationPage implements OnInit, AfterViewInit {
     }
   }
 
-  // async onNotificationClick(notif: Notifications) {
-  //   if(!this.isAuthenticated) {
-  //     this.authService.logout();
-  //   }
+  async onNotificationClick(notif: Notifications) {
+    if(!this.isAuthenticated) {
+      this.authService.logout();
+    }
 
-  //   if(notif.type === "TENANT_RENT_BOOKING") {
-  //     await this.pageLoaderService.open('Loading please wait...');
+    if(notif.type === 'RESERVATION') {
+      await this.pageLoaderService.open('Loading please wait...');
 
-  //     const res = await this.rentBookingService.getByCode(notif.referenceId).toPromise();
-  //     let modal: HTMLIonModalElement = null;
-  //     const currentUser = this.storageService.getLoginUser();
-  //     modal = await this.modalCtrl.create({
-  //       component: RequestDetailsPage,
-  //       cssClass: 'modal-fullscreen',
-  //       backdropDismiss: false,
-  //       canDismiss: true,
-  //       enterAnimation: this.animationService.pushLeftAnimation,
-  //       leaveAnimation: this.animationService.leavePushLeftAnimation,
-  //       componentProps: { modal, currentUser, details: res.data },
-  //     });
-  //     modal.present();
-  //     modal.onDidDismiss().then(res=> {
-  //       this.pageLoaderService.close();
-  //       this.markNotifAsRead(notif);
-  //     });
-  //   } else if(notif.type === "TENANT_RENT_CONTRACT") {
+      const res = await this.reservationService.getByCode(notif.referenceId).toPromise();
+      let modal: HTMLIonModalElement = null;
+      const currentUser = this.storageService.getLoginUser();
+      modal = await this.modalCtrl.create({
+        component: ReservationDetailsComponent,
+        cssClass: 'modal-fullscreen',
+        backdropDismiss: false,
+        canDismiss: true,
+        enterAnimation: this.animationService.pushLeftAnimation,
+        leaveAnimation: this.animationService.leavePushLeftAnimation,
+        componentProps: { modal, currentUser, reservation: res.data },
+      });
+      modal.present();
+      modal.onDidDismiss().then(res=> {
+        this.pageLoaderService.close();
+        this.markNotifAsRead(notif);
+      });
+    } else if(notif.type === 'WORK_ORDER') {
 
-  //     const res = await this.tenantRentContractService.getByCode(notif.referenceId).toPromise();
-  //     let modal: HTMLIonModalElement = null;
-  //     const currentUser = this.storageService.getLoginUser();
-  //     modal = await this.modalCtrl.create({
-  //       component: RentDetailsPage,
-  //       cssClass: 'modal-fullscreen',
-  //       backdropDismiss: false,
-  //       canDismiss: true,
-  //       enterAnimation: this.animationService.pushLeftAnimation,
-  //       leaveAnimation: this.animationService.leavePushLeftAnimation,
-  //       componentProps: { modal, currentUser, details: getContract(res.data) },
-  //     });
-  //     modal.present();
-  //     modal.onDidDismiss().then(res=> {
-  //       this.pageLoaderService.close();
-  //       this.markNotifAsRead(notif);
-  //     });
-  //   } else if(notif.type === "TENANT_RENT_CONTRACT_PAYMENT") {
-  //     const res = await this.contractPaymentService.getByCode(notif.referenceId).toPromise();
-  //     let modal: HTMLIonModalElement = null;
-  //     modal = await this.modalCtrl.create({
-  //       component: CollectionDetailsPage,
-  //       cssClass: 'modal-fullscreen',
-  //       backdropDismiss: false,
-  //       canDismiss: true,
-  //       enterAnimation: this.animationService.pushLeftAnimation,
-  //       leaveAnimation: this.animationService.leavePushLeftAnimation,
-  //       componentProps: { modal, details: res.data },
-  //     });
-  //     modal.present();
-  //     modal.onDidDismiss().then(res=> {
-  //       this.pageLoaderService.close();
-  //       this.markNotifAsRead(notif);
-  //     });
-  //   } else if (notif.type === "TENANT_RENT_BILLING_REMINDER") {
-  //   } else {
-  //     await this.pageLoaderService.open('Loading please wait...');
-  //     this.pageLoaderService.close();
-  //     this.markNotifAsRead(notif);
-  //   }
-  // }
+      const res = await this.workOrderService.getByCode(notif.referenceId).toPromise();
+      let modal: HTMLIonModalElement = null;
+      const currentUser = this.storageService.getLoginUser();
+      modal = await this.modalCtrl.create({
+        component: WorkOrderDetailsComponent,
+        cssClass: 'modal-fullscreen',
+        backdropDismiss: false,
+        canDismiss: true,
+        enterAnimation: this.animationService.pushLeftAnimation,
+        leaveAnimation: this.animationService.leavePushLeftAnimation,
+        componentProps: { modal, currentUser, workOrder: res.data},
+      });
+      modal.present();
+      modal.onDidDismiss().then(res=> {
+        this.pageLoaderService.close();
+        this.markNotifAsRead(notif);
+      });
+    } else {
+      await this.pageLoaderService.open('Loading please wait...');
+      this.pageLoaderService.close();
+      this.markNotifAsRead(notif);
+    }
+  }
 
   async getTotalUnreadNotif(userId: string){
     try {

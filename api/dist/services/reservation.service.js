@@ -215,7 +215,7 @@ let ReservationService = class ReservationService {
     }
     async updateStatus(reservationCode, dto) {
         return await this.reservationRepo.manager.transaction(async (entityManager) => {
-            var _a, _b, _c, _d, _e, _f;
+            var _a, _b, _c, _d, _e, _f, _g, _h;
             const reservation = await entityManager.findOne(Reservation_1.Reservation, {
                 where: {
                     reservationCode,
@@ -241,15 +241,19 @@ let ReservationService = class ReservationService {
             const status = reservation.status;
             if (status === reservation_constant_1.RESERVATION_STATUS.APPROVED) {
                 title = notifications_constant_1.NOTIF_TITLE.RESERVATION_APPROVED;
-                desc = `Your reservation for block ${(_a = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _a === void 0 ? void 0 : _a.block} - lot ${(_b = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _b === void 0 ? void 0 : _b.lotCode} has now been Approved, and the stall is now officially Leased to you!`;
+                desc = `Your reservation for block ${(_a = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _a === void 0 ? void 0 : _a.block} - lot ${(_b = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _b === void 0 ? void 0 : _b.lotCode} has now been Approved!`;
+            }
+            else if (status === reservation_constant_1.RESERVATION_STATUS.APPROVED) {
+                title = notifications_constant_1.NOTIF_TITLE.RESERVATION_APPROVED;
+                desc = `Your reservation for block ${(_c = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _c === void 0 ? void 0 : _c.block} - lot ${(_d = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _d === void 0 ? void 0 : _d.lotCode} has now been officially Leased to you!`;
             }
             else if (status === reservation_constant_1.RESERVATION_STATUS.REJECTED) {
                 title = notifications_constant_1.NOTIF_TITLE.RESERVATION_REJECTED;
-                desc = `Your reservation for block ${(_c = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _c === void 0 ? void 0 : _c.block} - lot ${(_d = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _d === void 0 ? void 0 : _d.lotCode} was Rejected!`;
+                desc = `Your reservation for block ${(_e = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _e === void 0 ? void 0 : _e.block} - lot ${(_f = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _f === void 0 ? void 0 : _f.lotCode} was Rejected!`;
             }
             else {
                 title = `Your reservation was ${status.toLowerCase().charAt(0).toUpperCase() + status.slice(1)}`;
-                desc = `Your reservation for block ${(_e = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _e === void 0 ? void 0 : _e.block} - lot ${(_f = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _f === void 0 ? void 0 : _f.lotCode} was now being ${status.toLowerCase().charAt(0).toUpperCase() + status.slice(1)}!`;
+                desc = `Your reservation for block ${(_g = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _g === void 0 ? void 0 : _g.block} - lot ${(_h = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _h === void 0 ? void 0 : _h.lotCode} was now being ${status.toLowerCase().charAt(0).toUpperCase() + status.slice(1)}!`;
             }
             const notificationIds = await this.logNotification([reservation.user], reservation, entityManager, title, desc);
             const staffUsers = await entityManager.find(Users_1.Users, {

@@ -5,188 +5,110 @@
         <ion-icon name="arrow-back-sharp" style="font-size: 2em!important;" color="primary" ></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center"></ion-title>
+    <ion-title class="ion-text-center">Create account</ion-title>
     <div slot="end" style="width: 48px"></div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <mat-stepper animationDuration="200" [linear]="false" #signUpStepper [ngClass]="{ 'center': signUpStepper.selectedIndex !== 3}">
-    <mat-step [stepControl]="mobileNumberForm">
-      <div class="form-container center">
-        <div class="form-header">
-          <h1 class="title">Please enter your mobile number</h1>
-        </div>
-        <form
-          [formGroup]="mobileNumberForm"
-          (ngSubmit)="registerNumber()">
-          <fieldset [disabled]="isSubmitting">
-            <div class="form-field-group">
-              <mat-form-field appearance="outline">
-                <input
-                  #mobileNumber
-                  matInput
-                  type="text"
-                  placeholder="ex: 09123456789"
-                  formControlName="mobileNumber"
-                  autocapitalize="none"
-                  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                />
-              </mat-form-field>
-            </div>
-          </fieldset>
-        </form>
-        <div class="form-footer">
-          <ion-button shape="round" size="large" [disabled]="!mobileNumberForm.valid"
-          (click)="registerNumber()">Next</ion-button>
-        </div>
-      </div>
-    </mat-step>
-    <mat-step [stepControl]="otpForm" >
-      <div class="form-container center">
-        <div class="form-header">
-          <h1 class="title">Verification</h1>
-        </div>
-        <form
-          [formGroup]="otpForm"
-          (ngSubmit)="verifyNumber()">
-          <fieldset [disabled]="isSubmitting">
-            <div class="form-field-group">
-              <mat-form-field appearance="outline">
-                <mat-label>OTP</mat-label>
-                <input
-                  #otp
-                  matInput
-                  pattern="[0-9]{6}"
-                  type="text"
-                  placeholder="Enter"
-                  formControlName="otp"
-                  autocapitalize="none"
-                  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                />
-              </mat-form-field>
-            </div>
-          </fieldset>
-        </form>
-        <div class="form-footer">
-          <ion-button shape="round" size="large" [disabled]="!otpForm.valid"
-          (click)="verifyNumber()">Continue</ion-button>
-          <ion-button shape="round" size="large" fill="outline" [disabled]="!otpForm.valid || otpSent" (click)="resendOTP()">Resend OTP</ion-button>
-        </div>
-      </div>
-    </mat-step>
-    <mat-step [stepControl]="authForm">
-      <div class="form-container center">
-        <div class="form-header">
-          <h1 class="title">Login password</h1>
-        </div>
-        <form
-          [formGroup]="authForm"
-          (ngSubmit)="savePassword()">
-          <fieldset [disabled]="isSubmitting">
+<ion-content class="ion-padding">
+  <form id="register" [formGroup]="form" (submit)="onRegister()" novalidate>
+    <fieldset>
+      <ion-col size="12" class="ion-margin-bottom">
+        <ion-item fill="outline" class="form-field" >
+          <ion-label position="floating">Name</ion-label>
+          <ion-input formControlName="fullName" type="text" placeholder="Name"> </ion-input>
+          <ion-note slot="error" *ngIf="formControls.fullName.dirty && formControls.fullName?.errors?.required">Name is required.</ion-note>
+          <ion-note slot="error" *ngIf="formControls.fullName.dirty && formControls.fullName?.errors?.minlength">Name must be at least 2 characters long.</ion-note>
+        </ion-item>
+      </ion-col>
 
-          <div class="form-field-group">
-            <mat-form-field appearance="outline">
-              <mat-label>Password</mat-label>
-              <input
-                matInput
-                type="password"
-                placeholder="Password"
-                formControlName="password"
-                autocomplete="new-password"
-                #password
-              />
-              <mat-icon
-                class="icon-right"
-                (click)="password.type = (password.type === 'password' ? 'text' : 'password')"
-                style="cursor: pointer;"
-                matSuffix>{{ password.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
-            </mat-form-field>
-          </div>
-          <div class="form-field-group">
-            <mat-form-field appearance="outline">
-              <mat-label>Confirm password</mat-label>
-              <input
-                matInput
-                type="password"
-                placeholder="Confirm password"
-                formControlName="confirmPassword"
-                autocomplete="new-confirmPassword"
-                [errorStateMatcher]="matcher"
-                #confirmPassword
-              />
-              <mat-icon
-                class="icon-right"
-                (click)="confirmPassword.type = (confirmPassword.type === 'password' ? 'text' : 'password')"
-                style="cursor: pointer;"
-                matSuffix>{{ confirmPassword.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
-            </mat-form-field>
-          </div>
-          </fieldset>
-        </form>
-        <div class="form-footer">
-          <ion-button shape="round" size="large" [disabled]="!authForm.valid"
-          (click)="savePassword()">Continue</ion-button>
-          <ion-button shape="round" size="large" fill="outline" (click)="signUpStepper.selectedIndex = 0">Go back</ion-button>
-        </div>
-      </div>
-    </mat-step>
-    <mat-step [stepControl]="personalDetailsForm">
-      <div class="form-container center">
-        <div class="form-header">
-          <h1 class="title">Personal details</h1>
-        </div>
-        <form
-          [formGroup]="personalDetailsForm"
-          (ngSubmit)="savePersonalDetails()">
-          <fieldset [disabled]="isSubmitting">
-            <div class="form-field-group">
-              <mat-form-field appearance="outline">
-                <mat-label>Name</mat-label>
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Name"
-                  formControlName="fullName"
-                  autocomplete="new-fullName"
-                />
-              </mat-form-field>
-            </div>
-          </fieldset>
-        </form>
-        <div class="form-footer" style="margin-bottom: 20px;">
-          <ion-button shape="round" size="large" [disabled]="!personalDetailsForm.valid"
-          (click)="savePersonalDetails()">Continue</ion-button>
-          <ion-button shape="round" size="large" fill="outline" (click)="signUpStepper.previous()">Go back</ion-button>
-        </div>
-      </div>
-    </mat-step>
-    <mat-step>
-      <div class="form-container center">
-        <div class="form-header">
-          <h1 class="title">Great! Everything's good. You can now register.</h1>
-        </div>
-        <div class="form-footer">
-          <ion-button shape="round" size="large" [disabled]="isSubmitting "
-          (click)="submit()">Register now</ion-button>
-          <ion-button shape="round" size="large" fill="outline" (click)="signUpStepper.previous()">Go back</ion-button>
-        </div>
-      </div>
-    </mat-step>
-    <mat-step>
-      <div class="form-container center">
-        <div class="form-header">
-          <ion-icon class="check" name="checkmark-circle-outline" color="primary"></ion-icon>
-          <h1 class="title">Success!</h1>
-        </div>
-      </div>
-    </mat-step>
-  </mat-stepper>
+      <ion-col size="12" class="ion-margin-bottom">
+        <ion-item fill="outline" class="form-field" >
+          <ion-label position="floating">Mobile number</ion-label>
+          <ion-input formControlName="mobileNumber" type="text" placeholder="Mobile number" oninput="this.value = this.value.replace(/[^0-9]/g, '')"> </ion-input>
+          <ion-note slot="error" *ngIf="formControls.mobileNumber.dirty && formControls.mobileNumber?.errors?.required">Mobile number is required.</ion-note>
+          <ion-note slot="error" *ngIf="formControls.mobileNumber.dirty && formControls.mobileNumber?.errors?.minlength">Enter valid mobile number.</ion-note>
+          <ion-note slot="error" *ngIf="formControls.mobileNumber.dirty && formControls.mobileNumber?.errors?.maxlength">Enter valid mobile number.</ion-note>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="12" class="ion-margin-bottom">
+        <ion-item fill="outline" class="form-field">
+          <ion-label position="floating">Password</ion-label>
+          <ion-input #password type="password" placeholder="Password" formControlName="password"> </ion-input>
+          <ion-icon name="eye" slot="end" (click)="password.type = password.type === 'text' ? 'password' : 'text'"></ion-icon>
+          <ion-note slot="error" *ngIf="formControls.password.dirty && formControls.password?.errors?.required">Password is required.</ion-note>
+          <ion-note slot="error" *ngIf="formControls.password.dirty && formControls.password?.errors?.minlength">The password must be at least 3 characters long.</ion-note>
+          <ion-note slot="error" *ngIf="formControls.password.dirty && formControls.password?.errors?.maxlength">The password must not be more than 16 characters long.</ion-note>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="12" class="ion-margin-bottom">
+        <ion-item fill="outline" class="form-field">
+          <ion-label position="floating">Confirm password</ion-label>
+          <ion-input #confirmPassword type="password" placeholder="Confirm password" formControlName="confirmPassword"> </ion-input>
+          <ion-icon name="eye" slot="end" (click)="confirmPassword.type = confirmPassword.type === 'text' ? 'password' : 'text'"></ion-icon>
+          <ion-note slot="error" *ngIf="formControls.password.dirty && formControls.confirmPassword?.errors?.notMatch">The password not match.</ion-note>
+        </ion-item>
+      </ion-col>
+    </fieldset>
+  </form>
 </ion-content>
-<ion-footer *ngIf="isProcessed">
-  <ion-toolbar>
-    <div class="controls">
-      <ion-button shape="round" size="large" (click)="login()">Login</ion-button>
-    </div>
+
+<ion-footer class="ion-padding">
+  <ion-toolbar mode="md" >
+    <ion-button
+      [disabled]="!form.dirty || !form.valid"
+      type="submit"
+      form="register"
+      mode="md"
+      expand="full"
+      shape="round"
+      size="large"
+      color="primary">
+    Create account
+  </ion-button>
   </ion-toolbar>
 </ion-footer>
+
+<ion-modal class="result-modal" [isOpen]="isOpenResultModal">
+  <ng-template>
+    <div class="success-modal-content">
+      <ion-icon name="checkmark-circle-outline" *ngIf="resultModal?.type==='success'; else errorIcon" color="primary"></ion-icon>
+      <ng-template #errorIcon>
+        <ion-icon name="checkmark-circle-outline" color="danger"></ion-icon>
+      </ng-template>
+
+      <div class="title">
+        <h1>{{resultModal?.title}}</h1>
+      </div>
+      <div class="desc">
+        <h1>{{resultModal?.desc}}</h1>
+      </div>
+      <div class="action">
+        <ion-button
+          *ngIf="resultModal?.type==='success'; else errorAction"
+          mode="md"
+          expand="outline"
+          shape="round"
+          size="large"
+          color="primary"
+          (click)="resultModal.done()">
+        Done
+      </ion-button>
+      <ng-template #errorAction>
+        <ion-button
+          mode="md"
+          expand="outline"
+          shape="round"
+          size="large"
+          color="danger"
+          (click)="resultModal.retry()">
+        Retry
+      </ion-button>
+      </ng-template>
+
+    </div>
+    </div>
+  </ng-template>
+</ion-modal>

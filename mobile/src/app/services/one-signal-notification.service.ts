@@ -47,7 +47,7 @@ export class OneSignalNotificationService {
     console.log('calling setAppId');
     PushNotifications.createChannel({
      id: 'fcm_default_channel',
-     name: 'Siaton Public Market Rentals',
+     name: 'Cemify',
      importance: 5,
      visibility: 1,
      lights: true,

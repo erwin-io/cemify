@@ -1,0 +1,97 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="modal.dismiss()">
+        <ion-icon name="arrow-back-outline" style="font-size: 2rem!important;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Select lot</ion-title>
+    <div slot="end" style="width: 48px"></div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="map-wrapper">
+    <app-map-box fxFlex="100" [disablePan]="true" [showLegend]="false" [mode]="config.mode" (onLoadComplete)="onMapLoadComplete()"
+      (onSelectChange)="onSelectLotChange($event);" [disableSelection]="config.disableSelection"
+      #mapBox></app-map-box>
+  </div>
+  <ion-modal id="lot-selected-lot-modal" #detailsModal trigger="open-selected-lot-modal" [initialBreakpoint]="0.6"
+    [breakpoints]="[0, 0.6, 0.8, 1]">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <div slot="start" style="width: 48px"></div>
+          <ion-title class="ion-text-center" *ngIf="!selectedLotLoading; else selectedLotLoadingTemp">{{selectedLot ?
+            selectedLot?.lotCode : ''}}{{selectedLot && selectedLot?.burial?.fullName ? '/' +
+            selectedLot?.burial?.fullName : ''}}</ion-title>
+          <ng-template #selectedLotLoadingTemp>
+            <ion-title class="ion-text-center">
+              <ion-skeleton-text style="min-height: 25px;min-width: 100%;" [animated]="true"></ion-skeleton-text>
+            </ion-title>
+          </ng-template>
+          <div slot="end" style="width: 48px"></div>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list *ngIf="selectedLot" lines="none">
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>
+                <h2>Lot</h2>
+              </ion-label>
+            </ion-item-divider>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Status</strong>: <ion-badge color="{{
+                  selectedLot.status === 'AVAILABLE' ? 'secondary': ''||
+                  selectedLot.status === 'OCCUPIED' ? 'danger': ''||
+                  selectedLot.status === 'UNAVAILABLE' ? 'light': ''
+                  }}">{{selectedLot.status}}</ion-badge></h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Lot</strong>: {{selectedLot.lotCode}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <h2><strong>Block</strong>: {{selectedLot.lotCode}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-item-group>
+        </ion-list>
+        <div class="ion-padding">
+          <ion-button (click)="detailsModal.dismiss();modal.dismiss(selectedLot)" [disabled]="!selectedLot || !selectedLot.lotCode || selectedLot.lotCode === ''" mode="md" expand="full" shape="round"
+            size="large" color="primary">
+            Select
+          </ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<ion-footer *ngIf="selectedLot && selectedLot.lotCode && selectedLot.lotCode !== ''">
+
+  <ion-col>
+    <ion-item lines="none">
+      <ion-icon name="location" slot="start"></ion-icon>
+      <ion-label fixed>
+        <h1>{{selectedLot?.lotCode}}</h1>
+        <h3>Block - {{selectedLot?.block}}</h3>
+      </ion-label>
+    </ion-item>
+  </ion-col>
+  <div class="ion-padding" *ngIf="!config.disableSelection">
+    <ion-toolbar mode="md">
+      <ion-button (click)="modal.dismiss(selectedLot)" [disabled]="!selectedLot || !selectedLot.lotCode || selectedLot.lotCode === ''" mode="md" expand="full" shape="round"
+        size="large" color="primary">
+        Select
+      </ion-button>
+    </ion-toolbar>
+  </div>
+
+</ion-footer>
+

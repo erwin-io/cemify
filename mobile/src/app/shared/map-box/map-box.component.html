@@ -1,4 +1,4 @@
-<div id="box" class="box" [class]="{'big-screen': width >= 600}">
+<div id="box" class="box{{ width >= 600 ? ' big-screen': ' ' }}{{' dom' + '-' + id}}">
   <div class="svg-box">
     <svg #map id="svg" class="svg {{mode.toLowerCase()}} {{disableSelection ? 'no-select' : 'can-select'}} {{showLegend ? 'show-legend' : 'hide-legend'}}" version="1.1" width="1594px" height="1673px" viewBox="-0.5 -0.5 1594 1673">
       <g>

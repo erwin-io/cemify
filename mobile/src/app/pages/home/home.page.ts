@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Style } from '@capacitor/status-bar';
 import { IonModal } from '@ionic/angular';
 import { Lot } from 'src/app/model/lot.model';
@@ -16,7 +16,7 @@ import { FormControl } from '@angular/forms';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss']
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   details: Lot;
   @ViewChild('mapBox') mapBox: MapBoxComponent;
   @ViewChild('detailsModal', { static: false }) detailsModal: IonModal;
@@ -52,6 +52,12 @@ export class HomePage implements OnInit {
     return this.burial.length;
   }
 
+  ionViewWillEnter(){
+    console.log('visited');
+    // this.mapBox.ngOnInit();
+    // this.mapBox.ngAfterViewInit();
+  }
+
   async ngOnInit(): Promise<void> {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
@@ -83,6 +89,21 @@ export class HomePage implements OnInit {
         await this.detailsModal.present();
       }
     });
+  }
+
+  ionViewDidLeave() {
+    console.log('leave home');
+  }
+
+  ionViewWillLeave() {
+    console.log('will leave home');
+  }
+
+  async ngOnDestroy() {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+
+    console.log('leave home');
   }
 
   onSelectChange({ lotCode }) {
@@ -125,6 +146,8 @@ export class HomePage implements OnInit {
     this.searchModal.dismiss();
     if(event) {
       this.details = event;
+      this.mapBox.setZoom(1.5);
+      this.mapBox.setPan(this.details.mapData?.pan?.x, this.details.mapData?.pan?.y);
       this.mapBox.selectLot(this.details.lotCode, this.details.block);
       this.searchModal.didDismiss.subscribe(async res=> {
         this.detailsModal.present();

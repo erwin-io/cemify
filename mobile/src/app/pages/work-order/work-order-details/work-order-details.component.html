@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start" >
+      <ion-button (click)="modal.dismiss(isModified ? this.workOrder: null)">
+        <ion-icon name="arrow-back-outline" style="font-size: 2rem!important;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">{{workOrder?.dateTargetCompletion | date: 'MMM dd, yyyy'}}</ion-title>
+    <div slot="end" style="width: 48px"></div>
+  </ion-toolbar>
+</ion-header>
+<ion-content >
+  <div class="status-section ion-padding {{workOrder?.status.toLowerCase()}}">{{workOrder?.status}}</div>
+  <div class="ion-padding">
+    <ion-col size="12">
+      <ion-item lines="full">
+        <ion-label fixed>
+          <h3>Work order code</h3>
+          <h1>#{{workOrder?.workOrderCode}}</h1>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="12">
+      <ion-item lines="full">
+        <ion-label fixed>
+          <h3>Type</h3>
+          <h1>{{workOrder?.type}}</h1>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="12">
+      <ion-item lines="full">
+        <ion-label fixed>
+          <h3>Target completion</h3>
+          <h1>{{workOrder?.dateTargetCompletion | date: 'MMM dd, yyy'}}</h1>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="12">
+      <ion-item lines="full">
+        <ion-label fixed>
+          <h3>Title</h3>
+          <h1>{{workOrder?.title}}</h1>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="12">
+      <ion-item lines="full">
+        <ion-label fixed>
+          <h3>Description</h3>
+          <h1>{{workOrder?.description}}</h1>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+  </div>
+
+</ion-content>
+
+<ion-footer class="ion-padding" >
+  <ion-toolbar mode="md">
+    <ion-button
+      mode="md"
+      expand="full"
+      shape="round"
+      size="large"
+      color="primary"
+      *ngIf="workOrder?.status === 'PENDING'"
+      (click)="onUpdateStatus('INPROGRESS')">
+      Mark as in progress
+    </ion-button>
+    <ion-button
+      mode="md"
+      expand="full"
+      shape="round"
+      size="large"
+      color="primary"
+      *ngIf="workOrder?.status === 'INPROGRESS'"
+      (click)="onUpdateStatus('COMPLETED')">
+      Mark as complete
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+<ion-modal class="result-modal" [isOpen]="isOpenResultModal">
+  <ng-template>
+    <div class="success-modal-content">
+      <ion-icon name="checkmark-circle-outline" *ngIf="resultModal?.type==='success'; else errorIcon" color="primary"></ion-icon>
+      <ng-template #errorIcon>
+        <ion-icon name="checkmark-circle-outline" color="danger"></ion-icon>
+      </ng-template>
+
+      <div class="title">
+        <h1>{{resultModal?.title}}</h1>
+      </div>
+      <div class="desc">
+        <h1>{{resultModal?.desc}}</h1>
+      </div>
+      <div class="action">
+        <ion-button
+          *ngIf="resultModal?.type==='success'; else errorAction"
+          mode="md"
+          expand="outline"
+          shape="round"
+          size="large"
+          color="primary"
+          (click)="resultModal.done()">
+        Done
+      </ion-button>
+      <ng-template #errorAction>
+        <ion-button
+          mode="md"
+          expand="outline"
+          shape="round"
+          size="large"
+          color="danger"
+          (click)="resultModal.retry()">
+        Retry
+      </ion-button>
+      </ng-template>
+
+    </div>
+    </div>
+  </ng-template>
+</ion-modal>

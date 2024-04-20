@@ -1,4 +1,4 @@
-import { Files } from "./files.model";
+import { Files } from './files.model';
 
 export class Users {
     userId: string;
@@ -8,7 +8,7 @@ export class Users {
     accessGranted: boolean;
     active: boolean;
     userCode: string;
-    userType: "ADMIN" | "STAFF" | "CLIENT";
+    userType: 'ADMIN' | 'STAFF' | 'CLIENT';
     userProfilePic: UserProfilePic;
     totalUnreadNotif;
   }

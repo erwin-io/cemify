@@ -115,13 +115,41 @@ ion-modal {
     }
   }
 }
-
 ion-item {
-  --border-color: rgba(0,0,0,0.1);
-}
-ion-item.item-has-focus.ion-valid {
-  --highlight-background: var(--ion-color-primary);
-  --border-color: var(--ion-color-primary);
+  &.item-fill-outline {
+    &::part(native) {
+      border-color: rgba(0,0,0,0.1)!important;
+      border-width: 3px!important;
+    }
+    &.item-has-focus {
+      &.ion-invalid  {
+        --highlight-background: var(--ion-color-danger)!important;
+        &::part(native) {
+          border-color: var(--ion-color-danger)!important;
+        }
+      }
+      &.ion-valid  {
+        --highlight-background: var(--ion-color-primary)!important;
+        &::part(native) {
+          border-color: var(--ion-color-primary)!important;
+        }
+      }
+    }
+    &.ion-focused {
+      &.ion-invalid  {
+        --highlight-background: var(--ion-color-danger)!important;
+        &::part(native) {
+          border-color: var(--ion-color-danger)!important;
+        }
+      }
+      &.ion-valid  {
+        --highlight-background: var(--ion-color-primary)!important;
+        &::part(native) {
+          border-color: var(--ion-color-primary);
+        }
+      }
+    }
+  }
 }
 
 .mat-select-panel{
@@ -139,6 +167,9 @@ ion-item.item-has-focus.ion-valid {
   .text {
     text-align: center;
     width: 100%;
+  }
+  ion-icon {
+    font-size: 3rem!important;
   }
 }
 .form-field-group {
@@ -326,6 +357,12 @@ ion-item {
   ion-input {
     input {
       font-size: 1.3em!important;
+      line-height: 1;
+    }
+  }
+  &.form-field {
+    ion-note {
+      font-size: 1.2em!important;
       line-height: 1;
     }
   }

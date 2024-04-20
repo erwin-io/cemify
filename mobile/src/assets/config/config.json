@@ -20,6 +20,7 @@
       "getByCode": "/users/",
       "createUsers": "/users/",
       "updateProfile": "/users/updateProfile/",
+      "updateProfilePicture": "/users/updateProfilePicture/",
       "updateUsers": "/users/",
       "getUsersByAdvanceSearch": "/users/page/",
       "resetUserPassword": "/users/",

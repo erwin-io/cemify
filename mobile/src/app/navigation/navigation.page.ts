@@ -28,7 +28,7 @@ export class NavigationPage implements OnInit, OnDestroy {
 
   get totalUnreadNotification() {
     const total = this.storageService.getTotalUnreadNotif();
-    return total? Number(total) : 0;
+    return total && !isNaN(Number(total))? Number(total) : 0;
   }
 
   ngOnInit() {

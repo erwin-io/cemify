@@ -1,50 +1,75 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start">
+    <ion-buttons slot="start" *ngIf="isEditMode">
+      <ion-button (click)="isEditMode=false">
+        <ion-icon name="close-outline" style="font-size: 2rem!important;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="start" *ngIf="!isEditMode">
       <ion-button (click)="modal.dismiss()">
         <ion-icon name="arrow-back-outline" style="font-size: 2rem!important;"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Account Settings</ion-title>
-    <div slot="end" style="width: 48px"></div>
+
+    <ion-title class="ion-text-center">Account</ion-title>
+    <ion-buttons *ngIf="!isEditMode; else editMode" slot="end">
+      <ion-button (click)="onEdit()">
+        <h3>Edit</h3>
+      </ion-button>
+    </ion-buttons>
+    <ng-template #editMode>
+      <div slot="end" style="width: 48px"></div>
+    </ng-template>
+
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
   <form
-  id="editProfileForm"
-  [formGroup]="editProfileForm"
-  (ngSubmit)="editProfileForm.valid ? onSubmit() : false">
+  id="form"
+  [formGroup]="form"
+  (ngSubmit)="form.valid ? onSubmit() : false">
     <fieldset [disabled]="isSubmitting">
-      <div class="form-field-group">
-        <mat-label>Name</mat-label>
-        <mat-form-field appearance="outline">
-          <input
-            matInput
-            type="text"
-            placeholder="Name"
-            formControlName="fullName"
-            autocomplete="new-fullName"
-          />
-        </mat-form-field>
-        <!-- <span class="error" *ngIf="getError("fullName")">
-          Full Name is required
-        </span> -->
-      </div>
-      <div class="form-field-group">
-        <mat-label>Mobile number</mat-label>
-        <mat-form-field appearance="outline" >
-          <input
-            matInput
-            type="text"
-            placeholder="Mobile number"
-            formControlName="mobileNumber"
-            autocomplete="new-mobileNumber"
-          />
-        </mat-form-field>
-        <!-- <span class="error" *ngIf="errorControls.mobileNumber.touched && errorControls.mobileNumber.errors && errorControls.mobileNumber.errors.required">
-          Mobile number is required
-        </span> -->
-      </div>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeFullName">
+            <ion-label position="floating">Name</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="fullName" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeFullName>
+            <ion-label fixed>
+              <h3>Name</h3>
+              <h1>{{currentUser.fullName}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.fullName.dirty && formControls.fullName?.errors?.required">Name is
+            required.</ion-note>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeMobileNumber">
+            <ion-label position="floating">Mobile number</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="mobileNumber" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeMobileNumber>
+            <ion-label fixed>
+              <h3>Mobile number</h3>
+              <h1>{{currentUser.mobileNumber}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.mobileNumber.dirty && formControls.mobileNumber?.errors?.required">Mobile number is
+            required.</ion-note>
+        </ion-item>
+      </ion-col>
     </fieldset>
   </form>
 </ion-content>
+
+<ion-footer class="ion-padding" *ngIf="isEditMode">
+  <ion-toolbar mode="md">
+    <ion-button *ngIf="isEditMode" [disabled]="!form.dirty || !form.valid" type="submit" form="form" mode="md"
+      expand="full" shape="round" size="large" color="primary">
+      Save
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

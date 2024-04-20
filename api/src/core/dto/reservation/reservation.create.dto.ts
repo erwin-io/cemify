@@ -10,7 +10,7 @@ export class CreateReservationDto extends DefaultReservationDto {
   
   @ApiProperty()
   @IsNotEmpty({
-    message: "Not allowed, Stall is required!"
+    message: "Not allowed, Lot is required!"
   })
   lotCode: string;
 }

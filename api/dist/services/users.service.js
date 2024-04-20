@@ -381,9 +381,6 @@ let UsersService = class UsersService {
                     userCode,
                     active: true,
                 },
-                relations: {
-                    access: true,
-                },
             });
             if (!user) {
                 throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);

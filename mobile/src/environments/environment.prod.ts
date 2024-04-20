@@ -5,5 +5,5 @@ export const environment = {
     cluster: 'ap1',
   },
   apiBaseUrl: 'https://cemify-api.vercel.app/api/v1',
-  oneSignalAppId: '2d60a699-ef0c-4a17-9786-f72b27f39eda'
+  oneSignalAppId: '57cd7844-8ada-4060-ae0d-bba1ec27ad12'
 };
