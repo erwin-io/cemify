@@ -8,7 +8,11 @@
       }}
     </mat-icon>
   </button>
-  <span id="title">{{ isNew ? 'New user' : '#' + userCode + ' ' + ( !isLoading ? user?.fullName : '')}}</span>
+  <span id="title" >
+    <span [ngStyle.md]="{ 'display': 'none'}" [ngStyle.sm]="{ 'display': 'none'}" [ngStyle.xs]="{ 'display': 'none'}">
+      {{ isNew ? 'New user' : '#' + userCode + ' ' + ( !isLoading ? user?.fullName : '')}}
+    </span>
+  </span>
   <span class="toolbar-item-spacer"></span>
   <div class="toolbar-action">
     <button
@@ -17,6 +21,14 @@
       matTooltip="Change pasword"
       (click)="openChangePasswordDialog()">
       Update pasword
+    </button>
+    <button
+      *ngIf="!isNew && isReadOnly"
+      mat-raised-button
+      color="primary"
+      matTooltip="Delete"
+      (click)="onDeleteUser()">
+      Delete
     </button>
     <button
       mat-raised-button

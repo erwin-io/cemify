@@ -245,11 +245,11 @@ let ReservationService = class ReservationService {
             }
             else if (status === reservation_constant_1.RESERVATION_STATUS.REJECTED) {
                 title = notifications_constant_1.NOTIF_TITLE.RESERVATION_REJECTED;
-                desc = `Your reservation for block $${(_c = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _c === void 0 ? void 0 : _c.block} - lot ${(_d = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _d === void 0 ? void 0 : _d.lotCode} was Rejected!`;
+                desc = `Your reservation for block ${(_c = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _c === void 0 ? void 0 : _c.block} - lot ${(_d = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _d === void 0 ? void 0 : _d.lotCode} was Rejected!`;
             }
             else {
                 title = `Your reservation was ${status.toLowerCase().charAt(0).toUpperCase() + status.slice(1)}`;
-                desc = `Your reservation for block $${(_e = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _e === void 0 ? void 0 : _e.block} - lot ${(_f = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _f === void 0 ? void 0 : _f.lotCode} was now being ${status.toLowerCase().charAt(0).toUpperCase() + status.slice(1)}!`;
+                desc = `Your reservation for block ${(_e = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _e === void 0 ? void 0 : _e.block} - lot ${(_f = reservation === null || reservation === void 0 ? void 0 : reservation.lot) === null || _f === void 0 ? void 0 : _f.lotCode} was now being ${status.toLowerCase().charAt(0).toUpperCase() + status.slice(1)}!`;
             }
             const notificationIds = await this.logNotification([reservation.user], reservation, entityManager, title, desc);
             const staffUsers = await entityManager.find(Users_1.Users, {

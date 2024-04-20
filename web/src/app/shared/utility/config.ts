@@ -39,6 +39,7 @@ export interface AppConfig {
         getUsersByAdvanceSearch: string;
         resetUserPassword: string;
         approveAccessRequest: string;
+        delete: string;
       };
       access: {
         getByAdvanceSearch: string;

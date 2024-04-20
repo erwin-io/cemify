@@ -293,14 +293,14 @@ export class ReservationService {
           desc = `Your reservation for block ${reservation?.lot?.block} - lot ${reservation?.lot?.lotCode} has now been Approved, and the stall is now officially Leased to you!`;
         } else if (status === RESERVATION_STATUS.REJECTED) {
           title = NOTIF_TITLE.RESERVATION_REJECTED;
-          desc = `Your reservation for block $${reservation?.lot?.block} - lot ${reservation?.lot?.lotCode} was Rejected!`;
+          desc = `Your reservation for block ${reservation?.lot?.block} - lot ${reservation?.lot?.lotCode} was Rejected!`;
         } else {
           title = `Your reservation was ${
             status.toLowerCase().charAt(0).toUpperCase() + status.slice(1)
           }`;
-          desc = `Your reservation for block $${
-            reservation?.lot?.block
-          } - lot ${reservation?.lot?.lotCode} was now being ${
+          desc = `Your reservation for block ${reservation?.lot?.block} - lot ${
+            reservation?.lot?.lotCode
+          } was now being ${
             status.toLowerCase().charAt(0).toUpperCase() + status.slice(1)
           }!`;
         }

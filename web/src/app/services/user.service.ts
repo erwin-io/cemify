@@ -76,6 +76,14 @@ export class UserService implements IServices {
     );
   }
 
+  delete(userCode): Observable<ApiResponse<Users>> {
+    return this.http.delete<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.delete + userCode)
+    .pipe(
+      tap(_ => this.log('user')),
+      catchError(this.handleError('user', []))
+    );
+  }
+
   approveAccessRequest(data: any): Observable<ApiResponse<Users>> {
     return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.approveAccessRequest + "approveAccessRequest", data)
     .pipe(

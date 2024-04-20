@@ -9,6 +9,8 @@ import {
   Param,
   Headers,
   Query,
+  HttpException,
+  HttpStatus,
 } from "@nestjs/common";
 import { AuthService } from "../../services/auth.service";
 import { ApiResponseModel } from "src/core/models/api-response.model";
@@ -61,9 +63,9 @@ export class AuthController {
       res.success = true;
       return res;
     } catch (e) {
-      res.success = false;
-      res.message = e.message !== undefined ? e.message : e;
-      return res;
+      throw new HttpException(
+        e.message !== undefined ? e.message : e,
+        HttpStatus.BAD_REQUEST);
     }
   }
 }

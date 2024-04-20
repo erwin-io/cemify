@@ -461,6 +461,60 @@ export class UserDetailsComponent implements OnInit {
     dialogRef.componentInstance.userCode = this.userCode;
   }
 
+  onDeleteUser() {
+    const dialogData = new AlertDialogModel();
+    dialogData.title = 'Delete User';
+    dialogData.message = 'Are you sure you want to delete this user?';
+    dialogData.confirmButton = {
+      visible: true,
+      text: 'yes',
+      color: 'primary',
+    };
+    dialogData.dismissButton = {
+      visible: true,
+      text: 'cancel',
+    };
+    const dialogRef = this.dialog.open(AlertDialogComponent, {
+      maxWidth: '400px',
+      closeOnNavigation: true,
+    });
+    dialogRef.componentInstance.alertDialogConfig = dialogData;
+
+    dialogRef.componentInstance.conFirm.subscribe(async (data: any) => {
+      try {
+
+        const res = await this.userService.delete(this.userCode).toPromise();
+        if (res.success) {
+          this.snackBar.open('User deleted!', 'close', {
+            panelClass: ['style-success'],
+          });
+          this.router.navigate(['/users/']);
+          this.isProcessing = false;
+          dialogRef.componentInstance.isProcessing = this.isProcessing;
+          dialogRef.close();
+        } else {
+          this.isProcessing = false;
+          dialogRef.componentInstance.isProcessing = this.isProcessing;
+          this.error = Array.isArray(res.message)
+            ? res.message[0]
+            : res.message;
+          this.snackBar.open(this.error, 'close', {
+            panelClass: ['style-error'],
+          });
+          dialogRef.close();
+        }
+      } catch (e) {
+        this.isProcessing = false;
+        dialogRef.componentInstance.isProcessing = this.isProcessing;
+        this.error = Array.isArray(e.message) ? e.message[0] : e.message;
+        this.snackBar.open(this.error, 'close', {
+          panelClass: ['style-error'],
+        });
+        dialogRef.close();
+      }
+    });
+  }
+
   profilePicErrorHandler(event) {
     event.target.src = this.getDeafaultProfilePicture();
   }

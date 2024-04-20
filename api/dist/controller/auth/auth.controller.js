@@ -58,9 +58,7 @@ let AuthController = class AuthController {
             return res;
         }
         catch (e) {
-            res.success = false;
-            res.message = e.message !== undefined ? e.message : e;
-            return res;
+            throw new common_1.HttpException(e.message !== undefined ? e.message : e, common_1.HttpStatus.BAD_REQUEST);
         }
     }
 };
