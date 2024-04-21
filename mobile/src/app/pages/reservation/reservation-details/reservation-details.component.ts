@@ -212,7 +212,8 @@ export class ReservationDetailsComponent implements OnInit {
     };
     const logoutSheet = await this.actionSheetController.create({
       cssClass: 'app-action-sheet',
-      header: 'Are you sure you want to update your this reservation?',
+      header: this.isNew ?
+      'Are you sure you want to submit this reservation?' : 'Are you sure you want to update this reservation?',
       buttons: [
         {
           text: 'Yes?',
