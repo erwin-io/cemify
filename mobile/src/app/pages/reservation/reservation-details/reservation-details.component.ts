@@ -142,15 +142,22 @@ export class ReservationDetailsComponent implements OnInit {
   }
 
   onPopulateDataToForm(reservation: Reservation) {
-    this.form.setValue({
-      lotCode: reservation?.lot?.lotCode,
-      burialName: reservation?.burialName,
-      dateOfBirth: reservation?.dateOfBirth,
-      dateOfDeath: reservation?.dateOfDeath,
-      dateOfBurial: reservation?.dateOfBurial,
-      familyContactPerson: reservation?.familyContactPerson,
-      familyContactNumber: reservation?.familyContactNumber,
-    });
+    this.form.controls.lotCode.setValue(reservation?.lot?.lotCode);
+    this.form.controls.burialName.setValue(reservation?.burialName);
+    this.form.controls.dateOfBirth.setValue(reservation?.dateOfBirth);
+    this.form.controls.dateOfDeath.setValue(reservation?.dateOfDeath);
+    this.form.controls.dateOfBurial.setValue(reservation?.dateOfBurial);
+    this.form.controls.familyContactPerson.setValue(reservation?.familyContactPerson);
+    this.form.controls.familyContactNumber.setValue(reservation?.familyContactNumber);
+    // this.form.controls.lotCode.setValue({
+    //   lotCode: reservation?.lot?.lotCode,
+    //   burialName: reservation?.burialName,
+    //   dateOfBirth: reservation?.dateOfBirth,
+    //   dateOfDeath: reservation?.dateOfDeath,
+    //   dateOfBurial: reservation?.dateOfBurial,
+    //   familyContactPerson: reservation?.familyContactPerson,
+    //   familyContactNumber: reservation?.familyContactNumber,
+    // });
   }
 
   triggerControlStatus(control) {

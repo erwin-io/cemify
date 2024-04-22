@@ -202,7 +202,7 @@ export class ReservationService {
   async update(reservationCode, dto: UpdateReservationDto) {
     return await this.reservationRepo.manager.transaction(
       async (entityManager) => {
-        const reservation = await entityManager.findOne(Reservation, {
+        let reservation = await entityManager.findOne(Reservation, {
           where: {
             reservationCode,
           },
@@ -241,6 +241,7 @@ export class ReservationService {
           DateConstant.DATE_LANGUAGE
         ).format("YYYY-MM-DD");
         reservation.dateOfBurial = dateOfBurial;
+        reservation = await entityManager.save(Reservation, reservation);
 
         return await entityManager.findOne(Reservation, {
           where: {
