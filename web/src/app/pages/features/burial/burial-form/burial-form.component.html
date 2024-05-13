@@ -211,7 +211,7 @@
           formControlName="familyContactNumber"/>
       </mat-form-field>
     </div>
-    <div fxLayout="column" fxFlex="100" fxLayoutGap="16" *ngIf="isReadOnly || !isReadOnly && burial?.workOrder?.status === 'PENDING'">
+    <div fxLayout="column" fxFlex="100" fxLayoutGap="16" >
       <mat-label >Work Order </mat-label>
       <a fxLayout="row" fxFlexAlign="center center" *ngIf="isReadOnly" href="/work-order/{{burial?.workOrder?.workOrderCode}}/details" target="_blank">Open work order
         <mat-icon>open_in_new</mat-icon>
