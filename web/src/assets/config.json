@@ -1,5 +1,5 @@
 {
-  "appName": "Cemify",
+  "appName": "DMPCMMS",
   "reservationConfig": {
     "maxCancellation": "3",
     "daysCancellationLimitReset": "5",
