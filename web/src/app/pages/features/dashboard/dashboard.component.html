@@ -126,7 +126,16 @@
       <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
         <mat-card fxFlex="100" >
           <mat-card-content fxLayout="column" fxFlex="100" >
-            <h3>Burial Records</h3>
+            <div fxLayout="row" fxFlex="100" fxFlexAlign="space-between">
+              <h3 fxFlex="100" >Burial Records</h3>
+              <button
+                mat-raised-button
+                matTooltip="Generate report"
+                routerLink="/burial-reports"
+                replaceUrl="true">
+                Generate report
+              </button>
+            </div>
             <br>
             <div fxFlex="100" fxLayout="column" fxLayoutGap="20">
               <div class="chart" id="chart-records"></div>

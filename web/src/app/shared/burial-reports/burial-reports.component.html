@@ -8,12 +8,81 @@
 <div fxFlex="100" fxLayout="column">
   <div fxLayout="row">
     <br>
-    <button style="margin-left: 16px;" matTooltip="Back" mat-fab extended routerLink="/burial"><mat-icon >arrow_back</mat-icon>Back burial page</button>
+    <button style="margin-left: 16px;margin-bottom: 20px;" matTooltip="Back" mat-fab extended routerLink="/burial"><mat-icon >arrow_back</mat-icon>Back</button>
+  </div>
+  <div style="margin-left: 16px;width: 100%;">
+    <div fxFlex="100" fxLayout="column" fxLayoutGap="20">
+      <div fxFlex="100" fxLayout="column" fxLayoutGap="20">
+        <div fxFlex.gt-xs="33.33%" fxFlex="100%" fxLayout="column" fxLayout.gt-xs="row">
+          <mat-form-field appearance="outline">
+            <mat-select value="ANNUAL" #reportViewMode
+              (selectionChange)="reportType = reportViewMode.value;filterParams = reportViewMode.value === 'ANNUAL' ? reportFilter.yearFrom.value +','+ reportFilter.yearTo.value: reportFilter.monthlyFilter.value;initReport()">
+              <mat-option value="MONTHLY">Monthly</mat-option>
+              <mat-option value="ANNUAL">Annual</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" *ngIf="reportViewMode.value === 'MONTHLY'">
+          <div fxFlex.gt-xs="33.33%" fxFlex="100%" fxLayout="column" fxLayout.gt-xs="row" >
+            <div fxFlex="100" fxLayoutAlign="space-between center" class="year-picker">
+              <mat-form-field appearance="outline">
+                <mat-label>Filter Year</mat-label>
+                <input matInput readonly value="{{reportFilter.monthlyFilter.value}}" placeholder="Year">
+                <mat-icon matTooltip="Filter Year" class="icon-right"
+                  (click)="reportFilter.monthlyFilter.show = !reportFilter.monthlyFilter.show"
+                  style="cursor: pointer;" matSuffix>today</mat-icon>
+              </mat-form-field>
+              <mat-card class="year-picker-calendar" *ngIf="reportFilter.monthlyFilter.show">
+                <mat-calendar startView="multi-year" [selected]="reportFilter.monthlyFilter.dateSelected()"
+                  [maxDate]="reportFilter.monthlyFilter.getMaxDate()"
+                  (yearSelected)="chosenFilterYearHandler($event, 'monthlyFilter')"></mat-calendar>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" *ngIf="reportViewMode.value === 'ANNUAL'">
+          <div fxFlex.gt-xs="50%" fxFlex="100%" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="16px">
+            <div fxFlex="50%" fxLayout="row" fxLayoutAlign="space-between center" class="year-picker">
+              <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>From</mat-label>
+                <input matInput readonly value="{{reportFilter.yearFrom.value}}" placeholder="From">
+                <mat-icon matTooltip="Filter From" class="icon-right"
+                  (click)="reportFilter.yearFrom.show = !reportFilter.yearFrom.show;reportFilter.yearTo.show = false"
+                  style="cursor: pointer;" matSuffix>today</mat-icon>
+              </mat-form-field>
+              <mat-card class="year-picker-calendar" *ngIf="reportFilter.yearFrom.show">
+                <mat-calendar startView="multi-year" [selected]="reportFilter.yearFrom.dateSelected()"
+                  [maxDate]="reportFilter.yearFrom.getMaxDate()"
+                  (yearSelected)="chosenFilterYearHandler($event, 'yearFrom')"></mat-calendar>
+              </mat-card>
+            </div>
+            <div fxFlex="50%" fxLayout="row" fxLayoutAlign="space-between center" class="year-picker">
+              <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>To</mat-label>
+                <input matInput readonly value="{{reportFilter.yearTo.value}}" placeholder="To">
+                <mat-icon matTooltip="Filter To" class="icon-right"
+                  (click)="reportFilter.yearTo.show = !reportFilter.yearTo.show;reportFilter.yearFrom.show = false"
+                  style="cursor: pointer;" matSuffix>today</mat-icon>
+              </mat-form-field>
+              <mat-card class="year-picker-calendar" *ngIf="reportFilter.yearTo.show">
+                <mat-calendar startView="multi-year" [selected]="reportFilter.yearTo.dateSelected()"
+                  [minDate]="reportFilter.yearTo.getMinDate()" [maxDate]="reportFilter.yearTo.getMaxDate()"
+                  (yearSelected)="chosenFilterYearHandler($event, 'yearTo')"></mat-calendar>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div fxFlex="100" fxLayout="column" class="printable">
     <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
       <h3 style="margin: 0;">Cemify</h3>
-      <h5>{{today | date: 'EEE, dd MMM yyyy'}}</h5>
+      <h5>Current Date: {{today | date: 'EEE, dd MMM yyyy'}}</h5>
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
+      <h5 *ngIf="reportViewMode.value === 'MONTHLY'">Filter Year: {{reportFilter?.monthlyFilter?.value | date: 'yyyy'}}</h5>
+      <h5 *ngIf="reportViewMode.value === 'ANNUAL'">Filter Year Range: {{reportFilter?.yearFrom?.value | date: 'yyyy'}} - {{reportFilter.yearTo?.value | date: 'yyyy'}}</h5>
     </div>
     <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
       <table mat-table [dataSource]="dataSource" >

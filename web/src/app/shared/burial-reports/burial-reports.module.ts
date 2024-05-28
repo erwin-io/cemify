@@ -19,7 +19,7 @@ export const routes: Routes = [
     path: '',
     pathMatch: 'full',
     component: BurialReportsComponent,
-    data: { title: "Burial",}
+    data: { title: "Burial Report",}
   },
 ]
 

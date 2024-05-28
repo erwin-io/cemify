@@ -58,21 +58,6 @@ export class BurialController {
     }
   }
 
-  @Get("/generateReport")
-  //   @UseGuards(JwtAuthGuard)
-  async generateReport() {
-    const res = {} as ApiResponseModel<Burial[]>;
-    try {
-      res.data = await this.burialService.getAll();
-      res.success = true;
-      return res;
-    } catch (e) {
-      res.success = false;
-      res.message = e.message !== undefined ? e.message : e;
-      return res;
-    }
-  }
-
   @Get("/:burialCode")
   //   @UseGuards(JwtAuthGuard)
   async getDetails(@Param("burialCode") burialCode: string) {

@@ -13,7 +13,6 @@ export declare class BurialController {
         burial: Burial[];
     }>>;
     getAllByClientUserCode(userCode: string): Promise<ApiResponseModel<any[]>>;
-    generateReport(): Promise<ApiResponseModel<Burial[]>>;
     getDetails(burialCode: string): Promise<ApiResponseModel<Burial>>;
     getPaginated(params: PaginationParamsDto): Promise<ApiResponseModel<{
         results: Burial[];

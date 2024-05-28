@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { AnnualFilterDashboardDto } from "src/core/dto/dashboard/dashboard-base.dto";
 import { ApiResponseModel } from "src/core/models/api-response.model";
+import { Burial } from "src/db/entities/Burial";
 import { DashboardService } from "src/services/dashboard.service";
 
 @ApiTags("dashboard")
@@ -78,6 +79,39 @@ export class DashboardController {
     }>;
     try {
       res.data = await this.dashboardService.getLotTrackerByBlock();
+      res.success = true;
+      return res;
+    } catch (e) {
+      res.success = false;
+      res.message = e.message !== undefined ? e.message : e;
+      return res;
+    }
+  }
+
+  @Post("/getAnnualBurialReport")
+  //   @UseGuards(JwtAuthGuard)
+  async getAnnualBurialReport(@Body() dto: AnnualFilterDashboardDto) {
+    const res = {} as ApiResponseModel<Burial[]>;
+    try {
+      res.data = await this.dashboardService.getAnnualBurialReport(
+        dto.yearFrom,
+        dto.yearTo
+      );
+      res.success = true;
+      return res;
+    } catch (e) {
+      res.success = false;
+      res.message = e.message !== undefined ? e.message : e;
+      return res;
+    }
+  }
+
+  @Get("/getMonthlyBurialReport/:year")
+  //   @UseGuards(JwtAuthGuard)
+  async getMonthlyBurialReport(@Param("year") year: string) {
+    const res = {} as ApiResponseModel<any[]>;
+    try {
+      res.data = await this.dashboardService.getMonthlyBurialReport(year);
       res.success = true;
       return res;
     } catch (e) {

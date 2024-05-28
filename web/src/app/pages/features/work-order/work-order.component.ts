@@ -60,9 +60,9 @@ export class WorkOrderComponent  {
     completed: 0,
   };
   order = {
-    pending: { workOrderId: "ASC" },
+    pending: { workOrderId: "DESC" },
     cancelled: { workOrderId: "DESC" },
-    inprogress: { workOrderId: "ASC" },
+    inprogress: { workOrderId: "DESC" },
     completed: { workOrderId: "DESC" }
   };
 

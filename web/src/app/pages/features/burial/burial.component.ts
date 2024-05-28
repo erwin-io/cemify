@@ -36,7 +36,7 @@ export class BurialComponent  {
   pageIndex = 0;
   pageSize = 10;
   total = 0;
-  order = { burialId: "ASC" };
+  order = { dateOfBurial: "DESC" };
 
   filter: {
     apiNotation: string;

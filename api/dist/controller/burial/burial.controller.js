@@ -50,19 +50,6 @@ let BurialController = class BurialController {
             return res;
         }
     }
-    async generateReport() {
-        const res = {};
-        try {
-            res.data = await this.burialService.getAll();
-            res.success = true;
-            return res;
-        }
-        catch (e) {
-            res.success = false;
-            res.message = e.message !== undefined ? e.message : e;
-            return res;
-        }
-    }
     async getDetails(burialCode) {
         const res = {};
         try {
@@ -160,12 +147,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], BurialController.prototype, "getAllByClientUserCode", null);
-__decorate([
-    (0, common_1.Get)("/generateReport"),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], BurialController.prototype, "generateReport", null);
 __decorate([
     (0, common_1.Get)("/:burialCode"),
     __param(0, (0, common_1.Param)("burialCode")),

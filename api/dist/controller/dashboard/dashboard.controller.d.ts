@@ -1,4 +1,6 @@
+import { AnnualFilterDashboardDto } from "src/core/dto/dashboard/dashboard-base.dto";
 import { ApiResponseModel } from "src/core/models/api-response.model";
+import { Burial } from "src/db/entities/Burial";
 import { DashboardService } from "src/services/dashboard.service";
 export declare class DashboardController {
     private readonly dashboardService;
@@ -25,4 +27,6 @@ export declare class DashboardController {
         d: any;
         e: any;
     }>>;
+    getAnnualBurialReport(dto: AnnualFilterDashboardDto): Promise<ApiResponseModel<Burial[]>>;
+    getMonthlyBurialReport(year: string): Promise<ApiResponseModel<any[]>>;
 }

@@ -525,7 +525,9 @@
       "getLot": "/dashboard/getLot/",
       "getBurialAndReservationRecords": "/dashboard/getBurialAndReservationRecords/",
       "getUsers": "/dashboard/getUsers/",
-      "getLotTrackerByBlock": "/dashboard/getLotTrackerByBlock/"
+      "getLotTrackerByBlock": "/dashboard/getLotTrackerByBlock/",
+      "getAnnualBurialReport": "/dashboard/getAnnualBurialReport/",
+      "getMonthlyBurialReport": "/dashboard/getMonthlyBurialReport/"
     }
   }
 }

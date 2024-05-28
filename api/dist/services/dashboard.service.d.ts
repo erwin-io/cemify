@@ -31,4 +31,6 @@ export declare class DashboardService {
         d: any;
         e: any;
     }>;
+    getAnnualBurialReport(yearFrom: any, yeartTo: any): Promise<Burial[]>;
+    getMonthlyBurialReport(year: any): Promise<Burial[]>;
 }

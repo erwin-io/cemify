@@ -7,7 +7,7 @@ import { Burial } from "src/db/entities/Burial";
 import { Lot } from "src/db/entities/Lot";
 import { Reservation } from "src/db/entities/Reservation";
 import { Users } from "src/db/entities/Users";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 
 @Injectable()
 export class DashboardService {
@@ -129,5 +129,63 @@ export class DashboardService {
           e: result["e"] ?? 0,
         };
       });
+  }
+
+  async getAnnualBurialReport(yearFrom, yeartTo) {
+    const burialIds = await this.burialRepo.manager
+      .query(
+        `
+      SELECT "BurialId" as "burialId"
+      FROM 
+          dbo."Burial"
+          
+      WHERE "Active" = true
+          AND EXTRACT(year FROM "LeasedDate"::timestamp) between ${yearFrom} AND ${yeartTo}
+      ORDER BY 
+          "LeasedDate" asc;
+
+      `
+      )
+      .then((res) => {
+        return res ? res.map((x) => x.burialId) : [];
+      });
+
+    return this.burialRepo.find({
+      where: {
+        burialId: In(burialIds),
+        active: true,
+      },
+      relations: {
+        lot: true,
+      },
+    });
+  }
+
+  async getMonthlyBurialReport(year) {
+    const burialIds = await this.burialRepo.manager
+      .query(
+        `
+        SELECT "BurialId" as "burialId"
+        FROM 
+            dbo."Burial"
+            
+        WHERE "Active" = true
+        AND EXTRACT(year FROM "LeasedDate"::timestamp) = ${year}
+        ORDER BY "LeasedDate" asc
+      `
+      )
+      .then((res) => {
+        return res ? res.map((x) => x.burialId) : [];
+      });
+
+    return this.burialRepo.find({
+      where: {
+        burialId: In(burialIds),
+        active: true,
+      },
+      relations: {
+        lot: true,
+      },
+    });
   }
 }

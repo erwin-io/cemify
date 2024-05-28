@@ -12,7 +12,6 @@ export declare class BurialService {
     private pusherService;
     private oneSignalNotificationService;
     constructor(burialRepo: Repository<Burial>, pusherService: PusherService, oneSignalNotificationService: OneSignalNotificationService);
-    getAll(): Promise<Burial[]>;
     searchMap(key: any): Promise<{
         burial: any;
         lot: Lot[];
