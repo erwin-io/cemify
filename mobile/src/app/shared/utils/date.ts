@@ -80,3 +80,9 @@ export const getDateDifference = (startDateString, endDate: Date) => {
 
   return { days, months, weeks };
 }
+
+
+export const getAge = (birthDate: Date) => {
+  const timeDiff = Math.abs(Date.now() - birthDate.getTime());
+  return Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
+};

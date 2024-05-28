@@ -48,6 +48,31 @@ export class Users {
   @Column("character varying", { name: "UserType" })
   userType: string;
 
+  @Column("character varying", { name: "FirstName", default: () => "''" })
+  firstName: string;
+
+  @Column("character varying", {
+    name: "MiddleName",
+    nullable: true,
+    default: () => "''",
+  })
+  middleName: string | null;
+
+  @Column("character varying", { name: "LastName", default: () => "''" })
+  lastName: string;
+
+  @Column("date", {
+    name: "BirthDate",
+    default: () => "(now() AT TIME ZONE 'Asia/Manila')",
+  })
+  birthDate: string;
+
+  @Column("numeric", { name: "Age", default: () => "0" })
+  age: string;
+
+  @Column("character varying", { name: "Address", default: () => "''" })
+  address: string;
+
   @OneToMany(
     () => GatewayConnectedUsers,
     (gatewayConnectedUsers) => gatewayConnectedUsers.user

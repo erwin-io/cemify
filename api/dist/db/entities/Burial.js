@@ -25,9 +25,9 @@ __decorate([
     __metadata("design:type", String)
 ], Burial.prototype, "burialCode", void 0);
 __decorate([
-    (0, typeorm_1.Column)("character varying", { name: "FullName" }),
+    (0, typeorm_1.Column)("character varying", { name: "BurialFullName" }),
     __metadata("design:type", String)
-], Burial.prototype, "fullName", void 0);
+], Burial.prototype, "burialFullName", void 0);
 __decorate([
     (0, typeorm_1.Column)("date", { name: "DateOfBirth" }),
     __metadata("design:type", String)
@@ -56,6 +56,37 @@ __decorate([
     (0, typeorm_1.Column)("boolean", { name: "Active", default: () => "true" }),
     __metadata("design:type", Boolean)
 ], Burial.prototype, "active", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", { name: "BurialFirstName", default: () => "''" }),
+    __metadata("design:type", String)
+], Burial.prototype, "burialFirstName", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", {
+        name: "BurialMiddleName",
+        nullable: true,
+        default: () => "''",
+    }),
+    __metadata("design:type", String)
+], Burial.prototype, "burialMiddleName", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", { name: "BurialLastName", default: () => "''" }),
+    __metadata("design:type", String)
+], Burial.prototype, "burialLastName", void 0);
+__decorate([
+    (0, typeorm_1.Column)("numeric", { name: "BurialAge", default: () => "0" }),
+    __metadata("design:type", String)
+], Burial.prototype, "burialAge", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", { name: "Address", default: () => "''" }),
+    __metadata("design:type", String)
+], Burial.prototype, "address", void 0);
+__decorate([
+    (0, typeorm_1.Column)("date", {
+        name: "LeasedDate",
+        default: () => "(now() AT TIME ZONE 'Asia/Manila')",
+    }),
+    __metadata("design:type", String)
+], Burial.prototype, "leasedDate", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Lot_1.Lot, (lot) => lot.burials),
     (0, typeorm_1.JoinColumn)([{ name: "LotId", referencedColumnName: "lotId" }]),

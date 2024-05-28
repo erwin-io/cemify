@@ -60,13 +60,23 @@ export class AccountSettingsComponent implements OnInit {
   onCreateForm() {
     if(this.isEditMode) {
       this.form = new FormGroup({
-        fullName: new FormControl(this.currentUser?.fullName, [Validators.required]),
-        mobileNumber: new FormControl(this.currentUser?.mobileNumber, [Validators.required])
+        firstName: new FormControl(this.currentUser?.firstName, [Validators.required, Validators.minLength(2)]),
+        middleName: new FormControl(this.currentUser?.middleName),
+        lastName: new FormControl(this.currentUser?.lastName, [Validators.required, Validators.minLength(2)]),
+        mobileNumber: new FormControl(this.currentUser?.mobileNumber, [Validators.required]),
+        birthDate: new FormControl(new Date().toISOString(), [Validators.required]),
+        age: new FormControl(this.currentUser?.age),
+        address: new FormControl(this.currentUser?.address, [Validators.required]),
       });
     } else {
       this.form = new FormGroup({
-        fullName: new FormControl(this.currentUser?.fullName),
-        mobileNumber: new FormControl(this.currentUser?.mobileNumber)
+        firstName: new FormControl(this.currentUser?.firstName),
+        middleName: new FormControl(this.currentUser?.middleName),
+        lastName: new FormControl(this.currentUser?.lastName),
+        mobileNumber: new FormControl(this.currentUser?.mobileNumber),
+        birthDate: new FormControl(new Date(this.currentUser?.birthDate).toISOString()),
+        age: new FormControl(this.currentUser?.age),
+        address: new FormControl(this.currentUser?.address),
       });
     }
   }

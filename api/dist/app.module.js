@@ -49,6 +49,7 @@ const reservation_module_1 = require("./controller/reservation/reservation.modul
 const work_order_module_1 = require("./controller/work-order/work-order.module");
 const certificate_module_1 = require("./controller/certificate/certificate.module");
 const settings_module_1 = require("./controller/settings/settings.module");
+const dashboard_module_1 = require("./controller/dashboard/dashboard.module");
 const envFilePath = (0, utils_1.getEnvPath)(`${__dirname}/common/envs`);
 let AppModule = class AppModule {
 };
@@ -74,7 +75,8 @@ AppModule = __decorate([
             reminder_module_1.ReminderModule,
             work_order_module_1.WorkOrderModule,
             certificate_module_1.CertificateModule,
-            settings_module_1.SettingsModule
+            settings_module_1.SettingsModule,
+            dashboard_module_1.DashboardModule
         ],
         providers: [app_service_1.AppService],
         controllers: [],

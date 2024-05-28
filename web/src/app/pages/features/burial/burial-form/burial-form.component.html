@@ -7,6 +7,171 @@
   class="readonly">
   <fieldset fxFlex="100" fxLayout="row wrap" style="row-gap: 16px">
     <div fxLayout="column" fxFlex="100">
+      <mat-label >Burial</mat-label>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-lg="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex="100"
+        appearance="outline">
+        <mat-label>Burial first name</mat-label>
+        <input
+          matInput
+          placeholder="Burial first name"
+          formControlName="burialFirstName"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex="100"
+        appearance="outline">
+        <mat-label>Burial middle name</mat-label>
+        <input
+          matInput
+          placeholder="Burial middle name"
+          formControlName="burialMiddleName"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex="100"
+        appearance="outline">
+        <mat-label>Burial last name</mat-label>
+        <input
+          matInput
+          placeholder="Burial last name"
+          formControlName="burialLastName"/>
+      </mat-form-field>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-lg="row"
+      style="gap: 16px">
+
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline"
+        *ngIf="!isReadOnly; else dateOfBirth">
+        <mat-label>Date of Birth</mat-label>
+        <input
+          matInput
+          placeholder="Date of birth"
+          formControlName="dateOfBirth"
+          [matDatepicker]="dateOfBirthPicker"
+          (dateChange)="form.controls['dateOfBirth'].markAsTouched();form.controls['dateOfBirth'].updateValueAndValidity()"/>
+        <mat-datepicker-toggle matIconSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateOfBirthPicker></mat-datepicker>
+      </mat-form-field>
+      <ng-template #dateOfBirth>
+        <mat-form-field
+          fxFlex.gt-lg="33.33%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Date of birth</mat-label>
+          <input
+            matInput
+            placeholder="Date of birth"
+            formControlName="dateOfBirth"/>
+        </mat-form-field>
+      </ng-template>
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex="100"
+        appearance="outline">
+        <mat-label>Age</mat-label>
+        <input
+          matInput
+          placeholder="Age"
+          formControlName="burialAge"/>
+      </mat-form-field>
+      <div
+        fxFlex.gt-lg="33.33%"
+        fxFlex="100">
+      </div>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column">
+      <mat-form-field
+        fxFlex="100"
+        appearance="outline">
+        <mat-label>Address</mat-label>
+        <textarea
+          matInput
+          placeholder="Address"
+          formControlName="address"></textarea>
+      </mat-form-field>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-lg="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-lg="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline"
+        *ngIf="!isReadOnly; else dateOfBurial">
+        <mat-label>Date of burial</mat-label>
+        <input
+          matInput
+          placeholder="Date of burial"
+          formControlName="dateOfBurial"
+          [matDatepicker]="dateOfBurialPicker"/>
+        <mat-datepicker-toggle matIconSuffix [for]="dateOfBurialPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateOfBurialPicker></mat-datepicker>
+      </mat-form-field>
+      <ng-template #dateOfBurial>
+        <mat-form-field
+          fxFlex.gt-lg="50%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Date of burial</mat-label>
+          <input
+            matInput
+            placeholder="Date of burial"
+            formControlName="dateOfBirth"/>
+        </mat-form-field>
+      </ng-template>
+
+      <mat-form-field
+        fxFlex.gt-lg="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline"
+        *ngIf="!isReadOnly; else dateOfDeath">
+        <mat-label>Date of death</mat-label>
+        <input
+          matInput
+          placeholder="Date of death"
+          formControlName="dateOfDeath"
+          [matDatepicker]="dateOfDeathPicker"/>
+        <mat-datepicker-toggle matIconSuffix [for]="dateOfDeathPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateOfDeathPicker></mat-datepicker>
+      </mat-form-field>
+      <ng-template #dateOfDeath>
+        <mat-form-field
+          fxFlex.gt-lg="50%"
+          fxFlex="100"
+          fxLayout="column"
+          appearance="outline">
+          <mat-label>Date of death</mat-label>
+          <input
+            matInput
+            placeholder="Date of death"
+            formControlName="dateOfDeath"/>
+        </mat-form-field>
+      </ng-template>
+    </div>
+    <div fxLayout="column" fxFlex="100">
       <mat-label >Lot</mat-label>
     </div>
     <div
@@ -64,121 +229,6 @@
       fxFlex.gt-xs="50%"
       fxFlex.md="100"
       fxLayout="column"></div>
-    </div>
-    <div fxLayout="column" fxFlex="100">
-      <mat-label >Burial</mat-label>
-    </div>
-    <div
-      fxFlex="100"
-      fxLayout="column"
-      fxLayout.gt-lg="row"
-      style="gap: 16px">
-      <mat-form-field
-        fxFlex.gt-lg="33.33%"
-        fxFlex="100"
-        fxLayout="column"
-        appearance="outline"
-        *ngIf="!isReadOnly; else dateOfBurial">
-        <mat-label>Date of burial</mat-label>
-        <input
-          matInput
-          placeholder="Date of burial"
-          formControlName="dateOfBurial"
-          [matDatepicker]="dateOfBurialPicker"/>
-        <mat-datepicker-toggle matIconSuffix [for]="dateOfBurialPicker"></mat-datepicker-toggle>
-        <mat-datepicker #dateOfBurialPicker></mat-datepicker>
-      </mat-form-field>
-      <ng-template #dateOfBurial>
-        <mat-form-field
-          fxFlex.gt-lg="33.33%"
-          fxFlex="100"
-          fxLayout="column"
-          appearance="outline">
-          <mat-label>Date of burial</mat-label>
-          <input
-            matInput
-            placeholder="Date of burial"
-            formControlName="dateOfBirth"/>
-        </mat-form-field>
-      </ng-template>
-
-      <mat-form-field
-        fxFlex.gt-lg="33.33%"
-        fxFlex="100"
-        fxLayout="column"
-        appearance="outline"
-        *ngIf="!isReadOnly; else dateOfBirth">
-        <mat-label>Date of Birth</mat-label>
-        <input
-          matInput
-          placeholder="Date of birth"
-          formControlName="dateOfBirth"
-          [matDatepicker]="dateOfBirthPicker"/>
-        <mat-datepicker-toggle matIconSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
-        <mat-datepicker #dateOfBirthPicker></mat-datepicker>
-      </mat-form-field>
-      <ng-template #dateOfBirth>
-        <mat-form-field
-          fxFlex.gt-lg="33.33%"
-          fxFlex="100"
-          fxLayout="column"
-          appearance="outline">
-          <mat-label>Date of birth</mat-label>
-          <input
-            matInput
-            placeholder="Date of birth"
-            formControlName="dateOfBirth"/>
-        </mat-form-field>
-      </ng-template>
-
-      <mat-form-field
-        fxFlex.gt-lg="33.33%"
-        fxFlex="100"
-        fxLayout="column"
-        appearance="outline"
-        *ngIf="!isReadOnly; else dateOfDeath">
-        <mat-label>Date of death</mat-label>
-        <input
-          matInput
-          placeholder="Date of death"
-          formControlName="dateOfDeath"
-          [matDatepicker]="dateOfDeathPicker"/>
-        <mat-datepicker-toggle matIconSuffix [for]="dateOfDeathPicker"></mat-datepicker-toggle>
-        <mat-datepicker #dateOfDeathPicker></mat-datepicker>
-      </mat-form-field>
-      <ng-template #dateOfDeath>
-        <mat-form-field
-          fxFlex.gt-lg="33.33%"
-          fxFlex="100"
-          fxLayout="column"
-          appearance="outline">
-          <mat-label>Date of death</mat-label>
-          <input
-            matInput
-            placeholder="Date of death"
-            formControlName="dateOfDeath"/>
-        </mat-form-field>
-      </ng-template>
-    </div>
-    <div
-      fxFlex="100"
-      fxLayout="column"
-      fxLayout.gt-lg="row"
-      style="gap: 16px">
-      <mat-form-field
-        fxFlex.gt-lg="50%"
-        fxFlex="100"
-        appearance="outline">
-        <mat-label>Name</mat-label>
-        <input
-          matInput
-          placeholder="Name"
-          formControlName="fullName"/>
-      </mat-form-field>
-      <div
-        fxFlex.gt-lg="50%"
-        fxFlex="100"
-        appearance="outline"></div>
     </div>
     <div fxLayout="column" fxFlex="100">
       <mat-label >Contact Person</mat-label>

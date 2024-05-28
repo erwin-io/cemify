@@ -19,8 +19,8 @@ export class Burial {
   @Column("character varying", { name: "BurialCode", nullable: true })
   burialCode: string | null;
 
-  @Column("character varying", { name: "FullName" })
-  fullName: string;
+  @Column("character varying", { name: "BurialFullName" })
+  burialFullName: string;
 
   @Column("date", { name: "DateOfBirth" })
   dateOfBirth: string;
@@ -42,6 +42,31 @@ export class Burial {
 
   @Column("boolean", { name: "Active", default: () => "true" })
   active: boolean;
+
+  @Column("character varying", { name: "BurialFirstName", default: () => "''" })
+  burialFirstName: string;
+
+  @Column("character varying", {
+    name: "BurialMiddleName",
+    nullable: true,
+    default: () => "''",
+  })
+  burialMiddleName: string | null;
+
+  @Column("character varying", { name: "BurialLastName", default: () => "''" })
+  burialLastName: string;
+
+  @Column("numeric", { name: "BurialAge", default: () => "0" })
+  burialAge: string;
+
+  @Column("character varying", { name: "Address", default: () => "''" })
+  address: string;
+
+  @Column("date", {
+    name: "LeasedDate",
+    default: () => "(now() AT TIME ZONE 'Asia/Manila')",
+  })
+  leasedDate: string;
 
   @ManyToOne(() => Lot, (lot) => lot.burials)
   @JoinColumn([{ name: "LotId", referencedColumnName: "lotId" }])

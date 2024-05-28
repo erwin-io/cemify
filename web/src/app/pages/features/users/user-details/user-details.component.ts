@@ -30,6 +30,7 @@ import { AccessPagesTableComponent } from '../../../../shared/access-pages-table
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ImageViewerDialogComponent } from 'src/app/shared/image-viewer-dialog/image-viewer-dialog.component';
+import { getAge } from 'src/app/shared/utility/utility';
 
 @Component({
   selector: 'app-user-details',
@@ -138,50 +139,51 @@ export class UserDetailsComponent implements OnInit {
         this.userForm = this.formBuilder.group(
           {
             userType: [null,[Validators.required]],
-            fullName: [
-              '',
-              [Validators.required, Validators.pattern('^[a-zA-Z0-9\\-\\s]+$')],
-            ],
-            mobileNumber: [
+            firstName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\-\\s]+$')]),
+            middleName: new FormControl(),
+            lastName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\-\\s]+$')]),
+            birthDate: new FormControl(null,[Validators.required]),
+            age: new FormControl(),
+            address: new FormControl(null,[Validators.required]),
+            mobileNumber: new FormControl(
               '',
               [
                 Validators.minLength(11),
                 Validators.maxLength(11),
                 Validators.pattern('^[0-9]*$'),
                 Validators.required,
-              ],
-            ],
-            password: [
+              ]),
+            password: new FormControl(
               '',
               [
                 Validators.minLength(6),
                 Validators.maxLength(16),
                 Validators.required,
-              ],
-            ],
-            confirmPassword: '',
-            accessCode: [''],
+              ]),
+            confirmPassword: new FormControl(),
+            accessCode: new FormControl(),
           },
           { validators: this.checkPasswords }
         );
         this.isLoading = false;
       } else {
         this.userForm = this.formBuilder.group({
-          userType: [null],
-          fullName: [
-            '',
-            [Validators.required, Validators.pattern('^[a-zA-Z0-9\\-\\s]+$')],
-          ],
-          mobileNumber: [
+          userType: new FormControl(null),
+          firstName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\-\\s]+$')]),
+          middleName: new FormControl(),
+          lastName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\-\\s]+$')]),
+          mobileNumber: new FormControl(
             '',
             [
               Validators.minLength(11),
               Validators.maxLength(11),
               Validators.pattern('^[0-9]*$'),
               Validators.required,
-            ],
-          ],
-          accessCode: [],
+            ]),
+          birthDate: new FormControl(null,[Validators.required]),
+          age: new FormControl(),
+          address: new FormControl(null,[Validators.required]),
+          accessCode: new FormControl(),
         });
 
 
@@ -203,7 +205,12 @@ export class UserDetailsComponent implements OnInit {
             this.user = user.data;
             this.userForm.patchValue({
               userType: user.data.userType,
-              fullName: user.data.fullName,
+              firstName: user.data.firstName,
+              middleName: user.data.middleName,
+              lastName: user.data.lastName,
+              birthDate: this.isReadOnly ? moment(user.data.birthDate).format("MMM DD, YYYY") : user.data.birthDate,
+              age: user.data.age,
+              address: user.data.address,
               mobileNumber: user.data.mobileNumber,
               accessCode: user.data.access?.accessCode,
             });
@@ -251,6 +258,11 @@ export class UserDetailsComponent implements OnInit {
             this.accessPagesTable.setDataSource(access.data.accessPages)
           }
           this.spinner.hide();
+        }
+      })
+      this.f['birthDate'].valueChanges.subscribe(async res=> {
+        if(this.f['birthDate'].touched) {
+          this.f['age'].setValue(getAge(new Date(res)));
         }
       })
       if(this.isNew) {

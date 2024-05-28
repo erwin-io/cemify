@@ -11,6 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
@@ -18,6 +21,7 @@ const jwt_1 = require("@nestjs/jwt");
 const utils_1 = require("../common/utils/utils");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const moment_1 = __importDefault(require("moment"));
 const Users_1 = require("../db/entities/Users");
 const auth_error_constant_1 = require("../common/constant/auth-error.constant");
 const user_type_constant_1 = require("../common/constant/user-type.constant");
@@ -31,11 +35,18 @@ let AuthService = class AuthService {
     async registerClient(dto) {
         try {
             return await this.userRepo.manager.transaction(async (transactionalEntityManager) => {
+                var _a, _b, _c;
                 let user = new Users_1.Users();
                 user.userName = dto.mobileNumber;
                 user.password = await (0, utils_1.hash)(dto.password);
                 user.accessGranted = true;
-                user.fullName = dto.fullName;
+                user.fullName = (0, utils_1.getFullName)((_a = dto.firstName) !== null && _a !== void 0 ? _a : "", (_b = dto.middleName) !== null && _b !== void 0 ? _b : "", (_c = dto.lastName) !== null && _c !== void 0 ? _c : "");
+                user.firstName = dto.firstName;
+                user.middleName = dto.middleName;
+                user.lastName = dto.lastName;
+                user.age = dto.age;
+                user.birthDate = (0, moment_1.default)(dto.birthDate).format("YYYY-MM-DD");
+                user.address = dto.address;
                 user.mobileNumber = dto.mobileNumber;
                 user.userType = user_type_constant_1.USER_TYPE.CLIENT.toUpperCase();
                 user = await transactionalEntityManager.save(user);

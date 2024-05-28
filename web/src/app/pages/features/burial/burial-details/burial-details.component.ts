@@ -176,7 +176,11 @@ export class BurialDetailsComponent {
         if (res.success && res.data) {
 
           this.burialForm.lot = res.data.lot;
-          this.burialForm.form.controls["fullName"].setValue(res.data.burialName);
+          this.burialForm.form.controls["burialFirstName"].setValue(res.data.burialFirstName);
+          this.burialForm.form.controls["burialMiddleName"].setValue(res.data.burialMiddleName);
+          this.burialForm.form.controls["burialLastName"].setValue(res.data.burialLastName);
+          this.burialForm.form.controls["burialAge"].setValue(res.data.burialAge);
+          this.burialForm.form.controls["address"].setValue(res.data.address);
           this.burialForm.form.controls["dateOfBirth"].setValue(this.isReadOnly ? (res.data.dateOfBirth ? moment(res.data.dateOfBirth).format("MMMM DD, YYYY") : "") : res.data.dateOfBirth);
           this.burialForm.form.controls["dateOfDeath"].setValue(this.isReadOnly ? (res.data.dateOfDeath ? moment(res.data.dateOfDeath).format("MMMM DD, YYYY") : "") : res.data.dateOfDeath);
           this.burialForm.form.controls["dateOfBurial"].setValue(this.isReadOnly ? (res.data.dateOfBurial ? moment(res.data.dateOfBurial).format("MMMM DD, YYYY") : "") : res.data.dateOfBurial);

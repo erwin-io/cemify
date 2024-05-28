@@ -45,7 +45,7 @@
             block: item?.lot?.block,
             status: item?.lot?.status,
             burial: item})">
-            <ion-label>{{item.fullName}}</ion-label>
+            <ion-label>{{item.burialFullName}}</ion-label>
           </ion-item>
         </ion-list>
         <ion-list lines="full" *ngIf="searchTab.value === 'lot'">
@@ -98,7 +98,7 @@
       <ion-header>
         <ion-toolbar >
           <div slot="start" style="width: 48px"></div>
-          <ion-title class="ion-text-center">{{details ? details?.lotCode : ''}}{{details && details?.burial?.fullName ? '/' + details?.burial?.fullName : ''}}</ion-title>
+          <ion-title class="ion-text-center">{{details ? details?.lotCode : ''}}{{details && details?.burial?.burialFullName ? '/' + details?.burial?.burialFullName : ''}}</ion-title>
           <div slot="end" style="width: 48px"></div>
         </ion-toolbar>
       </ion-header>
@@ -128,13 +128,13 @@
               </ion-label>
             </ion-item>
           </ion-item-group>
-          <ion-item-group *ngIf="details.burial && details.burial?.fullName">
+          <ion-item-group *ngIf="details.burial && details.burial?.burialFullName">
             <ion-item-divider>
               <ion-label> <h2>Burial</h2> </ion-label>
             </ion-item-divider>
             <ion-item>
               <ion-label>
-                <h2><strong>Name</strong>: {{details.burial?.fullName}}</h2>
+                <h2><strong>Name</strong>: {{details.burial?.burialFullName}}</h2>
               </ion-label>
             </ion-item>
             <ion-item>
@@ -153,7 +153,7 @@
               </ion-label>
             </ion-item>
           </ion-item-group>
-          <ion-item-group *ngIf="details.burial && details.burial?.fullName">
+          <ion-item-group *ngIf="details.burial && details.burial?.burialFullName">
             <ion-item-divider>
               <ion-label> <h2>Family Contact Person</h2> </ion-label>
             </ion-item-divider>

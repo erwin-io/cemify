@@ -7,6 +7,7 @@ import { Burial } from 'src/app/model/burial.model';
 import { Users } from 'src/app/model/users';
 import { SelectUserDialogComponent } from 'src/app/shared/select-user-dialog/select-user-dialog.component';
 import { Reservation } from 'src/app/model/reservation.model';
+import { getAge } from 'src/app/shared/utility/utility';
 
 @Component({
   selector: 'app-burial-form',
@@ -28,7 +29,11 @@ export class BurialFormComponent {
     private formBuilder: FormBuilder
   ) {
     this.form = this.formBuilder.group({
-      fullName: new FormControl(null, [Validators.required]),
+      burialFirstName: new FormControl(null, [Validators.required]),
+      burialMiddleName: new FormControl(),
+      burialLastName: new FormControl(null, [Validators.required]),
+      address: new FormControl(null, [Validators.required]),
+      burialAge: new FormControl(null, [Validators.required]),
       dateOfBirth: new FormControl(moment().format("YYYY-MM-DD")),
       dateOfDeath: new FormControl(moment().format("YYYY-MM-DD")),
       dateOfBurial: new FormControl(moment().format("YYYY-MM-DD")),
@@ -46,13 +51,14 @@ export class BurialFormComponent {
     this.reservation = value.reservation;
     this.assignedStaffUser = value.workOrder?.assignedStaffUser;
     if(this.form) {
-      this.form.controls["fullName"].setValue(value?.fullName ? value?.fullName : "");
+      this.form.controls["burialFirstName"].setValue(value?.burialFirstName??"");
+      this.form.controls["burialMiddleName"].setValue(value?.burialMiddleName??"");
+      this.form.controls["burialLastName"].setValue(value?.burialLastName??"");
+      this.form.controls["address"].setValue(value?.address??"");
+      this.form.controls["burialAge"].setValue(value?.burialAge??"");
       this.form.controls["dateOfBirth"].setValue(this.isReadOnly ? (value.dateOfBirth ? moment(value.dateOfBirth).format("MMMM DD, YYYY") : "") : new Date(value.dateOfBirth));
       this.form.controls["dateOfDeath"].setValue(this.isReadOnly ? (value.dateOfDeath ? moment(value.dateOfDeath).format("MMMM DD, YYYY") : "") : new Date(value.dateOfDeath));
       this.form.controls["dateOfBurial"].setValue(this.isReadOnly ? (value.dateOfBurial ? moment(value.dateOfBurial).format("MMMM DD, YYYY") : "") : new Date(value.dateOfBurial));
-      // this.form.controls["dateOfBirth"].setValue(value?.dateOfBirth ? moment(value?.dateOfBirth).format("MMMM DD, YYYY") : "");
-      // this.form.controls["dateOfDeath"].setValue(value?.dateOfDeath ? moment(value?.dateOfDeath).format("MMMM DD, YYYY") : "");
-      // this.form.controls["dateOfBurial"].setValue(value?.dateOfBurial ? moment(value?.dateOfBurial).format("MMMM DD, YYYY") : "");
       this.form.controls["lotCode"].setValue(value?.lot?.lotCode ? value?.lot?.lotCode : "");
       this.form.controls["block"].setValue(value?.lot?.block ? value?.lot?.block : "");
       this.form.controls["familyContactPerson"].setValue(value?.familyContactPerson ? value?.familyContactPerson : "");
@@ -73,7 +79,10 @@ export class BurialFormComponent {
   }
 
   ngOnInit(): void {
-    this.form.controls["fullName"].addValidators([Validators.required]);
+    this.form.controls["burialFirstName"].addValidators([Validators.required]);
+    this.form.controls["burialLastName"].addValidators([Validators.required]);
+    this.form.controls["address"].addValidators([Validators.required]);
+    this.form.controls["burialAge"].addValidators([Validators.required]);
     this.form.controls["dateOfBirth"].addValidators([Validators.required]);
     this.form.controls["dateOfDeath"].addValidators([Validators.required]);
     this.form.controls["dateOfBurial"].addValidators([Validators.required]);
@@ -86,11 +95,20 @@ export class BurialFormComponent {
     this.form.controls["assignedStaffUserId"].addValidators([Validators.required]);
     this.form.controls["assignedStaffUserId"].disable();
     this.form.updateValueAndValidity();
+    this.form.controls["dateOfBirth"].valueChanges.subscribe(async res=> {
+      if(this.form.controls["dateOfBirth"].touched) {
+        this.form.controls["burialAge"].setValue(getAge(new Date(res)));
+      }
+    })
   }
 
   public get getFormData() {
     return {
-      fullName: this.form.controls["fullName"].value,
+      burialFirstName: this.form.controls["burialFirstName"].value,
+      burialMiddleName: this.form.controls["burialMiddleName"].value,
+      burialLastName: this.form.controls["burialLastName"].value,
+      address: this.form.controls["address"].value,
+      burialAge: this.form.controls["burialAge"].value,
       dateOfBirth: this.form.controls["dateOfBirth"].value,
       dateOfDeath: this.form.controls["dateOfDeath"].value,
       dateOfBurial: this.form.controls["dateOfBurial"].value,

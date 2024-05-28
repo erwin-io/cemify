@@ -22,7 +22,7 @@ export declare class ReservationService {
             reservationId: string;
             reservationCode: string;
             dateTime: Date;
-            burialName: string;
+            burialFullName: string;
             dateOfBirth: string;
             dateOfDeath: string;
             dateOfBurial: string;
@@ -30,6 +30,11 @@ export declare class ReservationService {
             familyContactNumber: string;
             status: string;
             active: boolean;
+            burialFirstName: string;
+            burialMiddleName: string;
+            burialLastName: string;
+            address: string;
+            burialAge: string;
             burials: Burial[];
             lot: Lot;
             user: Users;

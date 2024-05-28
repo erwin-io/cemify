@@ -48,7 +48,7 @@ export class AccountPage implements OnInit {
   ngOnInit() {}
 
   async onOpenAccountSettings() {
-    let modal: any = null;
+    let modal: HTMLIonModalElement = null;
     modal = await this.modalCtrl.create({
       component: AccountSettingsComponent,
       cssClass: 'modal-fullscreen',
@@ -59,6 +59,11 @@ export class AccountPage implements OnInit {
       componentProps: { modal, currentUser: this.currentUser },
     });
     modal.present();
+    modal.onDidDismiss().then(res=> {
+      if(res.data && res.role === 'ok') {
+        this.currentUser = res.data;
+      }
+    });
   }
 
   async onOpenResetPassword() {

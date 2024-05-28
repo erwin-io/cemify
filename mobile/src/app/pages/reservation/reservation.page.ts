@@ -94,7 +94,6 @@ export class ReservationPage implements OnInit {
         pageSize: this.pageSize
       }).subscribe((res)=> {
         if(res.success){
-          console.log(res.data);
           this.total = res.data.total;
           // this.reservations = res.data.results;
           this.reservations = [ ...this.reservations, ...res.data.results ];

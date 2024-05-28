@@ -6,7 +6,7 @@
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="start" *ngIf="!isEditMode">
-      <ion-button (click)="modal.dismiss()">
+      <ion-button (click)="modal.dismiss(this.currentUser, 'ok')">
         <ion-icon name="arrow-back-outline" style="font-size: 2rem!important;"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -31,18 +31,50 @@
     <fieldset [disabled]="isSubmitting">
       <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
         <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
-          <ng-container *ngIf="isEditMode; else viewModeFullName">
-            <ion-label position="floating">Name</ion-label>
-            <ion-input [readonly]="!isEditMode" formControlName="fullName" type="text"> </ion-input>
+          <ng-container *ngIf="isEditMode; else viewModeFirstname">
+            <ion-label position="floating">Firstname</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="firstName" type="text"> </ion-input>
           </ng-container>
-          <ng-template #viewModeFullName>
+          <ng-template #viewModeFirstname>
             <ion-label fixed>
-              <h3>Name</h3>
-              <h1>{{currentUser.fullName}}</h1>
+              <h3>Firstname</h3>
+              <h1>{{currentUser.firstName}}</h1>
             </ion-label>
           </ng-template>
-          <ion-note slot="error" *ngIf="isEditMode && formControls.fullName.dirty && formControls.fullName?.errors?.required">Name is
+          <ion-note slot="error" *ngIf="formControls.firstName.dirty && formControls.firstName?.errors?.required">Firstname is required.</ion-note>
+          <ion-note slot="error" *ngIf="formControls.firstName.dirty && formControls.firstName?.errors?.minlength">Firstname must be at least 2 characters long.</ion-note>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeMiddlename">
+            <ion-label position="floating">Middlename</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="middleName" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeMiddlename>
+            <ion-label fixed>
+              <h3>Middlename</h3>
+              <h1>{{currentUser.middleName}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.middleName.dirty && formControls.middleName?.errors?.required">Middlename is
             required.</ion-note>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeLastname">
+            <ion-label position="floating">Lastname</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="lastName" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeLastname>
+            <ion-label fixed>
+              <h3>Lastname</h3>
+              <h1>{{currentUser.lastName}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.lastName.dirty && formControls.lastName?.errors?.required">Lastname is required.</ion-note>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.lastName.dirty && formControls.lastName?.errors?.minlength">Lastname must be at least 2 characters long.</ion-note>
         </ion-item>
       </ion-col>
       <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
@@ -58,6 +90,69 @@
             </ion-label>
           </ng-template>
           <ion-note slot="error" *ngIf="isEditMode && formControls.mobileNumber.dirty && formControls.mobileNumber?.errors?.required">Mobile number is
+            required.</ion-note>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'" (click)="isEditMode ? birthDatePicker.present() : false">
+          <ng-container *ngIf="isEditMode; else viewModeBirthDate">
+            <ion-label position="floating">Birthdate</ion-label>
+            <ion-input readonly [value]="formControls.birthDate.value | date: 'MMM dd, YYYY'" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeBirthDate>
+            <ion-label fixed>
+              <h3>Birthdate</h3>
+              <h1>{{currentUser.birthDate | date: 'MMM dd, YYYY'}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error"
+            *ngIf="isEditMode && formControls.birthDate.dirty && formControls.birthDate?.errors?.required">Birthdate is
+            required.</ion-note>
+        </ion-item>
+        <ion-modal #birthDatePicker [cssClass]="'bottom-end'" >
+          <ng-template>
+            <ion-datetime
+              presentation="date"
+              size="cover"
+              locale="en-ph"
+              showDefaultTitle="true"
+              showDefaultButtons="true"
+              formControlName="birthDate"
+              (ionChange)="form.controls.birthDate.markAsTouched();form.controls.birthDate.updateValueAndValidity()"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeAge">
+            <ion-label position="floating">Age</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="age" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeAge>
+            <ion-label fixed>
+              <h3>Age</h3>
+              <h1>{{currentUser.age}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.age.dirty && formControls.age?.errors?.required">Age is
+            required.</ion-note>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeAddress">
+            <ion-label position="floating">Address</ion-label>
+            <ion-textarea [readonly]="!isEditMode" formControlName="address" type="text"> </ion-textarea>
+          </ng-container>
+          <ng-template #viewModeAddress>
+            <ion-label fixed>
+              <h3>Address</h3>
+              <h1>{{currentUser.address}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.address.dirty && formControls.address?.errors?.required">Address is
             required.</ion-note>
         </ion-item>
       </ion-col>

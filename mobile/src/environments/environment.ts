@@ -16,6 +16,7 @@ export const environment = {
   },
   oneSignalAppId: '57cd7844-8ada-4060-ae0d-bba1ec27ad12',
   apiBaseUrl: 'http://192.168.254.140:3000/api/v1',
+  // apiBaseUrl: 'http://192.168.252.221:3000/api/v1',
 };
 
 /*

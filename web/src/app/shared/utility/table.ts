@@ -68,7 +68,7 @@ export class ReservationTableColumn {
 
 export class BurialTableColumn {
   burialCode?: string;
-  fullName?: string;
+  burialFullName?: string;
   dateOfBurial?: string;
   dateOfBirth?: string;
   dateOfDeath?: string;

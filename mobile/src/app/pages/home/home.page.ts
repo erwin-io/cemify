@@ -62,7 +62,6 @@ export class HomePage implements OnInit, OnDestroy {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     await ScreenOrientation.addListener('screenOrientationChange', async (orientation)=> {
-      console.log(orientation);
       await this.detailsModal.dismiss();
       let zoom = 1.3;
       if(this.details && this.details?.lotCode && this.details?.lotCode !== '') {
@@ -160,12 +159,10 @@ export class HomePage implements OnInit, OnDestroy {
 
   onFullModalWillPresent() {
     this.statusBarService.modifyStatusBar(Style.Light,'#ffffff');
-    console.log('status bar');
   }
 
   onFullModalWillDismiss() {
     this.statusBarService.modifyStatusBar(Style.Dark,'#004D40');
-    console.log('status bar');
     this.lot = {
       a:[],
       b:[],
@@ -178,9 +175,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   onSearchChange(event) {
     const query = event.target.value.toLowerCase();
-    console.log(query);
     this.burialService.searchMap(query).subscribe(res=> {
-      console.log(res.data);
       this.lot.a = res.data.lot.filter(x=>x.block === 'A');
       this.lot.b = res.data.lot.filter(x=>x.block === 'B');
       this.lot.c = res.data.lot.filter(x=>x.block === 'C');

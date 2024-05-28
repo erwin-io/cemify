@@ -46,7 +46,6 @@ export class PickLotComponent implements OnInit {
     this.lotService.getByCode(lotCode).subscribe(async res=> {
       this.selectedLot = res.data;
       this.selectedLotLoading = false;
-      console.log(res.data);
     });
   }
 }

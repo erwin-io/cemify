@@ -4,7 +4,7 @@ import { WorkOrder } from "./WorkOrder";
 export declare class Burial {
     burialId: string;
     burialCode: string | null;
-    fullName: string;
+    burialFullName: string;
     dateOfBirth: string;
     dateOfDeath: string;
     dateOfBurial: string;
@@ -12,6 +12,12 @@ export declare class Burial {
     familyContactNumber: string;
     fromReservation: boolean;
     active: boolean;
+    burialFirstName: string;
+    burialMiddleName: string | null;
+    burialLastName: string;
+    burialAge: string;
+    address: string;
+    leasedDate: string;
     lot: Lot;
     reservation: Reservation;
     workOrder: WorkOrder;

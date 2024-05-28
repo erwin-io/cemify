@@ -41,7 +41,18 @@ export class AuthService {
           user.userName = dto.mobileNumber;
           user.password = await hash(dto.password);
           user.accessGranted = true;
-          user.fullName = dto.fullName;
+
+          user.fullName = getFullName(
+            dto.firstName ?? "",
+            dto.middleName ?? "",
+            dto.lastName ?? ""
+          );
+          user.firstName = dto.firstName;
+          user.middleName = dto.middleName;
+          user.lastName = dto.lastName;
+          user.age = dto.age;
+          user.birthDate = moment(dto.birthDate).format("YYYY-MM-DD");
+          user.address = dto.address;
           user.mobileNumber = dto.mobileNumber;
           user.userType = USER_TYPE.CLIENT.toUpperCase();
           user = await transactionalEntityManager.save(user);

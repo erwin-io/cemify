@@ -15,10 +15,61 @@
     <fieldset>
       <ion-col size="12" class="ion-margin-bottom">
         <ion-item fill="outline" class="form-field" >
-          <ion-label position="floating">Name</ion-label>
-          <ion-input formControlName="fullName" type="text" placeholder="Name"> </ion-input>
-          <ion-note slot="error" *ngIf="formControls.fullName.dirty && formControls.fullName?.errors?.required">Name is required.</ion-note>
-          <ion-note slot="error" *ngIf="formControls.fullName.dirty && formControls.fullName?.errors?.minlength">Name must be at least 2 characters long.</ion-note>
+          <ion-label position="floating">Firstname</ion-label>
+          <ion-input formControlName="firstName" type="text" placeholder="Firstname"> </ion-input>
+          <ion-note slot="error" *ngIf="formControls.firstName.dirty && formControls.firstName?.errors?.required">Firstname is required.</ion-note>
+          <ion-note slot="error" *ngIf="formControls.firstName.dirty && formControls.firstName?.errors?.minlength">Firstname must be at least 2 characters long.</ion-note>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="ion-margin-bottom">
+        <ion-item fill="outline" class="form-field" >
+          <ion-label position="floating">Middlename</ion-label>
+          <ion-input formControlName="middleName" type="text" placeholder="Middlename"> </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="ion-margin-bottom">
+        <ion-item fill="outline" class="form-field" >
+          <ion-label position="floating">Lastname</ion-label>
+          <ion-input formControlName="lastName" type="text" placeholder="Lastname"> </ion-input>
+          <ion-note slot="error" *ngIf="formControls.lastName.dirty && formControls.lastName?.errors?.required">Lastname is required.</ion-note>
+          <ion-note slot="error" *ngIf="formControls.lastName.dirty && formControls.lastName?.errors?.minlength">Lastname must be at least 2 characters long.</ion-note>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="12" class="ion-margin-bottom">
+        <ion-item fill="outline" class="form-field" class="form-field" (click)="birthDaePicker.present()">
+          <ion-label position="floating">Birthdate</ion-label>
+          <ion-input readonly [value]="formControls.birthDate.value | date: 'MMM dd, YYYY'" type="text"> </ion-input>
+          <ion-note slot="error"
+            *ngIf="formControls.birthDate.dirty && formControls.birthDate?.errors?.required">Birthdate is
+            required.</ion-note>
+        </ion-item>
+        <ion-modal #birthDaePicker [cssClass]="'bottom-end'" >
+          <ng-template>
+            <ion-datetime
+              presentation="date"
+              size="cover"
+              locale="en-ph"
+              showDefaultTitle="true"
+              showDefaultButtons="true"
+              formControlName="birthDate"
+              (ionChange)="form.controls.birthDate.markAsTouched();form.controls.birthDate.updateValueAndValidity()"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+
+      <ion-col size="12" class="ion-margin-bottom">
+        <ion-item fill="outline" class="form-field" >
+          <ion-label position="floating">Age</ion-label>
+          <ion-input formControlName="age" type="text" placeholder="Age"> </ion-input>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="12" class="ion-margin-bottom">
+        <ion-item fill="outline" class="form-field" >
+          <ion-label position="floating">Address</ion-label>
+          <ion-textarea formControlName="address" type="text" placeholder="Address"> </ion-textarea>
         </ion-item>
       </ion-col>
 

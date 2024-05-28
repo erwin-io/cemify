@@ -38,6 +38,9 @@
             <mat-list-item (mouseup)="sidenav.close()" class="mobile-close-sidenav">
                 <mat-icon>keyboard_backspace</mat-icon>
             </mat-list-item>
+            <mat-list-item routerLink="dashboard" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
+                <mat-icon>space_dashboard</mat-icon><span>Dashboard</span>
+            </mat-list-item>
             <mat-list-item routerLink="map" (mouseup)="!drawerDefaultOpened ? sidenav.close() : false" routerLinkActive="active-link">
                 <mat-icon>map</mat-icon><span>Map</span>
             </mat-list-item>

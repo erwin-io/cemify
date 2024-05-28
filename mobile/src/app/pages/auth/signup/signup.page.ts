@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { PageLoaderService } from 'src/app/services/page-loader.service';
 import { MyErrorStateMatcher } from 'src/app/shared/form-validation/error-state.matcher';
 import { Subject, Observable, of } from 'rxjs';
+import { getAge } from 'src/app/shared/utils/date';
 
 @Component({
   selector: 'app-signup',
@@ -39,11 +40,26 @@ export class SignupPage implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private alertController: AlertController) {
       this.form = this.formBuilder.group({
-        fullName : [null, [Validators.required, Validators.minLength(2)]],
-        mobileNumber: [null, [Validators.required,Validators.minLength(11),Validators.maxLength(11)]],
-        password: [null, [Validators.required,Validators.minLength(3),Validators.maxLength(16)]],
-        confirmPassword : '',
+        firstName: new FormControl(null, [Validators.required, Validators.minLength(2)]),
+        middleName: new FormControl(),
+        lastName: new FormControl(null, [Validators.required, Validators.minLength(2)]),
+        birthDate: new FormControl(new Date().toISOString(), [Validators.required]),
+        age: new FormControl(),
+        address: new FormControl(null, [Validators.required]),
+        mobileNumber: new FormControl(null, [Validators.required,Validators.minLength(11),Validators.maxLength(11)]),
+        password: new FormControl(null, [Validators.required,Validators.minLength(3),Validators.maxLength(16)]),
+        confirmPassword : new FormControl(),
       }, { validators: this.checkPasswords });
+
+      this.form.controls.birthDate.valueChanges.subscribe(res=> {
+        console.log(res);
+        if(!res || res === '') {
+          this.form.controls.birthDate.setErrors({ required: true });
+        }
+        if(res && this.form.controls.birthDate.touched) {
+          this.form.controls.age.setValue(getAge(new Date(res)));
+        }
+      });
      }
 
   get formControls() {

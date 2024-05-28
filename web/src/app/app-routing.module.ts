@@ -10,7 +10,7 @@ import { NoAccessComponent } from './pages/no-access/no-access.component';
 import { HowToComponent } from './pages/how-to/how-to.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'map' },
+  { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
   { path: 'auth', pathMatch: 'full', redirectTo: 'auth/login' },
   { path: 'profile', pathMatch: 'full', redirectTo: 'profile/edit' },
 
@@ -19,6 +19,15 @@ const routes: Routes = [
     component: FeaturesComponent,
     canActivate: [AuthGuard],
     children: [
+      {
+        path: 'dashboard',
+        canActivate: [AuthGuard],
+        data: { title: 'Map' },
+        loadChildren: () =>
+          import('./pages/features/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
+          ),
+      },
       {
         path: 'map',
         canActivate: [AuthGuard],

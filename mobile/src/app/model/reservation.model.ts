@@ -6,7 +6,12 @@ export class Reservation {
   reservationId: string;
   reservationCode?: string;
   dateTime?: Date;
-  burialName?: string;
+  burialFullName?: string;
+  burialFirstName: string;
+  burialMiddleName?: string;
+  burialLastName: string;
+  address: string;
+  burialAge?: string;
   dateOfBirth?: string;
   dateOfDeath?: string;
   dateOfBurial?: string;

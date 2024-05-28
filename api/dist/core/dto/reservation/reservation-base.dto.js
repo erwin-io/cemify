@@ -21,10 +21,34 @@ class DefaultReservationDto {
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)({
-        message: "Not allowed, Burial name is required!"
+        message: "Not allowed, First name is required!"
     }),
     __metadata("design:type", String)
-], DefaultReservationDto.prototype, "burialName", void 0);
+], DefaultReservationDto.prototype, "burialFirstName", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], DefaultReservationDto.prototype, "burialMiddleName", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)({
+        message: "Not allowed, Last name is required!"
+    }),
+    __metadata("design:type", String)
+], DefaultReservationDto.prototype, "burialLastName", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)({
+        message: "Not allowed, Address is required!"
+    }),
+    __metadata("design:type", String)
+], DefaultReservationDto.prototype, "address", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], DefaultReservationDto.prototype, "burialAge", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         default: (0, moment_1.default)().format("YYYY-MM-DD")

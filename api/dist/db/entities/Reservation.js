@@ -29,9 +29,9 @@ __decorate([
     __metadata("design:type", Date)
 ], Reservation.prototype, "dateTime", void 0);
 __decorate([
-    (0, typeorm_1.Column)("character varying", { name: "BurialName" }),
+    (0, typeorm_1.Column)("character varying", { name: "BurialFullName" }),
     __metadata("design:type", String)
-], Reservation.prototype, "burialName", void 0);
+], Reservation.prototype, "burialFullName", void 0);
 __decorate([
     (0, typeorm_1.Column)("date", { name: "DateOfBirth" }),
     __metadata("design:type", String)
@@ -60,6 +60,30 @@ __decorate([
     (0, typeorm_1.Column)("boolean", { name: "Active", default: () => "true" }),
     __metadata("design:type", Boolean)
 ], Reservation.prototype, "active", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", { name: "BurialFirstName", default: () => "''" }),
+    __metadata("design:type", String)
+], Reservation.prototype, "burialFirstName", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", {
+        name: "BurialMiddleName",
+        nullable: true,
+        default: () => "''",
+    }),
+    __metadata("design:type", String)
+], Reservation.prototype, "burialMiddleName", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", { name: "BurialLastName", default: () => "''" }),
+    __metadata("design:type", String)
+], Reservation.prototype, "burialLastName", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", { name: "Address", default: () => "''" }),
+    __metadata("design:type", String)
+], Reservation.prototype, "address", void 0);
+__decorate([
+    (0, typeorm_1.Column)("numeric", { name: "BurialAge", default: () => "0" }),
+    __metadata("design:type", String)
+], Reservation.prototype, "burialAge", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => Burial_1.Burial, (burial) => burial.reservation),
     __metadata("design:type", Array)

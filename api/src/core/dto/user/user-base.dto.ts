@@ -22,8 +22,39 @@ export class UserDto {
 
 export class DefaultUserDto {
   @ApiProperty()
+  @IsNotEmpty({
+    message: "Not allowed, First name is required!"
+  })
+  firstName: string;
+
+  @ApiProperty()
+  @IsOptional()
+  middleName: string;
+
+  @ApiProperty()
+  @IsNotEmpty({
+    message: "Not allowed, Last name is required!"
+  })
+  lastName: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumberString()
+  @Transform(({ obj, key }) => {
+    return obj && obj[key] ? obj[key]?.toString() : "0";
+  })
+  age: string;
+
+  @ApiProperty({
+    default: moment().format("YYYY-MM-DD")
+  })
   @IsNotEmpty()
-  fullName: string;
+  @IsDateString({ strict: true } as any)
+  birthDate: Date;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  address: string;
 
   @ApiProperty()
   @IsNotEmpty()

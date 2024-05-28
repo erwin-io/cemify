@@ -16,6 +16,7 @@ import { ReservationService } from 'src/app/services/reservation.service';
 import { ApiResponse } from 'src/app/model/api-response.model';
 import { Subject, Observable, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
+import { getAge } from 'src/app/shared/utils/date';
 
 @Component({
   selector: 'app-reservation-details',
@@ -88,10 +89,14 @@ export class ReservationDetailsComponent implements OnInit {
     if (this.isNew || this.isEditMode) {
       this.form = this.formBuilder.group({
         lotCode: new FormControl(null, [Validators.required]),
-        burialName: new FormControl(null, [Validators.required]),
+        burialFirstName: new FormControl(null, [Validators.required]),
+        burialMiddleName: new FormControl(),
+        burialLastName: new FormControl(null, [Validators.required]),
         dateOfBirth: new FormControl(new Date().toISOString(), [
           Validators.required,
         ]),
+        burialAge: new FormControl(0, [Validators.required]),
+        address: new FormControl(null, [Validators.required]),
         dateOfDeath: new FormControl(new Date().toISOString(), [
           Validators.required,
         ]),
@@ -104,7 +109,11 @@ export class ReservationDetailsComponent implements OnInit {
     } else if (!this.isEditMode) {
       this.form = this.formBuilder.group({
         lotCode: new FormControl(null),
-        burialName: new FormControl(null),
+        burialFirstName: new FormControl(),
+        burialMiddleName: new FormControl(),
+        burialLastName: new FormControl(),
+        burialAge: new FormControl(0),
+        address: new FormControl(),
         dateOfBirth: new FormControl(new Date().toISOString()),
         dateOfDeath: new FormControl(new Date().toISOString()),
         dateOfBurial: new FormControl(new Date().toISOString()),
@@ -112,6 +121,11 @@ export class ReservationDetailsComponent implements OnInit {
         familyContactNumber: new FormControl(null),
       });
     }
+    this.form.controls.dateOfBirth.valueChanges.subscribe(res=> {
+      if(this.form.controls.dateOfBirth.touched) {
+        this.form.controls.burialAge.setValue(getAge(new Date(res)));
+      }
+    });
     // this.form.controls.dateOfBirth.valueChanges.subscribe(res=> {
     //   setTimeout(()=> {
     //     if(!this.form.controls.dateOfBirth.dirty && !this.form.controls.dateOfBirth.touched) {
@@ -143,7 +157,11 @@ export class ReservationDetailsComponent implements OnInit {
 
   onPopulateDataToForm(reservation: Reservation) {
     this.form.controls.lotCode.setValue(reservation?.lot?.lotCode);
-    this.form.controls.burialName.setValue(reservation?.burialName);
+    this.form.controls.burialFirstName.setValue(reservation?.burialFirstName);
+    this.form.controls.burialMiddleName.setValue(reservation?.burialMiddleName);
+    this.form.controls.burialLastName.setValue(reservation?.burialLastName);
+    this.form.controls.burialAge.setValue(reservation?.burialAge);
+    this.form.controls.address.setValue(reservation?.address);
     this.form.controls.dateOfBirth.setValue(reservation?.dateOfBirth);
     this.form.controls.dateOfDeath.setValue(reservation?.dateOfDeath);
     this.form.controls.dateOfBurial.setValue(reservation?.dateOfBurial);
@@ -162,6 +180,7 @@ export class ReservationDetailsComponent implements OnInit {
 
   triggerControlStatus(control) {
     if (this.form.controls[control]) {
+      this.form.controls[control].markAsTouched();
       this.form.controls[control].markAsDirty();
       this.form.controls[control].markAsDirty();
       this.form.controls[control].updateValueAndValidity();
@@ -189,7 +208,6 @@ export class ReservationDetailsComponent implements OnInit {
     });
     modal.present();
     modal.onWillDismiss().then((res: { data: Lot; role: any }) => {
-      console.log(res.data);
       if (res?.data && res?.data.lotCode) {
         this.selectedLot = res.data;
         this.formControls.lotCode.setValue(res.data?.lotCode);
@@ -248,7 +266,6 @@ export class ReservationDetailsComponent implements OnInit {
                   .toPromise();
               }
               if (res.success) {
-                console.log(res.data);
                 await this.pageLoaderService.close();
                 this.isOpenResultModal = true;
                 this.resultModal = {
@@ -326,7 +343,6 @@ export class ReservationDetailsComponent implements OnInit {
                 )
                 .toPromise();
               if (res.success) {
-                console.log(res.data);
                 await this.pageLoaderService.close();
                 this.isOpenResultModal = true;
                 this.resultModal = {

@@ -146,7 +146,7 @@ export class BurialComponent  {
           let data = res.data.results.map((d)=>{
             return {
               burialCode: d.burialCode,
-              fullName: d.fullName,
+              burialFullName: d.burialFullName,
               dateOfBurial: d.dateOfBurial.toString(),
               dateOfBirth: d.dateOfBirth.toString(),
               dateOfDeath: d.dateOfDeath.toString(),

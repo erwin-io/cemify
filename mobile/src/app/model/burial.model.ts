@@ -1,11 +1,16 @@
-import { Lot } from "./lot.model";
-import { Reservation } from "./reservation.model";
-import { WorkOrder } from "./work-order.model";
+import { Lot } from './lot.model';
+import { Reservation } from './reservation.model';
+import { WorkOrder } from './work-order.model';
 
 export class Burial {
   burialId: string;
   burialCode?: string;
-  fullName?: string;
+  burialFullName?: string;
+  burialFirstName: string;
+  burialMiddleName?: string;
+  burialLastName: string;
+  address: string;
+  burialAge?: string;
   dateOfBirth?: string;
   dateOfDeath?: string;
   dateOfBurial?: string;

@@ -1,0 +1,140 @@
+<div class="content">
+  <div class="inner-content dashboard">
+    <div class="error" *ngIf="error && error !== ''">
+      <br>
+      {{error}}
+      <button mat-icon-button aria-label="Clear" (click)="error=null">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
+      <div fxFlex="100" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="16px">
+
+        <mat-card class="card lot available" fxFlex.gt-xs="33.33%">
+          <mat-card-content>
+            <div fxFlex="100" fxLayout="column" fxLayoutGap="20">
+              <p>Total Available</p>
+              <h3><span *ngIf="!isLoading; else loadingActiveDrivers">{{totalAvailable}}</span></h3>
+              <ng-template #loadingActiveDrivers>
+                <div fxFlex="100">
+                  <ngx-skeleton-loader fxFlex [theme]="{ height: '30px', width: '100%',
+                    'background-color': 'rgb(126 38 26)',}"></ngx-skeleton-loader>
+                </div>
+              </ng-template>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="card lot occupied" fxFlex.gt-xs="33.33%">
+          <mat-card-content>
+            <div fxFlex="100" fxLayout="column" fxLayoutGap="20">
+              <p>Total Occupied</p>
+              <h3><span *ngIf="!isLoading; else loadingInactiveDrivers">{{totalOccupied}}</span></h3>
+              <ng-template #loadingInactiveDrivers>
+                <div fxFlex="100">
+                  <ngx-skeleton-loader fxFlex [theme]="{ height: '30px', width: '100%',
+                    'background-color': 'rgb(126 38 26)',}"></ngx-skeleton-loader>
+                </div>
+              </ng-template>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="card lot unavailable" fxFlex.gt-xs="33.33%">
+          <mat-card-content>
+            <div fxFlex="100" fxLayout="column" fxLayoutGap="20">
+              <p>Total Unavailable</p>
+              <h3><span *ngIf="!isLoading; else loadingInactiveDrivers">{{totalUnavailable}}</span></h3>
+              <ng-template #loadingInactiveDrivers>
+                <div fxFlex="100">
+                  <ngx-skeleton-loader fxFlex [theme]="{ height: '30px', width: '100%',
+                    'background-color': 'rgb(126 38 26)',}"></ngx-skeleton-loader>
+                </div>
+              </ng-template>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
+      <div fxFlex="100" fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="16px">
+        <mat-card fxFlex="100" class="card records">
+          <mat-card-content fxLayout="column" fxFlex="100" fxLayoutGap="16px">
+            <div fxFlex="100" fxLayout="column">
+              <div fxLayout="row" fxLayoutAlign="space-between">
+                <h3>Burial Records and Reservation</h3>
+              </div>
+            </div>
+            <div fxLayout="column" fxLayout.gt-xs="row" fxFlex="100">
+              <div class="summary all-records" fxFlex="100" fxFlex.gt-xs="33.33%">
+                <div class="summary-icon"><mat-icon>museum</mat-icon></div>
+                <div class="summary-content">
+                  <p>All Records</p>
+                  <h3>{{totalRecords}}</h3>
+                </div>
+              </div>
+              <div class="summary to-process" fxFlex="100" fxFlex.gt-xs="33.33%">
+                <div class="summary-icon"><mat-icon>error</mat-icon></div>
+                <div class="summary-content">
+                  <p>To Process</p>
+                  <h3>{{totalPending}}</h3>
+                </div>
+              </div>
+              <div class="summary for-leased" fxFlex="100" fxFlex.gt-xs="33.33%">
+                <div class="summary-icon"><mat-icon>assignment_turned_in</mat-icon></div>
+                <div class="summary-content">
+                  <p>Waiting for Leased</p>
+                  <h3>{{totalForLeased}}</h3>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex="100" class="card users">
+          <mat-card-content fxLayout="column" fxFlex="100" fxLayoutGap="16px">
+            <div fxFlex="100" fxLayout="column">
+              <div fxLayout="row" fxLayoutAlign="space-between">
+                <h3>Users</h3>
+              </div>
+            </div>
+            <div fxLayout="column" fxLayout.gt-xs="row" fxFlex="100">
+              <div class="summary total-client" fxFlex="100" fxFlex.gt-xs="33.33%">
+                <div class="summary-icon"><mat-icon>account_box</mat-icon></div>
+                <div class="summary-content">
+                  <p>Clients</p>
+                  <h3>{{totalClient}}</h3>
+                </div>
+              </div>
+              <div class="summary total-admin" fxFlex="100" fxFlex.gt-xs="33.33%">
+                <div class="summary-icon"><mat-icon>admin_panel_settings</mat-icon></div>
+                <div class="summary-content">
+                  <p>Admin</p>
+                  <h3>{{totalAdmin}}</h3>
+                </div>
+              </div>
+              <div class="summary total-staff" fxFlex="100" fxFlex.gt-xs="33.33%">
+                <div class="summary-icon"><mat-icon>engineering</mat-icon></div>
+                <div class="summary-content">
+                  <p>Staff</p>
+                  <h3>{{totalStaff}}</h3>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
+      <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
+        <mat-card fxFlex="100" >
+          <mat-card-content fxLayout="column" fxFlex="100" >
+            <h3>Burial Records</h3>
+            <br>
+            <div fxFlex="100" fxLayout="column" fxLayoutGap="20">
+              <div class="chart" id="chart-records"></div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+  </div>
+</div>

@@ -57,6 +57,37 @@ __decorate([
     __metadata("design:type", String)
 ], Users.prototype, "userType", void 0);
 __decorate([
+    (0, typeorm_1.Column)("character varying", { name: "FirstName", default: () => "''" }),
+    __metadata("design:type", String)
+], Users.prototype, "firstName", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", {
+        name: "MiddleName",
+        nullable: true,
+        default: () => "''",
+    }),
+    __metadata("design:type", String)
+], Users.prototype, "middleName", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", { name: "LastName", default: () => "''" }),
+    __metadata("design:type", String)
+], Users.prototype, "lastName", void 0);
+__decorate([
+    (0, typeorm_1.Column)("date", {
+        name: "BirthDate",
+        default: () => "(now() AT TIME ZONE 'Asia/Manila')",
+    }),
+    __metadata("design:type", String)
+], Users.prototype, "birthDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)("numeric", { name: "Age", default: () => "0" }),
+    __metadata("design:type", String)
+], Users.prototype, "age", void 0);
+__decorate([
+    (0, typeorm_1.Column)("character varying", { name: "Address", default: () => "''" }),
+    __metadata("design:type", String)
+], Users.prototype, "address", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => GatewayConnectedUsers_1.GatewayConnectedUsers, (gatewayConnectedUsers) => gatewayConnectedUsers.user),
     __metadata("design:type", Array)
 ], Users.prototype, "gatewayConnectedUsers", void 0);

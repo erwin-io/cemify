@@ -16,7 +16,11 @@ export class ReservationFormComponent {
   ) {
     this.form = this.formBuilder.group({
       reservationCode: new FormControl(),
-      burialName: new FormControl(),
+      burialFirstName: new FormControl(),
+      burialMiddleName: new FormControl(),
+      burialLastName: new FormControl(),
+      address: new FormControl(),
+      burialAge: new FormControl(),
       dateTime: new FormControl(),
       dateOfBirth: new FormControl(),
       dateOfDeath: new FormControl(),
@@ -33,7 +37,11 @@ export class ReservationFormComponent {
     this.reservation = value;
     if(this.form) {
       this.form.controls["reservationCode"].setValue(value?.reservationCode ? value?.reservationCode : "");
-      this.form.controls["burialName"].setValue(value?.burialName ? value?.burialName : "");
+      this.form.controls["burialFirstName"].setValue(value?.burialFirstName??"");
+      this.form.controls["burialMiddleName"].setValue(value?.burialMiddleName??"");
+      this.form.controls["burialLastName"].setValue(value?.burialLastName??"");
+      this.form.controls["address"].setValue(value?.address??"");
+      this.form.controls["burialAge"].setValue(value?.burialAge??"");
       this.form.controls["dateTime"].setValue(value?.dateTime ? moment(value?.dateTime).format("dddd, MMM DD, YYYY") : "");
       this.form.controls["dateOfBirth"].setValue(value?.dateOfBirth ? moment(value?.dateOfBirth).format("MMM DD, YYYY") : "");
       this.form.controls["dateOfDeath"].setValue(value?.dateOfDeath ? moment(value?.dateOfDeath).format("MMM DD, YYYY") : "");

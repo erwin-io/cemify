@@ -23,8 +23,8 @@
         <ion-toolbar>
           <div slot="start" style="width: 48px"></div>
           <ion-title class="ion-text-center" *ngIf="!selectedLotLoading; else selectedLotLoadingTemp">{{selectedLot ?
-            selectedLot?.lotCode : ''}}{{selectedLot && selectedLot?.burial?.fullName ? '/' +
-            selectedLot?.burial?.fullName : ''}}</ion-title>
+            selectedLot?.lotCode : ''}}{{selectedLot && selectedLot?.burial?.burialFullName ? '/' +
+            selectedLot?.burial?.burialFullName : ''}}</ion-title>
           <ng-template #selectedLotLoadingTemp>
             <ion-title class="ion-text-center">
               <ion-skeleton-text style="min-height: 25px;min-width: 100%;" [animated]="true"></ion-skeleton-text>

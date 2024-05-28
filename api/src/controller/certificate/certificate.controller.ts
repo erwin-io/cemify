@@ -91,7 +91,7 @@ export class CertificateController {
       const generatedDocument = await createReport({
         template: generatedDocumentWithDate,
         data: {
-          fullName: burial?.fullName,
+          fullName: burial?.burialFullName,
           dateOfDeath: moment(burial?.dateOfDeath).format("MMMM DD, YYYY"),
           dateOfBurial: moment(burial?.dateOfBurial).format("MMMM DD, YYYY"),
           familyContactPerson: burial?.familyContactPerson,
@@ -111,7 +111,7 @@ export class CertificateController {
       console.log();
       response.setHeader(
         "Content-Disposition",
-        `attachment; filename=${burial.fullName}.${fileName}`
+        `attachment; filename=${burial.burialFullName}.${fileName}`
       );
       return new StreamableFile(Buffer.from(buffer));
     } catch (e) {

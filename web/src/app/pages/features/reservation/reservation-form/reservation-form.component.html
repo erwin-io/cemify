@@ -6,6 +6,135 @@
   id="form"
   class="readonly">
   <fieldset fxFlex="100" fxLayout="row wrap" style="row-gap: 16px">
+    <div fxLayout="column" fxFlex="100">
+      <mat-label >Burial</mat-label>
+    </div>
+
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-lg="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex.md="100"
+        appearance="outline">
+        <mat-label>Burial first name</mat-label>
+        <input
+          matInput
+          placeholder="Burial first name"
+          formControlName="burialFirstName"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex.md="100"
+        appearance="outline">
+        <mat-label>Burial middle name</mat-label>
+        <input
+          matInput
+          placeholder="Burial middle name"
+          formControlName="burialMiddleName"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex.md="100"
+        appearance="outline">
+        <mat-label>Burial last name</mat-label>
+        <input
+          matInput
+          placeholder="Burial last name"
+          formControlName="burialLastName"/>
+      </mat-form-field>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-lg="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.lg="33.33%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Date of birth</mat-label>
+        <input
+          matInput
+          placeholder="Date of birth"
+          formControlName="dateOfBirth"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.gt-lg="33.33%"
+        fxFlex="100"
+        appearance="outline">
+        <mat-label>Age</mat-label>
+        <input
+          matInput
+          placeholder="Age"
+          formControlName="burialAge"/>
+      </mat-form-field>
+      <div
+        fxFlex.lg="33.33%"
+        fxFlex="100"
+        fxLayout="column"></div>
+    </div>
+
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.sm="row"
+      fxLayout.md="column"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.sm="50%"
+        fxFlex.md="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Date of burial</mat-label>
+        <input
+          matInput
+          placeholder="Date of burial"
+          formControlName="dateOfBirth"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.sm="50%"
+        fxFlex.md="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Date of death</mat-label>
+        <input
+          matInput
+          placeholder="Date of death"
+          formControlName="dateOfDeath"/>
+      </mat-form-field>
+    </div>
+    <div
+      fxFlex="100"
+      fxLayout="column"
+      fxLayout.gt-xs="row"
+      style="gap: 16px">
+      <mat-form-field
+        fxFlex.gt-xs="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Block</mat-label>
+        <input
+          matInput
+          placeholder="Block"
+          formControlName="block"/>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex.gt-xs="50%"
+        fxFlex="100"
+        fxLayout="column"
+        appearance="outline">
+        <mat-label>Lot</mat-label>
+        <input
+          matInput
+          placeholder="Lot"
+          formControlName="lotCode"/>
+      </mat-form-field>
+    </div>
     <div
       fxFlex="100"
       fxLayout="column"
@@ -31,69 +160,6 @@
       fxFlex.sm="33.33%"
       fxFlex.md="100"
         fxLayout="column"></div>
-    </div>
-    <div fxLayout="column" fxFlex="100">
-      <mat-label >Burial</mat-label>
-    </div>
-    <div
-      fxFlex="100"
-      fxLayout="column"
-      fxLayout.sm="row"
-      fxLayout.md="column"
-      style="gap: 16px">
-      <mat-form-field
-        fxFlex.sm="33.33%"
-        fxFlex.md="100"
-        fxLayout="column"
-        appearance="outline">
-        <mat-label>Date of burial</mat-label>
-        <input
-          matInput
-          placeholder="Date of burial"
-          formControlName="dateOfBirth"/>
-      </mat-form-field>
-      <mat-form-field
-        fxFlex.sm="33.33%"
-        fxFlex.md="100"
-        fxLayout="column"
-        appearance="outline">
-        <mat-label>Date of birth</mat-label>
-        <input
-          matInput
-          placeholder="Date of birth"
-          formControlName="dateOfBirth"/>
-      </mat-form-field>
-      <mat-form-field
-        fxFlex.sm="33.33%"
-        fxFlex.md="100"
-        fxLayout="column"
-        appearance="outline">
-        <mat-label>Date of death</mat-label>
-        <input
-          matInput
-          placeholder="Date of death"
-          formControlName="dateOfDeath"/>
-      </mat-form-field>
-    </div>
-    <div
-      fxFlex="100"
-      fxLayout="column"
-      fxLayout.gt-lg="row"
-      style="gap: 16px">
-      <mat-form-field
-        fxFlex.gt-lg="50%"
-        fxFlex="100"
-        appearance="outline">
-        <mat-label>Burial name</mat-label>
-        <input
-          matInput
-          placeholder="Name"
-          formControlName="burialName"/>
-      </mat-form-field>
-      <div
-        fxFlex.gt-lg="50%"
-        fxFlex="100"
-        appearance="outline"></div>
     </div>
     <div fxLayout="column" fxFlex="100">
       <mat-label >Contact Person</mat-label>
@@ -124,34 +190,6 @@
           matInput
           placeholder="Family contact number"
           formControlName="familyContactNumber"/>
-      </mat-form-field>
-    </div>
-    <div
-      fxFlex="100"
-      fxLayout="column"
-      fxLayout.gt-xs="row"
-      style="gap: 16px">
-      <mat-form-field
-        fxFlex.gt-xs="50%"
-        fxFlex="100"
-        fxLayout="column"
-        appearance="outline">
-        <mat-label>Block</mat-label>
-        <input
-          matInput
-          placeholder="Block"
-          formControlName="block"/>
-      </mat-form-field>
-      <mat-form-field
-        fxFlex.gt-xs="50%"
-        fxFlex="100"
-        fxLayout="column"
-        appearance="outline">
-        <mat-label>Lot</mat-label>
-        <input
-          matInput
-          placeholder="Lot"
-          formControlName="lotCode"/>
       </mat-form-field>
     </div>
     <div

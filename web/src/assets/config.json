@@ -129,9 +129,9 @@
         "urlPropertyName": "url"
       },
       {
-        "name": "fullName",
+        "name": "burialFullName",
         "label": "Name",
-        "apiNotation": "fullName",
+        "apiNotation": "burialFullName",
         "type": "string",
         "filterOptions": {
           "enable": true,
@@ -403,6 +403,11 @@
   "lookup": {
     "accessPages": [
       {
+        "page": "Dashboard",
+        "view": true,
+        "modify": true
+      },
+      {
         "page": "Map",
         "view": true,
         "modify": true,
@@ -515,6 +520,12 @@
     },
     "message": {
       "create": "/message/"
+    },
+    "dashboard": {
+      "getLot": "/dashboard/getLot/",
+      "getBurialAndReservationRecords": "/dashboard/getBurialAndReservationRecords/",
+      "getUsers": "/dashboard/getUsers/",
+      "getLotTrackerByBlock": "/dashboard/getLotTrackerByBlock/"
     }
   }
 }

@@ -15,9 +15,29 @@ import moment from "moment";
 export class DefaultBurialDto {
   @ApiProperty()
   @IsNotEmpty({
-    message: "Not allowed, Name is required!"
+    message: "Not allowed, First name is required!"
   })
-  fullName: string;
+  burialFirstName: string;
+  
+  @ApiProperty()
+  @IsOptional()
+  burialMiddleName: string;
+  
+  @ApiProperty()
+  @IsNotEmpty({
+    message: "Not allowed, Last name is required!"
+  })
+  burialLastName: string;
+  
+  @ApiProperty()
+  @IsNotEmpty({
+    message: "Not allowed, Address is required!"
+  })
+  address: string;
+  
+  @ApiProperty()
+  @IsOptional()
+  burialAge: string;
 
   @ApiProperty({
     default: moment().format("YYYY-MM-DD")

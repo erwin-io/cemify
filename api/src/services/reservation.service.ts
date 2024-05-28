@@ -12,6 +12,7 @@ import { USER_TYPE } from "src/common/constant/user-type.constant";
 import {
   columnDefToTypeORMCondition,
   generateIndentityCode,
+  getFullName,
 } from "src/common/utils/utils";
 import { CreateReservationDto } from "src/core/dto/reservation/reservation.create.dto";
 import {
@@ -146,7 +147,17 @@ export class ReservationService {
             return res[0]["timestamp"];
           });
         reservation.dateTime = timestamp;
-        reservation.burialName = dto.burialName;
+
+        reservation.burialFullName = getFullName(
+          dto.burialFirstName ?? "",
+          dto.burialMiddleName ?? "",
+          dto.burialLastName ?? ""
+        );
+        reservation.burialFirstName = dto.burialFirstName;
+        reservation.burialMiddleName = dto.burialMiddleName;
+        reservation.burialLastName = dto.burialLastName;
+        reservation.burialAge = dto.burialAge;
+        reservation.address = dto.address;
         const dateOfBirth = moment(
           new Date(dto.dateOfBirth),
           DateConstant.DATE_LANGUAGE
@@ -225,7 +236,16 @@ export class ReservationService {
           );
         }
 
-        reservation.burialName = dto.burialName;
+        reservation.burialFullName = getFullName(
+          dto.burialFirstName ?? "",
+          dto.burialMiddleName ?? "",
+          dto.burialLastName ?? ""
+        );
+        reservation.burialFirstName = dto.burialFirstName;
+        reservation.burialMiddleName = dto.burialMiddleName;
+        reservation.burialLastName = dto.burialLastName;
+        reservation.burialAge = dto.burialAge;
+        reservation.address = dto.address;
         const dateOfBirth = moment(
           new Date(dto.dateOfBirth),
           DateConstant.DATE_LANGUAGE

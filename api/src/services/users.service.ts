@@ -1,6 +1,7 @@
 import {
   columnDefToTypeORMCondition,
   generateIndentityCode,
+  getFullName,
   hash,
 } from "./../common/utils/utils";
 import { Injectable } from "@nestjs/common";
@@ -152,7 +153,18 @@ export class UsersService {
       user.userName = dto.mobileNumber;
       user.password = await hash(dto.password);
       user.accessGranted = true;
-      user.fullName = dto.fullName;
+
+      user.fullName = getFullName(
+        dto.firstName ?? "",
+        dto.middleName ?? "",
+        dto.lastName ?? ""
+      );
+      user.firstName = dto.firstName;
+      user.middleName = dto.middleName;
+      user.lastName = dto.lastName;
+      user.address = dto.address;
+      user.age = dto.age;
+      user.birthDate = moment(dto.birthDate).format("YYYY-MM-DD");
       user.mobileNumber = dto.mobileNumber;
       user.userType = dto.userType;
       if (dto.accessCode) {
@@ -219,7 +231,17 @@ export class UsersService {
         throw Error(USER_ERROR_USER_NOT_FOUND);
       }
 
-      user.fullName = dto.fullName;
+      user.fullName = getFullName(
+        dto.firstName ?? "",
+        dto.middleName ?? "",
+        dto.lastName ?? ""
+      );
+      user.firstName = dto.firstName;
+      user.middleName = dto.middleName;
+      user.lastName = dto.lastName;
+      user.address = dto.address;
+      user.age = dto.age;
+      user.birthDate = moment(dto.birthDate).format("YYYY-MM-DD");
       user.userName = dto.mobileNumber;
       user.mobileNumber = dto.mobileNumber;
       user = await entityManager.save(Users, user);
@@ -414,7 +436,17 @@ export class UsersService {
         throw Error(USER_ERROR_USER_NOT_FOUND);
       }
 
-      user.fullName = dto.fullName;
+      user.fullName = getFullName(
+        dto.firstName ?? "",
+        dto.middleName ?? "",
+        dto.lastName ?? ""
+      );
+      user.firstName = dto.firstName;
+      user.middleName = dto.middleName;
+      user.lastName = dto.lastName;
+      user.address = dto.address;
+      user.age = dto.age;
+      user.birthDate = moment(dto.birthDate).format("YYYY-MM-DD");
       user.mobileNumber = dto.mobileNumber;
       user.userName = dto.mobileNumber;
       if (dto.accessCode) {

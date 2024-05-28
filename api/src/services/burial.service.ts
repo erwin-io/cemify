@@ -31,6 +31,7 @@ import { USER_TYPE } from "src/common/constant/user-type.constant";
 import {
   columnDefToTypeORMCondition,
   generateIndentityCode,
+  getFullName,
 } from "src/common/utils/utils";
 import {
   CreateBurialDto,
@@ -78,7 +79,12 @@ export class BurialService {
       select 
       b."BurialId" as "burialId", 
       b."BurialCode" as "burialCode", 
-      b."FullName" as "fullName", 
+      b."BurialFullName" as "burialFullName",
+      b."BurialFirstName" as "burialFirstName",
+      b."BurialMiddleName" as "burialMiddleName", 
+      b."BurialLastName" as "burialLastName", 
+      b."BurialAge" as "burialAge", 
+      b."Address" as "address", 
       b."DateOfBirth" as "dateOfBirth", 
       b."DateOfDeath" as "dateOfDeath", 
       b."DateOfBurial" as "dateOfBurial", 
@@ -109,7 +115,12 @@ export class BurialService {
         return {
           burialId: res.burialId,
           burialCode: res.burialCode,
-          fullName: res.fullName,
+          burialFullName: res.burialFullName,
+          burialFirstName: res.burialFirstName,
+          burialMiddleName: res.burialMiddleName,
+          burialLastName: res.burialLastName,
+          burialAge: res.burialAge,
+          address: res.address,
           dateOfBirth: res.dateOfBirth,
           dateOfDeath: res.dateOfDeath,
           dateOfBurial: res.dateOfBurial,
@@ -243,7 +254,16 @@ export class BurialService {
       }
       let burial = new Burial();
 
-      burial.fullName = dto.fullName;
+      burial.burialFullName = getFullName(
+        dto.burialFirstName ?? "",
+        dto.burialMiddleName ?? "",
+        dto.burialLastName ?? ""
+      );
+      burial.burialFirstName = dto.burialFirstName;
+      burial.burialMiddleName = dto.burialMiddleName;
+      burial.burialLastName = dto.burialLastName;
+      burial.burialAge = dto.burialAge;
+      burial.address = dto.address;
       const dateOfBirth = moment(
         new Date(dto.dateOfBirth),
         DateConstant.DATE_LANGUAGE
@@ -375,7 +395,16 @@ export class BurialService {
       }
       let burial = new Burial();
 
-      burial.fullName = reservation.burialName;
+      burial.burialFullName = getFullName(
+        reservation.burialFirstName ?? "",
+        reservation.burialMiddleName ?? "",
+        reservation.burialLastName ?? ""
+      );
+      burial.burialFirstName = reservation.burialFirstName;
+      burial.burialMiddleName = reservation.burialMiddleName;
+      burial.burialLastName = reservation.burialLastName;
+      burial.burialAge = reservation.burialAge;
+      burial.address = reservation.address;
       const dateOfBirth = moment(
         new Date(reservation.dateOfBirth),
         DateConstant.DATE_LANGUAGE
@@ -512,7 +541,16 @@ export class BurialService {
         throw Error(BURIAL_ERROR_NOT_FOUND);
       }
 
-      burial.fullName = dto.fullName;
+      burial.burialFullName = getFullName(
+        dto.burialFirstName ?? "",
+        dto.burialMiddleName ?? "",
+        dto.burialLastName ?? ""
+      );
+      burial.burialFirstName = dto.burialFirstName;
+      burial.burialMiddleName = dto.burialMiddleName;
+      burial.burialLastName = dto.burialLastName;
+      burial.burialAge = dto.burialAge;
+      burial.address = dto.address;
       const dateOfBirth = moment(
         new Date(dto.dateOfBirth),
         DateConstant.DATE_LANGUAGE

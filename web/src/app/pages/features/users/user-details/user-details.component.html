@@ -103,7 +103,143 @@
                         ? "Please select User type"
                         : "") }}</mat-error>
                 </mat-form-field>
-            </div>
+              </div>
+              <div
+                fxFlex="100"
+                fxLayout="column"
+                fxLayout.gt-sm="row"
+                style="gap: 16px">
+                <mat-form-field
+                  appearance="outline"
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex="100"
+                  class="cell"
+                  [ngClass.gt-sm]="{ isLargeScreen: true }">
+                  <mat-label>First name</mat-label>
+                  <input
+                    matInput
+                    placeholder="First name"
+                    formControlName="firstName"
+                  />
+                  <mat-error
+                    *ngIf="getError('firstName') !== (null || undefined)"
+                    >{{
+                      (getError("firstName") &&
+                      getError("firstName")["required"]
+                        ? "Please enter First name"
+                        : "") ||
+                        (getError("firstName") &&
+                        getError("firstName")["pattern"]
+                          ? "Invalid input"
+                          : "")
+                    }}</mat-error
+                  >
+                </mat-form-field>
+                <mat-form-field
+                  appearance="outline"
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex="100"
+                  class="cell"
+                  [ngClass.gt-sm]="{ isLargeScreen: true }">
+                  <mat-label>Middle name</mat-label>
+                  <input
+                    matInput
+                    placeholder="Middle name"
+                    formControlName="middleName"
+                  />
+                  <mat-error
+                    *ngIf="getError('middleName') !== (null || undefined)"
+                    >{{
+                      (getError("middleName") &&
+                      getError("middleName")["required"]
+                        ? "Please enter Middle name"
+                        : "") ||
+                        (getError("middleName") &&
+                        getError("middleName")["pattern"]
+                          ? "Invalid input"
+                          : "")
+                    }}</mat-error
+                  >
+                </mat-form-field>
+                <mat-form-field
+                  appearance="outline"
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex="100"
+                  class="cell"
+                  [ngClass.gt-sm]="{ isLargeScreen: true }">
+                  <mat-label>Last name</mat-label>
+                  <input
+                    matInput
+                    placeholder="Last name"
+                    formControlName="lastName"
+                  />
+                  <mat-error
+                    *ngIf="getError('lastName') !== (null || undefined)"
+                    >{{
+                      (getError("lastName") &&
+                      getError("lastName")["required"]
+                        ? "Please enter Last name"
+                        : "") ||
+                        (getError("lastName") &&
+                        getError("lastName")["pattern"]
+                          ? "Invalid input"
+                          : "")
+                    }}</mat-error
+                  >
+                </mat-form-field>
+              </div>
+              <!-- birth date -->
+              <div
+                fxFlex="100"
+                fxLayout="column"
+                fxLayout.gt-sm="row"
+                style="gap: 16px"
+              >
+                <mat-form-field
+                fxFlex.gt-lg="33.33%"
+                fxFlex="100"
+                fxLayout="column"
+                appearance="outline"
+                *ngIf="!isReadOnly; else readOnlyBDate">
+                  <mat-label>Birth date</mat-label>
+                  <input
+                    matInput
+                    placeholder="Birth date"
+                    formControlName="birthDate"
+                    [matDatepicker]="birthDatePicker"
+                    (dateChange)="f['birthDate'].markAsTouched();f['birthDate'].updateValueAndValidity()"/>
+                  <mat-datepicker-toggle matIconSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #birthDatePicker></mat-datepicker>
+                </mat-form-field>
+                <ng-template #readOnlyBDate>
+                  <mat-form-field
+                    fxFlex.gt-lg="33.33%"
+                    fxFlex="100"
+                    fxLayout="column"
+                    appearance="outline">
+                    <mat-label>Birth date</mat-label>
+                    <input
+                      matInput
+                      placeholder="Birth date"
+                      formControlName="birthDate"/>
+                  </mat-form-field>
+                </ng-template>
+                <mat-form-field
+                  appearance="outline"
+                  fxFlex.gt-sm="33.33%"
+                  fxFlex="100"
+                  class="cell"
+                  [ngClass.gt-sm]="{ isLargeScreen: true }">
+                  <mat-label>Age</mat-label>
+                  <input
+                    matInput
+                    placeholder="Age"
+                    formControlName="age"/>
+                </mat-form-field>
+                <div
+                  fxFlex="33.33%"></div>
+              </div>
+              <!-- address -->
               <div
                 fxFlex="100"
                 fxLayout="column"
@@ -112,31 +248,30 @@
               >
                 <mat-form-field
                   appearance="outline"
-                  fxFlex="100"
+                  fxFlex="50%"
                   class="cell"
                   [ngClass.gt-sm]="{ isLargeScreen: true }"
                 >
-                  <mat-label>Full name</mat-label>
+                  <mat-label>Address</mat-label>
                   <input
                     matInput
-                    placeholder="Full name"
-                    formControlName="fullName"
+                    placeholder="Address"
+                    formControlName="address"
                   />
                   <mat-error
-                    *ngIf="getError('fullName') !== (null || undefined)"
+                    *ngIf="getError('address') !== (null || undefined)"
                     >{{
-                      (getError("fullName") &&
-                      getError("fullName")["required"]
-                        ? "Please enter Full name"
-                        : "") ||
-                        (getError("fullName") &&
-                        getError("fullName")["pattern"]
-                          ? "Invalid input"
-                          : "")
+                      (getError("address") &&
+                      getError("address").required
+                        ? "Please enter Address"
+                        : "")
                     }}</mat-error
                   >
                 </mat-form-field>
+                <div
+                  fxFlex="50%"></div>
               </div>
+              <!-- mobile -->
               <div
                 fxFlex="100"
                 fxLayout="column"

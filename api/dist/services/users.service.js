@@ -11,11 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const utils_1 = require("./../common/utils/utils");
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const moment_1 = __importDefault(require("moment"));
 const path_1 = require("path");
 const access_constant_1 = require("../common/constant/access.constant");
 const user_error_constant_1 = require("../common/constant/user-error.constant");
@@ -126,12 +130,18 @@ let UsersService = class UsersService {
     }
     async create(dto) {
         return await this.userRepo.manager.transaction(async (entityManager) => {
-            var _a, _b;
+            var _a, _b, _c, _d, _e;
             let user = new Users_1.Users();
             user.userName = dto.mobileNumber;
             user.password = await (0, utils_1.hash)(dto.password);
             user.accessGranted = true;
-            user.fullName = dto.fullName;
+            user.fullName = (0, utils_1.getFullName)((_a = dto.firstName) !== null && _a !== void 0 ? _a : "", (_b = dto.middleName) !== null && _b !== void 0 ? _b : "", (_c = dto.lastName) !== null && _c !== void 0 ? _c : "");
+            user.firstName = dto.firstName;
+            user.middleName = dto.middleName;
+            user.lastName = dto.lastName;
+            user.address = dto.address;
+            user.age = dto.age;
+            user.birthDate = (0, moment_1.default)(dto.birthDate).format("YYYY-MM-DD");
             user.mobileNumber = dto.mobileNumber;
             user.userType = dto.userType;
             if (dto.accessCode) {
@@ -159,9 +169,9 @@ let UsersService = class UsersService {
                 },
             });
             delete user.password;
-            if (user.access && ((_a = user === null || user === void 0 ? void 0 : user.access) === null || _a === void 0 ? void 0 : _a.accessPages)) {
+            if (user.access && ((_d = user === null || user === void 0 ? void 0 : user.access) === null || _d === void 0 ? void 0 : _d.accessPages)) {
                 user.access.accessPages =
-                    (user === null || user === void 0 ? void 0 : user.access) && ((_b = user === null || user === void 0 ? void 0 : user.access) === null || _b === void 0 ? void 0 : _b.accessPages)
+                    (user === null || user === void 0 ? void 0 : user.access) && ((_e = user === null || user === void 0 ? void 0 : user.access) === null || _e === void 0 ? void 0 : _e.accessPages)
                         ? user.access.accessPages.map((res) => {
                             if (!res.rights) {
                                 res["rights"] = [];
@@ -175,6 +185,7 @@ let UsersService = class UsersService {
     }
     async updateProfile(userCode, dto) {
         return await this.userRepo.manager.transaction(async (entityManager) => {
+            var _a, _b, _c;
             let user = await entityManager.findOne(Users_1.Users, {
                 where: {
                     userCode,
@@ -187,7 +198,13 @@ let UsersService = class UsersService {
             if (!user) {
                 throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
             }
-            user.fullName = dto.fullName;
+            user.fullName = (0, utils_1.getFullName)((_a = dto.firstName) !== null && _a !== void 0 ? _a : "", (_b = dto.middleName) !== null && _b !== void 0 ? _b : "", (_c = dto.lastName) !== null && _c !== void 0 ? _c : "");
+            user.firstName = dto.firstName;
+            user.middleName = dto.middleName;
+            user.lastName = dto.lastName;
+            user.address = dto.address;
+            user.age = dto.age;
+            user.birthDate = (0, moment_1.default)(dto.birthDate).format("YYYY-MM-DD");
             user.userName = dto.mobileNumber;
             user.mobileNumber = dto.mobileNumber;
             user = await entityManager.save(Users_1.Users, user);
@@ -333,6 +350,7 @@ let UsersService = class UsersService {
     }
     async update(userCode, dto) {
         return await this.userRepo.manager.transaction(async (entityManager) => {
+            var _a, _b, _c;
             let user = await entityManager.findOne(Users_1.Users, {
                 where: {
                     userCode,
@@ -345,7 +363,13 @@ let UsersService = class UsersService {
             if (!user) {
                 throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
             }
-            user.fullName = dto.fullName;
+            user.fullName = (0, utils_1.getFullName)((_a = dto.firstName) !== null && _a !== void 0 ? _a : "", (_b = dto.middleName) !== null && _b !== void 0 ? _b : "", (_c = dto.lastName) !== null && _c !== void 0 ? _c : "");
+            user.firstName = dto.firstName;
+            user.middleName = dto.middleName;
+            user.lastName = dto.lastName;
+            user.address = dto.address;
+            user.age = dto.age;
+            user.birthDate = (0, moment_1.default)(dto.birthDate).format("YYYY-MM-DD");
             user.mobileNumber = dto.mobileNumber;
             user.userName = dto.mobileNumber;
             if (dto.accessCode) {

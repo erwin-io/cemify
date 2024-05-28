@@ -5,7 +5,7 @@ export declare class Reservation {
     reservationId: string;
     reservationCode: string | null;
     dateTime: Date;
-    burialName: string;
+    burialFullName: string;
     dateOfBirth: string;
     dateOfDeath: string;
     dateOfBurial: string;
@@ -13,6 +13,11 @@ export declare class Reservation {
     familyContactNumber: string;
     status: string;
     active: boolean;
+    burialFirstName: string;
+    burialMiddleName: string | null;
+    burialLastName: string;
+    address: string;
+    burialAge: string;
     burials: Burial[];
     lot: Lot;
     user: Users;

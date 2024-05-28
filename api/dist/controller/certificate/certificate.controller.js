@@ -71,7 +71,7 @@ let CertificateController = class CertificateController {
             const generatedDocument = await (0, docx_templates_1.default)({
                 template: generatedDocumentWithDate,
                 data: {
-                    fullName: burial === null || burial === void 0 ? void 0 : burial.fullName,
+                    fullName: burial === null || burial === void 0 ? void 0 : burial.burialFullName,
                     dateOfDeath: (0, moment_1.default)(burial === null || burial === void 0 ? void 0 : burial.dateOfDeath).format("MMMM DD, YYYY"),
                     dateOfBurial: (0, moment_1.default)(burial === null || burial === void 0 ? void 0 : burial.dateOfBurial).format("MMMM DD, YYYY"),
                     familyContactPerson: burial === null || burial === void 0 ? void 0 : burial.familyContactPerson,
@@ -82,7 +82,7 @@ let CertificateController = class CertificateController {
             response.setHeader("Content-Type", `application/vnd.openxmlformats-officedocument.wordprocessingml.document`);
             const fileName = templatePath.split(".")[templatePath.split(".").length - 1];
             console.log();
-            response.setHeader("Content-Disposition", `attachment; filename=${burial.fullName}.${fileName}`);
+            response.setHeader("Content-Disposition", `attachment; filename=${burial.burialFullName}.${fileName}`);
             return new common_1.StreamableFile(Buffer.from(buffer));
         }
         catch (e) {

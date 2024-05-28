@@ -58,7 +58,12 @@ let BurialService = class BurialService {
       select 
       b."BurialId" as "burialId", 
       b."BurialCode" as "burialCode", 
-      b."FullName" as "fullName", 
+      b."BurialFullName" as "burialFullName",
+      b."BurialFirstName" as "burialFirstName",
+      b."BurialMiddleName" as "burialMiddleName", 
+      b."BurialLastName" as "burialLastName", 
+      b."BurialAge" as "burialAge", 
+      b."Address" as "address", 
       b."DateOfBirth" as "dateOfBirth", 
       b."DateOfDeath" as "dateOfDeath", 
       b."DateOfBurial" as "dateOfBurial", 
@@ -89,7 +94,12 @@ let BurialService = class BurialService {
                 return {
                     burialId: res.burialId,
                     burialCode: res.burialCode,
-                    fullName: res.fullName,
+                    burialFullName: res.burialFullName,
+                    burialFirstName: res.burialFirstName,
+                    burialMiddleName: res.burialMiddleName,
+                    burialLastName: res.burialLastName,
+                    burialAge: res.burialAge,
+                    address: res.address,
                     dateOfBirth: res.dateOfBirth,
                     dateOfDeath: res.dateOfDeath,
                     dateOfBurial: res.dateOfBurial,
@@ -204,7 +214,7 @@ let BurialService = class BurialService {
     }
     async create(dto) {
         return await this.burialRepo.manager.transaction(async (entityManager) => {
-            var _a, _b, _c, _d;
+            var _a, _b, _c, _d, _e, _f, _g;
             let lot = await entityManager.findOne(Lot_1.Lot, {
                 where: {
                     lotCode: dto.lotCode,
@@ -220,7 +230,12 @@ let BurialService = class BurialService {
                 throw Error(lot_constant_1.LOT_ERROR_NOT_AVAILABLE);
             }
             let burial = new Burial_1.Burial();
-            burial.fullName = dto.fullName;
+            burial.burialFullName = (0, utils_1.getFullName)((_a = dto.burialFirstName) !== null && _a !== void 0 ? _a : "", (_b = dto.burialMiddleName) !== null && _b !== void 0 ? _b : "", (_c = dto.burialLastName) !== null && _c !== void 0 ? _c : "");
+            burial.burialFirstName = dto.burialFirstName;
+            burial.burialMiddleName = dto.burialMiddleName;
+            burial.burialLastName = dto.burialLastName;
+            burial.burialAge = dto.burialAge;
+            burial.address = dto.address;
             const dateOfBirth = (0, moment_1.default)(new Date(dto.dateOfBirth), date_constant_1.DateConstant.DATE_LANGUAGE).format();
             burial.dateOfBirth = dateOfBirth;
             const dateOfDeath = (0, moment_1.default)(new Date(dto.dateOfDeath), date_constant_1.DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");
@@ -286,14 +301,14 @@ let BurialService = class BurialService {
                     },
                 },
             });
-            (_b = (_a = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _a === void 0 ? void 0 : _a.assignedStaffUser) === null || _b === void 0 ? true : delete _b.password;
-            (_d = (_c = burial === null || burial === void 0 ? void 0 : burial.reservation) === null || _c === void 0 ? void 0 : _c.user) === null || _d === void 0 ? true : delete _d.password;
+            (_e = (_d = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _d === void 0 ? void 0 : _d.assignedStaffUser) === null || _e === void 0 ? true : delete _e.password;
+            (_g = (_f = burial === null || burial === void 0 ? void 0 : burial.reservation) === null || _f === void 0 ? void 0 : _f.user) === null || _g === void 0 ? true : delete _g.password;
             return burial;
         });
     }
     async createFromReservation(dto) {
         return await this.burialRepo.manager.transaction(async (entityManager) => {
-            var _a, _b, _c, _d;
+            var _a, _b, _c, _d, _e, _f, _g;
             let reservation = await entityManager.findOne(Reservation_1.Reservation, {
                 where: {
                     reservationCode: dto.reservationCode,
@@ -316,7 +331,12 @@ let BurialService = class BurialService {
                 throw Error(lot_constant_1.LOT_ERROR_NOT_AVAILABLE);
             }
             let burial = new Burial_1.Burial();
-            burial.fullName = reservation.burialName;
+            burial.burialFullName = (0, utils_1.getFullName)((_a = reservation.burialFirstName) !== null && _a !== void 0 ? _a : "", (_b = reservation.burialMiddleName) !== null && _b !== void 0 ? _b : "", (_c = reservation.burialLastName) !== null && _c !== void 0 ? _c : "");
+            burial.burialFirstName = reservation.burialFirstName;
+            burial.burialMiddleName = reservation.burialMiddleName;
+            burial.burialLastName = reservation.burialLastName;
+            burial.burialAge = reservation.burialAge;
+            burial.address = reservation.address;
             const dateOfBirth = (0, moment_1.default)(new Date(reservation.dateOfBirth), date_constant_1.DateConstant.DATE_LANGUAGE).format();
             burial.dateOfBirth = dateOfBirth;
             const dateOfDeath = (0, moment_1.default)(new Date(reservation.dateOfDeath), date_constant_1.DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");
@@ -387,14 +407,14 @@ let BurialService = class BurialService {
                     },
                 },
             });
-            (_b = (_a = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _a === void 0 ? void 0 : _a.assignedStaffUser) === null || _b === void 0 ? true : delete _b.password;
-            (_d = (_c = burial === null || burial === void 0 ? void 0 : burial.reservation) === null || _c === void 0 ? void 0 : _c.user) === null || _d === void 0 ? true : delete _d.password;
+            (_e = (_d = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _d === void 0 ? void 0 : _d.assignedStaffUser) === null || _e === void 0 ? true : delete _e.password;
+            (_g = (_f = burial === null || burial === void 0 ? void 0 : burial.reservation) === null || _f === void 0 ? void 0 : _f.user) === null || _g === void 0 ? true : delete _g.password;
             return burial;
         });
     }
     async update(burialCode, dto) {
         return await this.burialRepo.manager.transaction(async (entityManager) => {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
             let burial = await entityManager.findOne(Burial_1.Burial, {
                 where: {
                     burialCode,
@@ -418,7 +438,12 @@ let BurialService = class BurialService {
             if (!burial) {
                 throw Error(burial_constant_1.BURIAL_ERROR_NOT_FOUND);
             }
-            burial.fullName = dto.fullName;
+            burial.burialFullName = (0, utils_1.getFullName)((_a = dto.burialFirstName) !== null && _a !== void 0 ? _a : "", (_b = dto.burialMiddleName) !== null && _b !== void 0 ? _b : "", (_c = dto.burialLastName) !== null && _c !== void 0 ? _c : "");
+            burial.burialFirstName = dto.burialFirstName;
+            burial.burialMiddleName = dto.burialMiddleName;
+            burial.burialLastName = dto.burialLastName;
+            burial.burialAge = dto.burialAge;
+            burial.address = dto.address;
             const dateOfBirth = (0, moment_1.default)(new Date(dto.dateOfBirth), date_constant_1.DateConstant.DATE_LANGUAGE).format();
             burial.dateOfBirth = dateOfBirth;
             const dateOfDeath = (0, moment_1.default)(new Date(dto.dateOfDeath), date_constant_1.DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");
@@ -429,9 +454,9 @@ let BurialService = class BurialService {
             burial.dateOfBurial = dateOfBurial;
             burial.familyContactPerson = dto.familyContactPerson;
             burial.familyContactNumber = dto.familyContactNumber;
-            const assignedStaffUserChanged = ((_b = (_a = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _a === void 0 ? void 0 : _a.assignedStaffUser) === null || _b === void 0 ? void 0 : _b.userId) !==
+            const assignedStaffUserChanged = ((_e = (_d = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _d === void 0 ? void 0 : _d.assignedStaffUser) === null || _e === void 0 ? void 0 : _e.userId) !==
                 dto.assignedStaffUserId;
-            const oldAssignedStaffUser = (_c = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _c === void 0 ? void 0 : _c.assignedStaffUser;
+            const oldAssignedStaffUser = (_f = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _f === void 0 ? void 0 : _f.assignedStaffUser;
             burial = await entityManager.save(Burial_1.Burial, burial);
             burial.burialCode = (0, utils_1.generateIndentityCode)(burial.burialId);
             burial = await entityManager.save(Burial_1.Burial, burial);
@@ -481,9 +506,9 @@ let BurialService = class BurialService {
             }
             else if (assignedStaffUserChanged) {
                 const workOrderNotifTitleOld = `Burial work order was no longer assigned to you!`;
-                const workOrderNotifDescOld = `Burial work order at block ${(_d = burial === null || burial === void 0 ? void 0 : burial.lot) === null || _d === void 0 ? void 0 : _d.block}, lot ${(_e = burial === null || burial === void 0 ? void 0 : burial.lot) === null || _e === void 0 ? void 0 : _e.lotCode} was no longer assigned to you!`;
+                const workOrderNotifDescOld = `Burial work order at block ${(_g = burial === null || burial === void 0 ? void 0 : burial.lot) === null || _g === void 0 ? void 0 : _g.block}, lot ${(_h = burial === null || burial === void 0 ? void 0 : burial.lot) === null || _h === void 0 ? void 0 : _h.lotCode} was no longer assigned to you!`;
                 const workOrderNotifTitleNew = `New Burial work order assigned to you!`;
-                const workOrderNotifDescNew = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} at block ${burial.lot.block}, lot ${(_f = burial === null || burial === void 0 ? void 0 : burial.lot) === null || _f === void 0 ? void 0 : _f.lotCode}`;
+                const workOrderNotifDescNew = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")} at block ${burial.lot.block}, lot ${(_j = burial === null || burial === void 0 ? void 0 : burial.lot) === null || _j === void 0 ? void 0 : _j.lotCode}`;
                 burial.workOrder.dateTargetCompletion = dateOfBurial;
                 burial.workOrder.title = `Burial work order on ${(0, moment_1.default)(dateOfBurial).format("MMM DD, YYYY")}`;
                 burial.workOrder.description =
@@ -543,8 +568,8 @@ let BurialService = class BurialService {
                     },
                 },
             });
-            (_h = (_g = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _g === void 0 ? void 0 : _g.assignedStaffUser) === null || _h === void 0 ? true : delete _h.password;
-            (_k = (_j = burial === null || burial === void 0 ? void 0 : burial.reservation) === null || _j === void 0 ? void 0 : _j.user) === null || _k === void 0 ? true : delete _k.password;
+            (_l = (_k = burial === null || burial === void 0 ? void 0 : burial.workOrder) === null || _k === void 0 ? void 0 : _k.assignedStaffUser) === null || _l === void 0 ? true : delete _l.password;
+            (_o = (_m = burial === null || burial === void 0 ? void 0 : burial.reservation) === null || _m === void 0 ? void 0 : _m.user) === null || _o === void 0 ? true : delete _o.password;
             return burial;
         });
     }

@@ -71,17 +71,47 @@
     <fieldset>
       <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
         <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
-          <ng-container *ngIf="isEditMode; else viewModeBurialName">
-            <ion-label position="floating">Burial name</ion-label>
-            <ion-input [readonly]="!isEditMode" formControlName="burialName" type="text"> </ion-input>
+          <ng-container *ngIf="isEditMode; else viewModeBurialFirstName">
+            <ion-label position="floating">Burial firstname</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="burialFirstName" type="text"> </ion-input>
           </ng-container>
-          <ng-template #viewModeBurialName>
+          <ng-template #viewModeBurialFirstName>
             <ion-label fixed>
-              <h3>Burial name</h3>
-              <h1>{{reservation.burialName}}</h1>
+              <h3>Burial firstname</h3>
+              <h1>{{reservation.burialFirstName}}</h1>
             </ion-label>
           </ng-template>
-          <ion-note slot="error" *ngIf="isEditMode && formControls.burialName.dirty && formControls.burialName?.errors?.required">Burial name is
+          <ion-note slot="error" *ngIf="isEditMode && formControls.burialFirstName.dirty && formControls.burialFirstName?.errors?.required">Burial firstname is
+            required.</ion-note>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeBurialMiddleName">
+            <ion-label position="floating">Burial middlename</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="burialMiddleName" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeBurialMiddleName>
+            <ion-label fixed>
+              <h3>Burial middlename</h3>
+              <h1>{{reservation.burialMiddleName}}</h1>
+            </ion-label>
+          </ng-template>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeBurialLastName">
+            <ion-label position="floating">Burial lastname</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="burialLastName" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeBurialLastName>
+            <ion-label fixed>
+              <h3>Burial lastname</h3>
+              <h1>{{reservation.burialLastName}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.burialLastName.dirty && formControls.burialLastName?.errors?.required">Burial lastname is
             required.</ion-note>
         </ion-item>
       </ion-col>
@@ -114,6 +144,38 @@
             ></ion-datetime>
           </ng-template>
         </ion-modal>
+      </ion-col>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeBurialAge">
+            <ion-label position="floating">Burial age</ion-label>
+            <ion-input [readonly]="!isEditMode" formControlName="burialAge" type="text"> </ion-input>
+          </ng-container>
+          <ng-template #viewModeBurialAge>
+            <ion-label fixed>
+              <h3>Burial age</h3>
+              <h1>{{reservation.burialAge}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.burialAge.dirty && formControls.burialAge?.errors?.required">Burial age is
+            required.</ion-note>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}">
+        <ion-item [fill]="isEditMode ? 'outline' : ''" class="form-field" [lines]="!isEditMode ? 'full' : 'none'">
+          <ng-container *ngIf="isEditMode; else viewModeAddress">
+            <ion-label position="floating">Address</ion-label>
+            <ion-textarea [readonly]="!isEditMode" formControlName="address" type="text"> </ion-textarea>
+          </ng-container>
+          <ng-template #viewModeAddress>
+            <ion-label fixed>
+              <h3>Address</h3>
+              <h1>{{reservation.address}}</h1>
+            </ion-label>
+          </ng-template>
+          <ion-note slot="error" *ngIf="isEditMode && formControls.address.dirty && formControls.address?.errors?.required">Address is
+            required.</ion-note>
+        </ion-item>
       </ion-col>
 
       <ion-col size="12" class="{{isEditMode ? 'ion-margin-bottom' : ''}}" >

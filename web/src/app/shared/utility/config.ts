@@ -91,7 +91,12 @@ export interface AppConfig {
         update: string;
         uploadCertificateTemplate: string;
       };
-      dashboard: {};
+      dashboard: {
+        getLot: string;
+        getBurialAndReservationRecords: string;
+        getUsers: string;
+        getLotTrackerByBlock: string;
+      };
       certificate: { generateCertificate: string };
       message: { create: string };
     };

@@ -95,6 +95,7 @@ let ReservationService = class ReservationService {
     }
     async create(dto) {
         return await this.reservationRepo.manager.transaction(async (entityManager) => {
+            var _a, _b, _c;
             const lot = await entityManager.findOne(Lot_1.Lot, {
                 where: {
                     lotCode: dto.lotCode,
@@ -131,7 +132,12 @@ let ReservationService = class ReservationService {
                 return res[0]["timestamp"];
             });
             reservation.dateTime = timestamp;
-            reservation.burialName = dto.burialName;
+            reservation.burialFullName = (0, utils_1.getFullName)((_a = dto.burialFirstName) !== null && _a !== void 0 ? _a : "", (_b = dto.burialMiddleName) !== null && _b !== void 0 ? _b : "", (_c = dto.burialLastName) !== null && _c !== void 0 ? _c : "");
+            reservation.burialFirstName = dto.burialFirstName;
+            reservation.burialMiddleName = dto.burialMiddleName;
+            reservation.burialLastName = dto.burialLastName;
+            reservation.burialAge = dto.burialAge;
+            reservation.address = dto.address;
             const dateOfBirth = (0, moment_1.default)(new Date(dto.dateOfBirth), date_constant_1.DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");
             reservation.dateOfBirth = dateOfBirth;
             const dateOfDeath = (0, moment_1.default)(new Date(dto.dateOfDeath), date_constant_1.DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");
@@ -172,6 +178,7 @@ let ReservationService = class ReservationService {
     }
     async update(reservationCode, dto) {
         return await this.reservationRepo.manager.transaction(async (entityManager) => {
+            var _a, _b, _c;
             let reservation = await entityManager.findOne(Reservation_1.Reservation, {
                 where: {
                     reservationCode,
@@ -191,7 +198,12 @@ let ReservationService = class ReservationService {
             if (reservation.status !== reservation_constant_1.RESERVATION_STATUS.PENDING) {
                 throw Error("The booking was already: " + reservation.status.toLocaleLowerCase());
             }
-            reservation.burialName = dto.burialName;
+            reservation.burialFullName = (0, utils_1.getFullName)((_a = dto.burialFirstName) !== null && _a !== void 0 ? _a : "", (_b = dto.burialMiddleName) !== null && _b !== void 0 ? _b : "", (_c = dto.burialLastName) !== null && _c !== void 0 ? _c : "");
+            reservation.burialFirstName = dto.burialFirstName;
+            reservation.burialMiddleName = dto.burialMiddleName;
+            reservation.burialLastName = dto.burialLastName;
+            reservation.burialAge = dto.burialAge;
+            reservation.address = dto.address;
             const dateOfBirth = (0, moment_1.default)(new Date(dto.dateOfBirth), date_constant_1.DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");
             reservation.dateOfBirth = dateOfBirth;
             const dateOfDeath = (0, moment_1.default)(new Date(dto.dateOfDeath), date_constant_1.DateConstant.DATE_LANGUAGE).format("YYYY-MM-DD");

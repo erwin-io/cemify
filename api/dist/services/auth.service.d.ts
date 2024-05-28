@@ -27,6 +27,12 @@ export declare class AuthService {
         active: boolean;
         userCode: string;
         userType: string;
+        firstName: string;
+        middleName: string;
+        lastName: string;
+        birthDate: string;
+        age: string;
+        address: string;
         gatewayConnectedUsers: import("../db/entities/GatewayConnectedUsers").GatewayConnectedUsers[];
         notifications: import("../db/entities/Notifications").Notifications[];
         reservations: import("../db/entities/Reservation").Reservation[];
@@ -49,6 +55,12 @@ export declare class AuthService {
         active: boolean;
         userCode: string;
         userType: string;
+        firstName: string;
+        middleName: string;
+        lastName: string;
+        birthDate: string;
+        age: string;
+        address: string;
         gatewayConnectedUsers: import("../db/entities/GatewayConnectedUsers").GatewayConnectedUsers[];
         notifications: import("../db/entities/Notifications").Notifications[];
         reservations: import("../db/entities/Reservation").Reservation[];

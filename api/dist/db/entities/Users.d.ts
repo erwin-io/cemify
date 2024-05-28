@@ -15,6 +15,12 @@ export declare class Users {
     active: boolean;
     userCode: string | null;
     userType: string;
+    firstName: string;
+    middleName: string | null;
+    lastName: string;
+    birthDate: string;
+    age: string;
+    address: string;
     gatewayConnectedUsers: GatewayConnectedUsers[];
     notifications: Notifications[];
     reservations: Reservation[];
