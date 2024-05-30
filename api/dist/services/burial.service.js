@@ -68,7 +68,7 @@ let BurialService = class BurialService {
       l."MapData" as "mapData",  
       l."Status" as "status" FROM dbo."Burial" b
     left join dbo."Lot" l ON b."LotId" = l."LotId"
-    where LOWER(b."FullName") like '%${key.toLowerCase()}%' and b."Active" = true 
+    where LOWER(b."BurialFullName") like '%${key.toLowerCase()}%' and b."Active" = true 
       `),
             this.burialRepo.manager.query(`
       select 

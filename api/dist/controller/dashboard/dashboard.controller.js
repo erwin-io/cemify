@@ -86,19 +86,6 @@ let DashboardController = class DashboardController {
             return res;
         }
     }
-    async getMonthlyBurialReport(year) {
-        const res = {};
-        try {
-            res.data = await this.dashboardService.getMonthlyBurialReport(year);
-            res.success = true;
-            return res;
-        }
-        catch (e) {
-            res.success = false;
-            res.message = e.message !== undefined ? e.message : e;
-            return res;
-        }
-    }
 };
 __decorate([
     (0, common_1.Get)("/getLot"),
@@ -131,13 +118,6 @@ __decorate([
     __metadata("design:paramtypes", [dashboard_base_dto_1.AnnualFilterDashboardDto]),
     __metadata("design:returntype", Promise)
 ], DashboardController.prototype, "getAnnualBurialReport", null);
-__decorate([
-    (0, common_1.Get)("/getMonthlyBurialReport/:year"),
-    __param(0, (0, common_1.Param)("year")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], DashboardController.prototype, "getMonthlyBurialReport", null);
 DashboardController = __decorate([
     (0, swagger_1.ApiTags)("dashboard"),
     (0, common_1.Controller)("dashboard"),

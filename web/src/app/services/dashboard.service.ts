@@ -71,14 +71,6 @@ export class DashboardService implements IServices {
     );
   }
 
-  getMonthlyBurialReport(year): Observable<ApiResponse<any[]>> {
-    return this.http.get<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.dashboard.getMonthlyBurialReport + year)
-    .pipe(
-      tap(_ => this.log('dashboard')),
-      catchError(this.handleError('dashboard', []))
-    );
-  }
-
   handleError<T>(operation: string, result?: T) {
     return (error: any): Observable<T> => {
       this.log(`${operation} failed: ${Array.isArray(error.error.message) ? error.error.message[0] : error.error.message}`);

@@ -105,19 +105,4 @@ export class DashboardController {
       return res;
     }
   }
-
-  @Get("/getMonthlyBurialReport/:year")
-  //   @UseGuards(JwtAuthGuard)
-  async getMonthlyBurialReport(@Param("year") year: string) {
-    const res = {} as ApiResponseModel<any[]>;
-    try {
-      res.data = await this.dashboardService.getMonthlyBurialReport(year);
-      res.success = true;
-      return res;
-    } catch (e) {
-      res.success = false;
-      res.message = e.message !== undefined ? e.message : e;
-      return res;
-    }
-  }
 }

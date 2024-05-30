@@ -19,15 +19,8 @@ import { DashboardService } from 'src/app/services/dashboard.service';
 export class BurialReportsComponent {
   isLoading = false;
 
-  reportType: 'MONTHLY' | 'ANNUAL' = "ANNUAL";
   filterParams: any;
   reportFilter = {
-    monthlyFilter: {
-      show: false,
-      value: moment().format("YYYY"),
-      dateSelected: ()=> new Date(Number(this.reportFilter.monthlyFilter.value) +1, 0, 0),
-      getMaxDate: ()=> new Date()
-    },
     yearFrom: {
       show: false,
       value: moment(new Date(new Date().getFullYear() -5, 0, 0)).format("YYYY"),
@@ -77,44 +70,24 @@ export class BurialReportsComponent {
 
   initReport() {
     this.isLoading = true;
-    if(this.reportType === "ANNUAL") {
-      this.dashboardService.getAnnualBurialReport({yearFrom: moment(this.reportFilter.yearFrom.value).format("YYYY"), yearTo: moment(this.reportFilter.yearTo.value).format("YYYY")}).pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError(this.handleError('burial', []))
-      ).subscribe(async res=> {
-        this.dataSource = new MatTableDataSource(res.data.map((x: Burial)=> {
-          return {
-            ...x,
-            ...x.lot
-          }
-        }));
-        this.isLoading = false;
-      });
-    } else {
-      this.dashboardService.getMonthlyBurialReport(moment(this.reportFilter.monthlyFilter.value).format("YYYY")).pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError(this.handleError('burial', []))
-      ).subscribe(async res=> {
-        this.dataSource = new MatTableDataSource(res.data.map((x: Burial)=> {
-          return {
-            ...x,
-            ...x.lot
-          }
-        }));
-        this.isLoading = false;
-      });
-    }
+    this.dashboardService.getAnnualBurialReport({yearFrom: moment(this.reportFilter.yearFrom.value).format("YYYY"), yearTo: moment(this.reportFilter.yearTo.value).format("YYYY")}).pipe(
+      takeUntil(this.ngUnsubscribe),
+      catchError(this.handleError('burial', []))
+    ).subscribe(async res=> {
+      this.dataSource = new MatTableDataSource(res.data.map((x: Burial)=> {
+        return {
+          ...x,
+          ...x.lot
+        }
+      }));
+      this.isLoading = false;
+    });
   }
 
   chosenFilterYearHandler(event, type) {
     this.reportFilter[type].value = moment(event).format("YYYY");
     this.reportFilter[type].show = false;
-    if(type !== 'monthlyFilter') {
-      this.filterParams = `${this.reportFilter.yearFrom.value},${this.reportFilter.yearTo.value}`
-    } else {
-      this.filterParams = this.reportFilter.monthlyFilter.value;
-
-    }
+    this.filterParams = `${this.reportFilter.yearFrom.value},${this.reportFilter.yearTo.value}`
     this.initReport();
   }
 

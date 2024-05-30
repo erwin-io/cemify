@@ -28,5 +28,4 @@ export declare class DashboardController {
         e: any;
     }>>;
     getAnnualBurialReport(dto: AnnualFilterDashboardDto): Promise<ApiResponseModel<Burial[]>>;
-    getMonthlyBurialReport(year: string): Promise<ApiResponseModel<any[]>>;
 }

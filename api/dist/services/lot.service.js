@@ -94,7 +94,12 @@ let LotService = class LotService {
             burial: {
                 burialId: result.burialId,
                 burialCode: result.burialCode,
-                fullName: result.fullName,
+                burialFullName: result.burialFullName,
+                burialFirstName: result.burialFirstName,
+                burialMiddleName: result.burialMiddleName,
+                burialLastName: result.burialLastName,
+                address: result.address,
+                burialAge: result.burialAge,
                 dateOfBirth: result.dateOfBirth,
                 dateOfDeath: result.dateOfDeath,
                 dateOfBurial: result.dateOfBurial,

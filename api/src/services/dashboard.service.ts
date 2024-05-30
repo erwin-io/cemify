@@ -140,38 +140,10 @@ export class DashboardService {
           dbo."Burial"
           
       WHERE "Active" = true
-          AND EXTRACT(year FROM "LeasedDate"::timestamp) between ${yearFrom} AND ${yeartTo}
+          AND EXTRACT(year FROM "DateOfBurial"::timestamp) between ${yearFrom} AND ${yeartTo}
       ORDER BY 
-          "LeasedDate" asc;
+          "DateOfBurial" asc;
 
-      `
-      )
-      .then((res) => {
-        return res ? res.map((x) => x.burialId) : [];
-      });
-
-    return this.burialRepo.find({
-      where: {
-        burialId: In(burialIds),
-        active: true,
-      },
-      relations: {
-        lot: true,
-      },
-    });
-  }
-
-  async getMonthlyBurialReport(year) {
-    const burialIds = await this.burialRepo.manager
-      .query(
-        `
-        SELECT "BurialId" as "burialId"
-        FROM 
-            dbo."Burial"
-            
-        WHERE "Active" = true
-        AND EXTRACT(year FROM "LeasedDate"::timestamp) = ${year}
-        ORDER BY "LeasedDate" asc
       `
       )
       .then((res) => {

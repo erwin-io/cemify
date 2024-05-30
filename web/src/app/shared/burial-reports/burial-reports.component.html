@@ -13,34 +13,7 @@
   <div style="margin-left: 16px;width: 100%;">
     <div fxFlex="100" fxLayout="column" fxLayoutGap="20">
       <div fxFlex="100" fxLayout="column" fxLayoutGap="20">
-        <div fxFlex.gt-xs="33.33%" fxFlex="100%" fxLayout="column" fxLayout.gt-xs="row">
-          <mat-form-field appearance="outline">
-            <mat-select value="ANNUAL" #reportViewMode
-              (selectionChange)="reportType = reportViewMode.value;filterParams = reportViewMode.value === 'ANNUAL' ? reportFilter.yearFrom.value +','+ reportFilter.yearTo.value: reportFilter.monthlyFilter.value;initReport()">
-              <mat-option value="MONTHLY">Monthly</mat-option>
-              <mat-option value="ANNUAL">Annual</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div fxLayout="row" *ngIf="reportViewMode.value === 'MONTHLY'">
-          <div fxFlex.gt-xs="33.33%" fxFlex="100%" fxLayout="column" fxLayout.gt-xs="row" >
-            <div fxFlex="100" fxLayoutAlign="space-between center" class="year-picker">
-              <mat-form-field appearance="outline">
-                <mat-label>Filter Year</mat-label>
-                <input matInput readonly value="{{reportFilter.monthlyFilter.value}}" placeholder="Year">
-                <mat-icon matTooltip="Filter Year" class="icon-right"
-                  (click)="reportFilter.monthlyFilter.show = !reportFilter.monthlyFilter.show"
-                  style="cursor: pointer;" matSuffix>today</mat-icon>
-              </mat-form-field>
-              <mat-card class="year-picker-calendar" *ngIf="reportFilter.monthlyFilter.show">
-                <mat-calendar startView="multi-year" [selected]="reportFilter.monthlyFilter.dateSelected()"
-                  [maxDate]="reportFilter.monthlyFilter.getMaxDate()"
-                  (yearSelected)="chosenFilterYearHandler($event, 'monthlyFilter')"></mat-calendar>
-              </mat-card>
-            </div>
-          </div>
-        </div>
-        <div fxLayout="row" *ngIf="reportViewMode.value === 'ANNUAL'">
+        <div fxLayout="row" >
           <div fxFlex.gt-xs="50%" fxFlex="100%" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="16px">
             <div fxFlex="50%" fxLayout="row" fxLayoutAlign="space-between center" class="year-picker">
               <mat-form-field fxFlex="100" appearance="outline">
@@ -81,8 +54,7 @@
       <h5>Current Date: {{today | date: 'EEE, dd MMM yyyy'}}</h5>
     </div>
     <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
-      <h5 *ngIf="reportViewMode.value === 'MONTHLY'">Filter Year: {{reportFilter?.monthlyFilter?.value | date: 'yyyy'}}</h5>
-      <h5 *ngIf="reportViewMode.value === 'ANNUAL'">Filter Year Range: {{reportFilter?.yearFrom?.value | date: 'yyyy'}} - {{reportFilter.yearTo?.value | date: 'yyyy'}}</h5>
+      <h5 >Filter Year Range: {{reportFilter?.yearFrom?.value | date: 'yyyy'}} - {{reportFilter.yearTo?.value | date: 'yyyy'}}</h5>
     </div>
     <div fxFlex="100" fxLayout="column" fxLayoutGap="16px">
       <table mat-table [dataSource]="dataSource" >

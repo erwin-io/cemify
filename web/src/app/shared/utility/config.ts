@@ -97,7 +97,6 @@ export interface AppConfig {
         getUsers: string;
         getLotTrackerByBlock: string;
         getAnnualBurialReport: string;
-        getMonthlyBurialReport: string;
       };
       certificate: { generateCertificate: string };
       message: { create: string };
