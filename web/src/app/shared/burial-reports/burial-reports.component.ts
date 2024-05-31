@@ -40,7 +40,7 @@ export class BurialReportsComponent {
     'burialCode',
     'lotCode',
     'block',
-    'fullName',
+    'burialFullName',
     'dateOfDeath',
     'dateOfBurial',
     'familyContactPerson',

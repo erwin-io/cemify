@@ -58,7 +58,7 @@
         <div fxFlex="100" fxLayout="column">
           <mat-action-list cdk-virtual-scroll-viewport style="width: 100%;max-height: 300px;">
             <h4 matSubheader *ngIf="burial.length > 0">Burial</h4>
-            <button mat-list-item  *ngFor="let item of burial" (click)="onSearchComplete({ lotCode: item?.lot?.lotCode, block: item?.lot?.block, status: item?.lot?.status, burial: item})">{{item?.fullName}}</button>
+            <button mat-list-item  *ngFor="let item of burial" (click)="onSearchComplete({ lotCode: item?.lot?.lotCode, block: item?.lot?.block, status: item?.lot?.status, burial: item})">{{item?.burialFullName}}</button>
           </mat-action-list>
         </div>
       </mat-tab>
